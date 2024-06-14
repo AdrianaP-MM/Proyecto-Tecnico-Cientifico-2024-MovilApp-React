@@ -1,8 +1,11 @@
+// screens/MyCarsScreen.js
 import React from 'react';
-import { View, Text, Button, FlatList, Image, StyleSheet } from 'react-native';
+import { View, Button, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import CarCard from '../components/CarCard';
+import { Ionicons } from '@expo/vector-icons';
 
 const cars = [
-  { id: '1', model: 'Hyundai Elantra', plate: '999-999', image: 'https://example.com/car1.png' },
+  { id: '1', model: 'Hyundai Elantra', plate: '999-999', image: 'https://example.com/car1.png'},
   { id: '2', model: 'Hyundai Elantra', plate: '999-999', image: 'https://example.com/car2.png' },
   { id: '3', model: 'Hyundai Elantra', plate: '999-999', image: 'https://example.com/car3.png' },
 ];
@@ -10,17 +13,18 @@ const cars = [
 const MyCarsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Button title="Agregar carros" onPress={() => navigation.navigate('AddCar')} />
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddCar')}>
+        <Ionicons name="add-circle-outline" size={24} color="white" />
+        <Text style={styles.addButtonText}>Agregar carros</Text>
+      </TouchableOpacity>
       <FlatList
         data={cars}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.carCard}>
-            <Image source={{ uri: item.image }} style={styles.carImage} />
-            <Text>{item.model}</Text>
-            <Text>{item.plate}</Text>
-          </View>
+          <CarCard model={item.model} plate={item.plate} image={item.image} />
         )}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
       />
     </View>
   );
@@ -31,16 +35,20 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  carCard: {
-    marginBottom: 20,
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ff4d4d',
     padding: 10,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
+    borderRadius: 5,
+    marginBottom: 20,
   },
-  carImage: {
-    width: '100%',
-    height: 150,
-    borderRadius: 10,
+  addButtonText: {
+    color: 'white',
+    marginLeft: 10,
+  },
+  row: {
+    justifyContent: 'space-between',
   },
 });
 
