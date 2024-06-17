@@ -3,15 +3,20 @@ import { View, StyleSheet } from 'react-native';
 import { Avatar, Button, TextInput, Title } from 'react-native-paper';
 import Icon from '@mdi/react';
 import { mdiAccount } from '@mdi/js';
+import ButtonAction from '../components/ButtonAction';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
+  const hasErrors = () => {
+    return !text.includes('@');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
-        <Avatar.Icon size={75       } icon="account" />
+      <Avatar.Icon size={100} icon="alpha-d" />
       </View>
       <Title style={styles.title}>Inicio de Sesión</Title>
       <TextInput
@@ -19,6 +24,7 @@ export default function Login({ navigation }) {
         value={email}
         onChangeText={setEmail}
         style={styles.input}
+        left={<TextInput.Icon icon={"account-circle"}/>}
       />
       <TextInput
         label="Contraseña"
@@ -26,10 +32,9 @@ export default function Login({ navigation }) {
         value={password}
         onChangeText={setPassword}
         style={styles.input}
+        left={<TextInput.Icon icon={"lock"}/>}
       />
-      <Button mode="contained" onPress={() => navigation.navigate('MyCars')}>
-        Iniciar Sesión
-      </Button>
+      <ButtonAction textoBoton = "Registrate" modo="contained"/>
     </View>
   );
 }
