@@ -6,6 +6,7 @@ import MyCarsScreen from './screens/MyCarsScreen';
 import AddCarScreen from './screens/AddCarScreen';
 import Login from './screens/Login';
 import ButtonAction from './components/ButtonAction';
+import PrimerUso from './screens/primer_uso';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,7 @@ function App() {
     <PaperProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
-           <Stack.Screen name="Login" component={Login} options={{ title: 'Inicio de sesión' }} />
+          <Stack.Screen name="Login" component={Login} options={{ title: 'Inicio de sesión' }} />
           <Stack.Screen name="MyCars" component={MyCarsScreen} options={{ title: 'Mis carros' }} />
           <Stack.Screen name="AddCar" component={AddCarScreen} options={{ title: 'Agregar vehiculo' }} />
         </Stack.Navigator>
