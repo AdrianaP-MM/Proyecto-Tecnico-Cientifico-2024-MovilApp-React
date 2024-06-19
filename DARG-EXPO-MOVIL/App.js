@@ -27,7 +27,7 @@ function App() {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="EditarNatural">
         <Stack.Screen name="Login" component={Login} options={{ title: 'Inicio de sesión' }} />
         <Stack.Screen name="Registrate" component={Registrate} options={{ title: 'Registrarse' }}/>
          <Stack.Screen name="MyCars" component={MyCarsScreen} options={{ title: 'Mis carros' }} />
