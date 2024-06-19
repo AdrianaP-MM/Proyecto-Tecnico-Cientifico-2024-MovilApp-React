@@ -7,6 +7,9 @@ import AddCarScreen from './screens/AddCarScreen';
 import Login from './screens/Login';
 import ButtonAction from './components/ButtonAction';
 import PrimerUso from './screens/primer_uso';
+import React, { useEffect, useState } from 'react';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +25,38 @@ const theme = {
 };
 
 function App() {
+  const [fontsLoaded] = useFonts({
+    'PoppinsSemiBold': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-SemiBold.ttf'),
+    'PoppinsRegular': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-Regular.ttf'),
+    'PoppinsMedium': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-Medium.ttf'),
+    'PoppinsLight': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-Light.ttf'),
+    'PoppinsLightItalic': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-LightItalic.ttf'),
+  });
+
+  const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepareApp() {
+      try {
+        // Evita que el SplashScreen se oculte automáticamente
+        await SplashScreen.preventAutoHideAsync();
+
+        // Hace una pausa de 3 segundos (esto es opcional, solo como ejemplo)
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        // Cuando las fuentes estén cargadas, oculta el SplashScreen
+        if (fontsLoaded) {
+          await SplashScreen.hideAsync();
+          setAppIsReady(true);
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    prepareApp();
+  }, [fontsLoaded]);
+
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
