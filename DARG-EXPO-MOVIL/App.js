@@ -7,6 +7,7 @@ import AddCarScreen from './screens/AddCarScreen';
 import Login from './screens/Login';
 import ButtonAction from './components/ButtonAction';
 import EditarJuridico from './screens/EditarJuridico';
+import PrimerUso from './screens/primer_uso';
 
 const Stack = createStackNavigator();
 
