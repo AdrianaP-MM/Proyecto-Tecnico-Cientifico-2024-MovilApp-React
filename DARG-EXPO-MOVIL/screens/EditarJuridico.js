@@ -1,113 +1,148 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { Appbar, Avatar, Button, Text, TextInput, TouchableRipple } from "react-native-paper";
+import { Avatar, Button, Text, TextInput, TouchableRipple } from "react-native-paper";
+import ButtonAction from '../components/ButtonAction';
 
 export default function EditarJuridico({ navigation }) {
   const [nombre, setNombre] = useState("");
 
   return (
-    <View>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.avatarContainer}>
         <Avatar.Icon size={75} icon="account" />
-        <Text variant="headlineSmall" style={{fontWeight:'bold'}}>Emily Murillo</Text>
+        <Text variant="headlineSmall" style={{ fontWeight: 'bold' }}>Empresa</Text>
         <TouchableRipple
-    onPress={() => console.log('Pressed')}
-    rippleColor="rgba(0, 0, 0, .32)"
-  >
-  <Text variant="bodyLarge" style={styles.textoAvatar}>Cambiar foto de perfil</Text>
-  </TouchableRipple>
+          onPress={() => console.log('Pressed')}
+          rippleColor="rgba(0, 0, 0, .32)"
+        >
+          <Text variant="bodyLarge" style={styles.textoAvatar}>Cambiar foto de perfil</Text>
+        </TouchableRipple>
       </View>
 
       <View style={styles.ContainerInputs}>
-      {/* ++++++ Nombre++++++ */}
-      <Text variant="bodyLarge" >Nombre</Text>
-      <TextInput
-       label="Nombre"
-       mode="outlined"
 
-       />
-        {/* ++++++ Apellido++++++ */}
+        {/* Nombre */}
+        <Text variant="bodyLarge">Nombre</Text>
+        <TextInput
+          label="Nombre"
+          style={styles.input}
+          value={nombre}
+          onChangeText={setNombre}
+          theme={{ colors: { background: 'white' } }}
+        />
 
-      <Text variant="bodyLarge">Apellido</Text>
-      <TextInput
-       label="Apellido"
-        mode="outlined"
-      />
+        {/* Apellido */}
+        <Text variant="bodyLarge">Apellido</Text>
+        <TextInput
+          label="Apellido"
+          style={styles.input}
+          theme={{ colors: { background: 'white' } }}
+        />
 
-        {/* ++++++ Departamento++++++ */}
-
+        {/* Departamento */}
         <Text variant="bodyLarge">Departamento</Text>
-      <TextInput
-       label="Departamento"
-        mode="outlined"
+        <TextInput
+          label="Departamento"
+          style={styles.input}
+          theme={{ colors: { background: 'white' } }}
+        />
 
-      />
-        {/* ++++++ Correo++++++ */}
-
+        {/* Correo */}
         <Text variant="bodyLarge">Correo</Text>
-      <TextInput
-       label="Correo@ejemplo.com"
-        mode="outlined"
-      />
-{/* ++++++ DUI++ NIT++++ */}
-<View style={styles.dui_nit }>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>DUI</Text>
-        <TextInput style={styles.input} placeholder="DUI"
-         mode="outlined" keyboardType="numeric"/>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label }>NIT</Text>
-        <TextInput style={styles.input} placeholder="NIT"
-         mode="outlined" keyboardType="numeric"
+        <TextInput
+          label="Correo@ejemplo.com"
+          style={styles.input}
+          theme={{ colors: { background: 'white' } }}
         />
+
+        {/* DUI y NIT */}
+        <View style={styles.dui_nit}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>DUI</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="DUI"
+              keyboardType="numeric"
+              theme={{ colors: { background: 'white' } }}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>NIT</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="NIT"
+              keyboardType="numeric"
+              theme={{ colors: { background: 'white' } }}
+            />
+          </View>
+        </View>
+
+        {/* NRC y NRF */}
+        <View style={styles.dui_nit}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>NRC</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="NRC"
+              keyboardType="numeric"
+              theme={{ colors: { background: 'white' } }}
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>NRF</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="NRF"
+              keyboardType="numeric"
+              theme={{ colors: { background: 'white' } }}
+            />
+          </View>
+        </View>
+        
+        <View>
+          <Button mode="contained">Actualizar</Button>
+        </View>
       </View>
-    </View>
-    {/* ++++++ NRC++ NRF++++ */}
-    <View style={styles.dui_nit }>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>NRC</Text>
-        <TextInput style={styles.input} placeholder="NRC"
-         mode="outlined" keyboardType="numeric"/>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label }>NRF</Text>
-        <TextInput style={styles.input} placeholder="NRF"
-         mode="outlined" keyboardType="numeric"
-        />
-      </View>
-    </View>
-      <View>
-        <Button mode="contained">Actualizar</Button>
-      </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "start",
-    padding: 50,
-
+    padding: 20,
   },
   avatarContainer: {
     alignItems: "center", // Centra el avatar horizontalmente
-    // Añade espacio entre el avatar y el título
-    padding: 50,
+    padding: 50, // Añade espacio entre el avatar y el título
   },
-  textoAvatar:{
-    color:"#BA181B"
+  textoAvatar: {
+    color: "#BA181B",
   },
   title: {
     marginBottom: 10,
     textAlign: "center",
   },
-  ContainerInputs:{
-    paddingHorizontal:20,
+  ContainerInputs: {
+    paddingHorizontal: 20,
   },
   input: {
     marginBottom: 10,
+    backgroundColor: 'white', // Fondo blanco
+    borderColor: 'black', // Color del borde
+    borderWidth: 0.2, // Ancho del borde
+    borderRadius: 3, // Borde redondeado
+    shadowColor: "#000", // Color de la sombra
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25, // Opacidad de la sombra
+    shadowRadius: 3.84, // Radio de la sombra
+    elevation: 2, // Altura de la sombra 
   },
   dui_nit: {
     flexDirection: 'row',
@@ -117,19 +152,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
     marginHorizontal: 2,
+  },
   label: {
     fontSize: 16,
     marginBottom: 5,
   },
-  input: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 4,  
-    borderWidth: 1,
-    borderColor: '#000',
-    padding: 8,
-    borderRadius: 4,
-    height: 40,
-    flex: 1, // Esto permite que los inputs se expandan para llenar el espacio disponible
-  },
-  }
 });
