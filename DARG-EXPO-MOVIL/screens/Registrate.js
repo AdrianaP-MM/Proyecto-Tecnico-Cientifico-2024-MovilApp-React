@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Avatar, TextInput, Text, Dialog, Portal, Button, Provider, RadioButton } from 'react-native-paper';
+import { Avatar, TextInput, Text, Dialog, Portal, Button, Provider, RadioButton, TouchableRipple } from 'react-native-paper';
 
 export default function Registrate({ navigation }) {
     const [name, setName] = React.useState('');
@@ -159,9 +159,18 @@ export default function Registrate({ navigation }) {
                     style={styles.button}
                     theme={{ colors: { primary: '#BA181B' } }}
                 >
-                    Ir a MyCarsScreen
+                    Registrate
                 </Button>
 
+                <View style={styles.loginContainer}>
+                    <Text style={styles.accountText}>¿Ya tienes cuenta? </Text>
+                    <TouchableRipple
+                        onPress={() => navigation.navigate('Login')}
+                        rippleColor="rgba(0, 0, 0, .32)"
+                    >
+                        <Text variant="bodyLarge" style={styles.loginText}>Iniciar sesión</Text>
+                    </TouchableRipple>
+                </View>
             </ScrollView>
         </Provider>
     );
@@ -223,5 +232,19 @@ const styles = StyleSheet.create({
         marginTop: 10,
         backgroundColor: '#BA181B',
         borderRadius: 5,
+    },
+    loginContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    accountText: {
+        fontSize: 15,
+    },
+    loginText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'red',
     },
 });

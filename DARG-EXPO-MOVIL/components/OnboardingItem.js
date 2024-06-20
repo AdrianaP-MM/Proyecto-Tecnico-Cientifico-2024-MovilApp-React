@@ -1,9 +1,12 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native'; // Importar desde @react-navigation/native
 
 const OnboardingItem = ({ item }) => {
     const { width } = useWindowDimensions();
+    const navigation = useNavigation(); // Usar useNavigation para la navegación
+
     return (
         <View style={[styles.container, { width }]}>
             <Image source={item.image} style={[styles.image, { resizeMode: 'contain' }]}/>
@@ -12,9 +15,9 @@ const OnboardingItem = ({ item }) => {
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.description}>{item.description}</Text>
                 <TouchableRipple
-                    onPress={() => console.log('Pressed')}
+                    onPress={() => navigation.navigate('Login')} // Navegar a la pantalla de inicio de sesión
                     rippleColor="rgba(128, 128, 128, .32)"
-                    style={styles.touchableRipple} // Define estilos para el TouchableRipple si es necesario
+                    style={styles.touchableRipple}
                 >
                     <Text style={styles.textoitem}>Saltar</Text>
                 </TouchableRipple>
@@ -28,13 +31,13 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFE0E1', // Establecer el color de fondo
-        padding: 20, // Agregar padding para asegurarse de que hay suficiente espacio
+        backgroundColor: '#FFE0E1',
+        padding: 20,
     },
     image: {
-        height: 300, // Ajustar la altura de la imagen
-        width: 300, // Ajustar el ancho de la imagen
-        marginBottom: 30, // Agregar margen para el espacio
+        height: 300,
+        width: 300,
+        marginBottom: 30,
     },
     title: {
         padding: 10,
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 60,
     },
     touchableRipple: {
-        marginTop: 20, 
+        marginTop: 20,
         marginBottom: 10,
         alignItems: 'center',
     },

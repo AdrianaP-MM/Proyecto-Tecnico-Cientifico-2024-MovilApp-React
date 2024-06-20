@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Avatar, TextInput, Text, TouchableRipple } from 'react-native-paper';
-import ButtonAction from '../components/ButtonAction';
+import { Avatar, TextInput, Text, TouchableRipple, Button } from 'react-native-paper';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState('');
@@ -31,14 +30,31 @@ export default function Login({ navigation }) {
         left={<TextInput.Icon icon="lock" />}
       />
       <View>
-      <TouchableRipple
+        <TouchableRipple
           onPress={() => console.log('Pressed')}
           rippleColor="rgba(0, 0, 0, .32)"
         >
           <Text variant="bodyLarge" style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
         </TouchableRipple>
       </View>
-      <ButtonAction textoBoton="Registrate" modo="contained" />
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('MyCarsScreen')}
+        style={styles.button}
+        theme={{ colors: { primary: '#BA181B' } }}
+      >
+        Iniciar sesión
+      </Button>
+
+      <View style={styles.registerContainer}>
+        <Text style={styles.noAccountText}>¿No tienes cuenta? </Text>
+        <TouchableRipple
+          onPress={() => navigation.navigate('Registrate')}
+          rippleColor="rgba(0, 0, 0, .32)"
+        >
+          <Text variant="bodyLarge" style={styles.registerText}>Registrate</Text>
+        </TouchableRipple>
+      </View>
     </View>
   );
 }
@@ -79,5 +95,23 @@ const styles = StyleSheet.create({
     fontSize: 15, // Tamaño del texto más grande
     marginTop: 20, // Espacio superior
     marginBottom: 20,
+  },
+  button: {
+    marginTop: 20,
+    borderRadius: 5, // Hacer el botón más cuadrado
+  },
+  registerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  noAccountText: {
+    fontSize: 15,
+  },
+  registerText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: 'red',
   },
 });
