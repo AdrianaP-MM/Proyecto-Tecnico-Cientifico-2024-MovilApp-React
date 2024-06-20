@@ -72,7 +72,14 @@ export default function EditarJuridico({ navigation }) {
         </View>
 
         <View>
-          <Button mode="contained">Actualizar</Button>
+          <Button
+            mode="contained"
+            onPress={handleNavigate}
+            style={styles.button}
+            theme={{ colors: { primary: '#BA181B' } }}
+          >
+            Actualizar
+          </Button>
         </View>
       </View>
     </ScrollView>
