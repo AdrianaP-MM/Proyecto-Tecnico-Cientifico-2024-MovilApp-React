@@ -13,3 +13,5 @@
 * npm install react-native-reanimated
 * npm install @react-native-community/masked-view
 * npm install react-native-image-picker
+* npm install react-native-gesture-handler
+* npm install @react-navigation/stack
