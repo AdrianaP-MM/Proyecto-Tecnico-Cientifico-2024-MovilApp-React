@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 //import PanelPrincipal from '../screens/panel_principal';
 import Perfil from '../screens/perfil';
 import CarrosStack from './carrosStack';
-import Servicios from '../screens/servicios';
+import Servicios from './serviciosStack';
 import CitasStack from './citasStack';
 import PanelStack from './panelStack';
 
