@@ -30,7 +30,7 @@ const TabNavigator = () => {
             iconName = focused ? 'car' : 'car-outline';
           } else if (route.name === 'Citas') {
             iconName = focused ? 'calendar' : 'calendar-outline';
-          } else if (route.name === 'Servicios') {
+          } else if (route.name === 'GrupoServicios') {
             iconName = focused ? 'settings' : 'settings-outline';
           }
 
@@ -52,7 +52,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Panel Principal" component={PanelStack}
         options={{ headerShown: false }} />
         <Tab.Screen name="Citas" component={CitasStack} options={{ headerShown: false }} />
-      <Tab.Screen name="Servicios" component={Servicios} options={{ headerShown: false }} />
+      <Tab.Screen name="GrupoServicios" component={Servicios} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }

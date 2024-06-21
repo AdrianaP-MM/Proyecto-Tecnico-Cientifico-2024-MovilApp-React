@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     width: '92%',
     maxHeight: '78%',
     position: 'relative',
+    marginBottom: 30,
   },
   scrollView: {
     width: '100%',

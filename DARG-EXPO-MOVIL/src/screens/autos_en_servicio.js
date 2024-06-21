@@ -79,6 +79,14 @@ export default function App() {
                         fechaDeRegistro="17/06/2024"
                     />
 
+                    <AutoEnProceso //Card de ejemplo de auto en proceso
+                        marca="Mazda"
+                        modelo="RX8"
+                        tipoVehiculo="Deportivo Coupe"
+                        placa="P246-456"
+                        fechaDeRegistro="17/06/2024"
+                    />
+
                 </ScrollView>
 
                 <CustomScrollBar /*Se agregan los parametros que espera recibir la custom bar*/
