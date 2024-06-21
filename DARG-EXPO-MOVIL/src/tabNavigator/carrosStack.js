@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import CarrosVista from '../screens/carros_vista';
-import AgregarVehiculo from '../screens/agregar_vehiculo';
+import CarrosVista from '../screens/carros';
+import AgregarVehiculo from '../screens/agregar_carro';
 import InformacionCarro from '../screens/informacion_carro';
 import CustomBackButton from './custom_back_button'; // Asegúrate de que esta ruta es correcta
 
