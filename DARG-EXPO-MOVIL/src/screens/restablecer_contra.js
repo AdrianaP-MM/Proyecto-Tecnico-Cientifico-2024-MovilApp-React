@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Text from '../components/utilidades/text';
-import Button from '../components/Buttons/btnRojo';
+import Button from '../components/buttons/btnRojo';
 import Input from '../components/inputs/allBorder';
 
 export default function AppRestablecerContra() {

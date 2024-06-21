@@ -1,19 +1,13 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-<<<<<<< Updated upstream
 import Boton from '../components/buttons/btnRojo';
 import TextC from '../components/utilidades/text';
-=======
-import Boton from '../components/Buttons/botonCarros';
-
->>>>>>> Stashed changes
 
 const InformacionCarro = ({ route }) => {
   const { carro } = route.params;
 
   return (
     <View style={styles.container}>
-     
       <Text style={styles.label}>hiundai elantra</Text>
       <Text style={styles.text}>{carro.modelo}</Text>
       <Text style={styles.label}>Rojo</Text>
