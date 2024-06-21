@@ -4,7 +4,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 export default function CarCard2({ deleted, appointment }) {
   return (
     <View style={[styles.carCard, deleted && styles.deletedCard, appointment && styles.appointmentCard]}>
-      <Image source={{ uri: 'https://via.placeholder.com/150' }} style={styles.carImage} />
+      <Image source={require('../../images/carros/carExample2.png')} style={styles.carImage} />
       <Text>Hyundai Bayon</Text>
       <Text>P222-222 - Color verde</Text>
       {deleted && <Text style={styles.deletedText}>ELIMINADO</Text>}

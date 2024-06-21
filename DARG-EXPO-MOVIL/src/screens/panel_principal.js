@@ -1,9 +1,16 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import CarCard2 from '../components/carros/carCard2';
+import TarjetaCarro from '../components/carros/tarjeta_carro';
 
 export default function DashboardScreen({ navigation }) {
+  const carro =
+  {
+    imagen: 'https://th.bing.com/th/id/OIP.xxMt6xG7kaLu7P6llDKWyAHaEK?w=318&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+    modelo: 'Toyota Corolla',
+    placa: 'XYZ 123',
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -18,7 +25,7 @@ export default function DashboardScreen({ navigation }) {
       </View>
       <View style={styles.appointmentstwo}>
         <Text style={styles.subtitle}>Agrega un auto nuevo</Text>
-        <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddCar')}>
+        <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('CarrosVista')}>
           <MaterialIcons name="add" size={30} color="white" />
         </TouchableOpacity>
       </View>
@@ -26,22 +33,24 @@ export default function DashboardScreen({ navigation }) {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Vista previa de tus autos</Text>
           <ScrollView horizontal>
-            <CarCard2 />
-            <CarCard2 />
+            <TarjetaCarro carro={carro} />
+            <TarjetaCarro carro={carro} />
+            <TarjetaCarro carro={carro} />
           </ScrollView>
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Autos eliminados</Text>
           <ScrollView horizontal>
-            <CarCard2 deleted />
-            <CarCard2 deleted />
+            <TarjetaCarro carro={carro} />
+            <TarjetaCarro carro={carro} />
+            <TarjetaCarro carro={carro} />
           </ScrollView>
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Citas próximas</Text>
           <View style={styles.appointments}>
-            <CarCard2 appointment />
-            <CarCard2 appointment />
+            <TarjetaCarro carro={carro} />
+            <TarjetaCarro carro={carro} />
           </View>
         </View>
       </View>
@@ -53,6 +62,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
+    marginBottom: 80,
     backgroundColor: '#fff',
   },
   header: {

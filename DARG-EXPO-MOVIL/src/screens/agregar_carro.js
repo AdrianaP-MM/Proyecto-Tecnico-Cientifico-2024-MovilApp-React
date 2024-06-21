@@ -1,7 +1,7 @@
 // AgregarVehiculo.js
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import Boton from '../components/buttons/botonCarros';
+import Button from '../components/buttons/btnRojo';
 import Input from '../components/inputs/allBorder';
 
 const defaultImageUrl = 'https://th.bing.com/th/id/OIP.xxMt6xG7kaLu7P6llDKWyAHaEK?w=318&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7'; // URL de la imagen predeterminada
@@ -27,7 +27,6 @@ const AgregarVehiculo = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-
       <Input
         placeholder="Modelo automóvil"
         value={modelo}
@@ -61,7 +60,7 @@ const AgregarVehiculo = ({ navigation, route }) => {
         <Image source={{ uri: imagen }} style={styles.image} />
         <Text>{imagen.split('/').pop()}</Text>
       </View>
-      <Boton title="Guardar" onPress={handleGuardarCarro} />
+      <Button textoBoton='Guardar' accionBoton={handleGuardarCarro}/>
     </View>
   );
 };
@@ -71,6 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: 'white',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,

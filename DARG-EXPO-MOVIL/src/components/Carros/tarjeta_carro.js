@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     maxWidth: '45%',
     overflow: 'hidden',
     borderWidth: 0, // Eliminado el borde rojo
+    minWidth: 180,
   },
   image: {
     width: '100%',

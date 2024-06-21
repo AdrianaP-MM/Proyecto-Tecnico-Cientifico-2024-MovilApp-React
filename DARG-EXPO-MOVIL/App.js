@@ -14,6 +14,7 @@ import RestablecerContra from './src/screens/restablecer_contra.js';
 import Onboarding from './src/screens/primer_uso.js';
 import { View } from 'react-native';
 import TabNavigator from './src/tabNavigator/TabNavigator.js';
+import CustomBackButton from './src/tabNavigator/custom_back_button';
 
 const Stack = createStackNavigator();
 
@@ -71,10 +72,16 @@ export default function App() {
     <PaperProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Onboarding">
-          <Stack.Screen name="Onboarding" component={Onboarding} options={{ title: 'Primer uso' }} />
+          <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }}  />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-          <Stack.Screen name="Registrate" component={Registrate} options={{ title: 'Registrarse' }} />
-          <Stack.Screen name="RestablecerContra" component={RestablecerContra} options={{ headerShown: false }}/>
+          <Stack.Screen name="Registrate" component={Registrate} options={{
+            title: 'Registrarse',
+            headerShown: true, headerBackImage: () => <CustomBackButton />,
+            headerStyle: {
+              backgroundColor: '#F9FAFB', // Color de fondo del header
+            },
+          }} />
+          <Stack.Screen name="RestablecerContra" component={RestablecerContra} options={{ headerShown: false }} />
           <Stack.Screen name="EditarJuridico" component={EditarJuridico} options={{ title: 'Editar persona juridica' }} />
           <Stack.Screen name="EditarNatural" component={EditarNatural} options={{ title: 'Editar persona natural' }} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />

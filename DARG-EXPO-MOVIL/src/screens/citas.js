@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     contenedorTitulo: {
         width: '100%',
-        backgroundColor: '',
+        backgroundColor: '#F9FAFB',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',

@@ -26,7 +26,7 @@ const TabNavigator = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Mi Perfil') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Mis Automóviles') {
+          } else if (route.name === 'CarrosVista') {
             iconName = focused ? 'car' : 'car-outline';
           } else if (route.name === 'Citas') {
             iconName = focused ? 'calendar' : 'calendar-outline';
