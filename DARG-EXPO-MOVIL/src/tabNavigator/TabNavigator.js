@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 //import PanelPrincipal from '../screens/panel_principal';
 import Perfil from '../screens/perfil';
-import Carros from '../screens/carros_vista';
+import CarrosStack from './carrosStack';
 import Servicios from '../screens/servicios';
 import CitasStack from './citasStack';
 import PanelStack from './panelStack';
@@ -47,7 +47,7 @@ const TabNavigator = () => {
         tabBarStyle: styles.tabBar,
       })}
     >
-      <Tab.Screen name="Mis Carros" component={Carros} options={{ headerShown: false }} />
+      <Tab.Screen name="Mis Carros" component={CarrosStack} options={{ headerShown: false }} />
       <Tab.Screen name="Mi Perfil" component={Perfil} options={{ headerShown: false }} />
       <Tab.Screen name="Panel Principal" component={PanelStack}
         options={{ headerShown: false }} />
