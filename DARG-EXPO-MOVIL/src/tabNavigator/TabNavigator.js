@@ -47,7 +47,7 @@ const TabNavigator = () => {
         tabBarStyle: styles.tabBar,
       })}
     >
-      <Tab.Screen name="Mis Carros" component={CarrosStack} options={{ headerShown: false }} />
+      <Tab.Screen name="CarrosVista" component={CarrosStack} options={{ headerShown: false }} />
       <Tab.Screen name="Mi Perfil" component={Perfil} options={{ headerShown: false }} />
       <Tab.Screen name="Panel Principal" component={PanelStack}
         options={{ headerShown: false }} />
