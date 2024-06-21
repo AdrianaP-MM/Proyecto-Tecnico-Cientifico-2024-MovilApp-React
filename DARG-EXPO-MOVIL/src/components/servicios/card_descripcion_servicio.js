@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image} from 'react-native';
 //Imagen de ejemplo en archivos del proyecto
-import fixedImage from '../images/imagenServicio.png'; 
+import fixedImage from '../../images/servicios/imagenServicio.png'; 
 
 //Constante de la card de descipcion con los parametros requeridoss
 const CardDescripcion = ({ titulo, descripcion }) => {

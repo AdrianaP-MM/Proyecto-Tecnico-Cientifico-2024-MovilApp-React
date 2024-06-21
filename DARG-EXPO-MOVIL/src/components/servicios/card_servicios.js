@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 //Import de la navegacion para poder cambiar la pantalla
 import { useNavigation } from '@react-navigation/native';
 //Import de imagen dentro del proyecto
-import fixedImage from '../images/serviciosIcon.png'; 
+import fixedImage from '../../images/servicios/serviciosIcon.png'; 
 
 //Constante de la card de servicios 
 const VerticalCard = ({ titulo, tipo }) => {

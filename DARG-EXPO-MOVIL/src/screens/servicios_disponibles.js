@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, Animated, TouchableOpacity, Image} from 'react-native';
 import { useNavigation } from '@react-navigation/native';// 
-import VerticalCard from '../src/card_servicios';
+import VerticalCard from '../components/servicios/card_servicios';
 // Importa la scroll bar personalizada
-import CustomScrollBar from '../src/scroll_bar_personalizada';
+import CustomScrollBar from '../components/servicios/scroll_bar_personalizada';
 
 export default function App() {
   // Constantes para ver las dimensiones para la barra de scroll
@@ -28,7 +28,7 @@ export default function App() {
 
         <TouchableOpacity onPress={handleGoBack} style={styles.backButton} /*Boton de regresar*/>
           <Image
-            source={require('../images/btnBack.png')} // Ruta a tu imagen personalizada
+            source={require('../images/icons/btnBack.png')} // Ruta a tu imagen personalizada
             style={{ width: 35, height: 27 }} // Ajusta el tamaño según tus necesidades
           />
         </TouchableOpacity>
