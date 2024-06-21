@@ -61,10 +61,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 10,
-        paddingVertical: 15,
+        paddingTop: 0,
         borderRadius: 15,
         borderBottomWidth: 2,
         borderColor: '#E4E5EB',
+        marginVertical: 20,
     },
     cardHeader: {
         width: '100%',

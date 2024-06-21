@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, Animated, TouchableOpacity, Image} from 'react-native';
+import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';// 
 import VerticalCard from '../components/servicios/card_servicios';
 // Importa la scroll bar personalizada
 import CustomScrollBar from '../components/servicios/scroll_bar_personalizada';
+import Text from '../components/utilidades/text';
+
 
 export default function App() {
   // Constantes para ver las dimensiones para la barra de scroll
@@ -24,7 +26,7 @@ export default function App() {
     <View style={styles.container}>
 
       <View style={styles.titulo} /*Contenedor del titulo y del boton de regresar*/>
-        <Text style={styles.title}>Servicios</Text>
+        <Text texto='Servicios' font='PoppinsMedium' fontSize={25} />
 
         <TouchableOpacity onPress={handleGoBack} style={styles.backButton} /*Boton de regresar*/>
           <Image
@@ -87,20 +89,16 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F3F4',
+    backgroundColor: '#F9FAFB',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
   titulo: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 20,
+    marginVertical: 20,
   },
   backButton: {
     flexDirection: 'row',

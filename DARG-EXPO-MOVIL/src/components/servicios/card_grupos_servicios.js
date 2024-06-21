@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 //Import de la navegacion para poder cambiar la pantalla
 import { useNavigation } from '@react-navigation/native';
+import Text from '../utilidades/text';
+import Button from '../buttons/btnRojo';
 
 //Constante de la card de grupos de servicios
 const HorizontalCard = ({ title, imageUrl }) => {
@@ -11,17 +13,16 @@ const HorizontalCard = ({ title, imageUrl }) => {
   return (
     //Contenedor general de la card
     <View style={styles.horizontalCard}>
-      
       <Image source={{ uri: imageUrl }} style={styles.cardImage} /*Imagen para la card de grupo de servicios*/ />
-
       <View style={styles.cardContent} /*Contenedor para el contenido de la card*/>
-        <Text style={styles.cardTitle}>Nombre del grupo: {title}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Servicios', { title })}
-        >
-          <Text style={styles.buttonText}>Ver servicio</Text>
-        </TouchableOpacity>
+        <View style={styles.grup}>
+          <Text texto='Nombre del grupo: ' fontSize={15} />
+          <Text texto={`${title}`} font='PoppinsMedium' fontSize={15} />
+        </View>
+        <View style={styles.row}>
+          <Button textoBoton='Ver servicio' fontSize={16} width='55%' accionBoton={() => navigation.navigate('Servicios', { title })}
+            marginTop={10} marginBottom={10} />
+        </View>
       </View>
     </View>
   );
@@ -30,7 +31,7 @@ const HorizontalCard = ({ title, imageUrl }) => {
 //Hoja de estilos especificos para la card
 const styles = StyleSheet.create({
   horizontalCard: {
-    width: '100%', 
+    width: '100%',
     borderRadius: 10,
     marginBottom: 16,
     backgroundColor: '#fff',
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     width: '100%',
-    height: 200, 
+    height: 200,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     resizeMode: 'cover',
@@ -52,22 +53,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  cardTitle: {
-    fontSize: 16,
-    marginBottom: 15,
+  row: {
+    width: '100%',
+    alignItems: 'center',
   },
-  button: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    width: '100%', 
-    borderRadius: 5,
-    backgroundColor: '#BA181B',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
+  grup: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
   },
 });
 

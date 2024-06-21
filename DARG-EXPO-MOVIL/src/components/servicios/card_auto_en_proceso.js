@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, ScrollView } from 'react-native';
 //Se importa una imagen dentro del proyecto como ejemplo
 import fixedImage from '../../images/carros/imagenAuto.png';
-
+import Text from '../utilidades/text';
 //Constante de la card de autos en proceso con sus parametros requeridos
 const AutoEnProceso = ({ marca, modelo, tipoVehiculo, placa, fechaDeRegistro }) => {
     return (
@@ -13,16 +13,20 @@ const AutoEnProceso = ({ marca, modelo, tipoVehiculo, placa, fechaDeRegistro }) 
                 <Image source={fixedImage} style={styles.cardImage} />
             </View>
 
-            
             <View style={styles.verticalLine} /*Linea vertical para dividir la imagen de la informacion*/ />
 
             <View style={styles.cardContentContainer} /*Contenedor de la info de la card*/>
                 <ScrollView /*Contenedor con scroll para la informacion*/>
-                    <Text style={styles.cardInfo}>Marca: {marca}</Text>
-                    <Text style={styles.cardInfo}>Modelo: {modelo}</Text>
-                    <Text style={styles.cardInfo}>Tipo de vehiculo: {tipoVehiculo}</Text>
-                    <Text style={styles.cardInfo}>Placa: {placa}</Text>
-                    <Text style={styles.cardInfo}>Fecha de registro: {fechaDeRegistro}</Text>
+                <Text texto='Marca:' font='PoppinsSemiBold' fontSize={13} />
+                <Text texto={`${marca}`} />
+                <Text texto='Modelo:' font='PoppinsSemiBold' fontSize={13} />
+                <Text texto={`${modelo}`} />
+                <Text texto='Tipo de vehiculo:' font='PoppinsSemiBold' fontSize={13} />
+                <Text texto={`${tipoVehiculo}`} />
+                <Text texto='Placa:' font='PoppinsSemiBold' fontSize={13} />
+                <Text texto={`${placa}`} />
+                <Text texto='Fecha de registro:' font='PoppinsSemiBold' fontSize={13} />
+                <Text texto={`${fechaDeRegistro}`} />
                 </ScrollView>
             </View>
         </View>

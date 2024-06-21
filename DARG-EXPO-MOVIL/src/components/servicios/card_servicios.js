@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 //Import de la navegacion para poder cambiar la pantalla
 import { useNavigation } from '@react-navigation/native';
 //Import de imagen dentro del proyecto
-import fixedImage from '../../images/servicios/serviciosIcon.png'; 
+import fixedImage from '../../images/servicios/serviciosIcon.png';
+import Text from '../utilidades/text';
+import Button from '../buttons/btnRojo';
 
 //Constante de la card de servicios 
 const VerticalCard = ({ titulo, tipo }) => {
@@ -21,16 +23,12 @@ const VerticalCard = ({ titulo, tipo }) => {
             <View style={styles.line} /*Linea para dividir el contenido de la card*/ />
 
             <View style={styles.cardContent} /*Contenedor de la informacion de la card*/ >
-                <Text style={styles.cardTitle}>Nombre de servicio:</Text>
-                <Text style={styles.cardText}>{titulo}</Text>
-                <Text style={styles.cardTitle}>Tipo de servicio:</Text>
-                <Text style={styles.cardText}>{tipo}</Text>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.navigate('AutosEnProceso')} 
-                >
-                    <Text style={styles.buttonText}>Ver vehiculos</Text>
-                </TouchableOpacity>
+                <Text texto='Nombre de servicio:' font='PoppinsSemiBold' fontSize={13} />
+                <Text texto={`${titulo}`} />
+                <Text texto='Tipo de servicio:' font='PoppinsSemiBold' fontSize={13} />
+                <Text texto={`${tipo}`} />
+                <Button textoBoton='Ver vehículos' fontSize={14} width='95%' accionBoton={() => navigation.navigate('AutosEnProceso')}
+                    marginTop={15} marginBottom={15} />
             </View>
         </View>
     );
@@ -48,14 +46,14 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 4,
         elevation: 5,
-        alignItems: 'center', 
+        alignItems: 'center',
     },
     imageContainer: {
         marginTop: 20,
     },
     cardImage: {
         width: 65,
-        height: 65, 
+        height: 65,
         resizeMode: 'cover',
     },
     line: {
@@ -68,28 +66,7 @@ const styles = StyleSheet.create({
         padding: 16,
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100%', 
-    },
-    cardTitle: {
-        fontSize: 13,
-        marginBottom: 5,
-        fontWeight: 'bold',
-    },
-    cardText: {
-        fontSize: 12,
-        marginBottom: 15,
-    },
-    button: {
-        backgroundColor: '#BA181B',
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        borderRadius: 5,
-        alignSelf: 'center', 
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 15,
-        textAlign: 'center',
+        width: '100%',
     },
 });
 

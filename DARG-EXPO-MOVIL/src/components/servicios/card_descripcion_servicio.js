@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image} from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 //Imagen de ejemplo en archivos del proyecto
-import fixedImage from '../../images/servicios/imagenServicio.png'; 
+import fixedImage from '../../images/servicios/imagenServicio.png';
+import Text from '../utilidades/text';
 
 //Constante de la card de descipcion con los parametros requeridoss
 const CardDescripcion = ({ titulo, descripcion }) => {
@@ -10,11 +11,13 @@ const CardDescripcion = ({ titulo, descripcion }) => {
         //Contenedor general de la card
         <View style={styles.horizontalCard}>
             <View style={styles.imageContainer} /*Contenedor de la imagen*/>
-                <Image source={fixedImage} style={styles.cardImage}/>
+                <Image source={fixedImage} style={styles.cardImage} />
             </View>
             <View style={styles.cardContent} /*Contenedor del contenido de la card*/>
-                <Text style={styles.cardTitle}>Nombre de servicio: {titulo}</Text>
-                <Text style={styles.cardText}>¿En que consiste?: {descripcion}</Text>
+                <Text texto='Nombre de servicio: ' font='PoppinsSemiBold' fontSize={15} />
+                <Text texto={`${titulo}`} font='PoppinsMedium'/>
+                <Text texto='¿En que consiste?: ' font='PoppinsSemiBold' fontSize={15} />
+                <Text texto={`${descripcion}`}/>
             </View>
         </View>
     );

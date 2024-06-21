@@ -55,7 +55,10 @@ export default function AppCitas({ navigation }) {
                     />
                 </View>
                 <ScrollView style={styles.scrollCitas}>
-                    {<CardCita accionCard={verDetalles} />}
+                    <CardCita accionCard={verDetalles} />
+                    <CardCita accionCard={verDetalles} />
+                    <CardCita accionCard={verDetalles} />
+                    <CardCita accionCard={verDetalles} />
                 </ScrollView>
             </View>
         </SafeAreaView >

@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, Animated } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated } from 'react-native';
 // Importa la card que se utiliza para mostrar el contenido
 import HorizontalCard from '../components/servicios/card_grupos_servicios';
 // Importa la barra de scroll personalizada
 import CustomScrollBar from '../components/servicios/scroll_bar_personalizada';
+import Text from '../components/utilidades/text';
 
 export default function App() {
   // Constantes para ver las dimensiones para la barra de scroll
@@ -15,7 +16,7 @@ export default function App() {
     // Container principal de pantalla
     <View style={styles.container}>
       <View style={styles.titulo} /*Contenedor del titulo de la pantalla*/>
-        <Text style={styles.title}>Grupos de servicio</Text>
+        <Text texto='Grupos de servicio' font='PoppinsMedium' fontSize={25} />
       </View>
 
       <View /*Contenedor que guarda el scroll de las cards de servicios*/
@@ -26,7 +27,7 @@ export default function App() {
           style={styles.scrollView}
           contentContainerStyle={styles.containerCards}
           /*De aqui se saca el alto del content y se use el parametro para el scroll personalizado*/
-          onContentSizeChange={(width,height) => setContentHeight(height)}
+          onContentSizeChange={(width, height) => setContentHeight(height)}
           /*Se agrega el event al contenedor Animated*/
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
             useNativeDriver: false,
@@ -70,14 +71,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F3F4',
+    backgroundColor: '#F9FAFB',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
   scrollView: {
     width: '97%',
@@ -89,6 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '100%',
     paddingHorizontal: 20,
+    marginVertical: 20,
   },
   scrollViewContainer: {
     width: '92%',

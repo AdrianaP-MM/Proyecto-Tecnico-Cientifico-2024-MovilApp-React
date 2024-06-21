@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // Importa la card de descripcion del servicio
 import CardDescripcion from '../components/servicios/card_descripcion_servicio';
@@ -7,6 +7,7 @@ import CardDescripcion from '../components/servicios/card_descripcion_servicio';
 import CustomScrollBar from '../components/servicios/scroll_bar_personalizada';
 // Importa la card de auto en proceso
 import AutoEnProceso from '../components/servicios/card_auto_en_proceso';
+import Text from '../components/utilidades/text';
 
 export default function App() {
     // Constantes para ver las dimensiones para la barra de scroll
@@ -25,9 +26,8 @@ export default function App() {
     return (
         //Contenedor de la pantalla en general
         <View style={styles.container}>
-
             <View style={styles.titulo} /*Contenedor del titulo y del boton de regresar*/>
-                <Text style={styles.title}>Autos En "Servicio x" </Text>
+                <Text texto='Autos en servicio "x"' font='PoppinsMedium' fontSize={25} />
 
                 <TouchableOpacity onPress={handleGoBack} style={styles.backButton} /*Boton de regresar*/>
                     <Image
@@ -44,7 +44,7 @@ export default function App() {
 
             <View style={styles.line} /*Linea para dividir la descripcion de las cards*/ />
 
-            <Text style={styles.title}>Autos en proceso</Text>
+            <Text texto='Autos en proceso' font='PoppinsMedium' fontSize={17} />
 
             <View /*Contenedor que guarda el scroll de las cards de servicios*/
                 style={styles.scrollViewContainer}
@@ -94,7 +94,6 @@ export default function App() {
                     contentHeight={contentHeight}
                     containerHeight={containerHeight}
                 />
-
             </View>
         </View>
     );
@@ -104,20 +103,16 @@ export default function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5F3F4',
+        backgroundColor: '#F9FAFB',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    title: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginBottom: 20,
     },
     titulo: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
         paddingHorizontal: 20,
+        marginVertical: 20,
     },
     backButton: {
         flexDirection: 'row',

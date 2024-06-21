@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import TarjetaCarro from '../components/carros/tarjeta_carro';
+import Text from '../components/utilidades/text';
+
 
 export default function DashboardScreen({ navigation }) {
   const carro =
@@ -14,7 +16,7 @@ export default function DashboardScreen({ navigation }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Bienvenido</Text>
+        <Text texto='Bienvenido' font='PoppinsMedium' fontSize={25} />
         <TouchableOpacity onPress={() => navigation.navigate('Notificaciones')}>
           <MaterialIcons name="notifications" size={30} color="black" />
         </TouchableOpacity>
@@ -24,14 +26,14 @@ export default function DashboardScreen({ navigation }) {
         <TextInput style={styles.searchInput} placeholder="Buscar..." />
       </View>
       <View style={styles.appointmentstwo}>
-        <Text style={styles.subtitle}>Agrega un auto nuevo</Text>
+        <Text texto='Agrega un auto nuevo' font='PoppinsRegular' fontSize={15} />
         <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('CarrosVista')}>
           <MaterialIcons name="add" size={30} color="white" />
         </TouchableOpacity>
       </View>
       <View style={styles.upperSection}>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Vista previa de tus autos</Text>
+        <Text texto='Vista previa de tus autos' font='PoppinsSemiBold' fontSize={18} color='white' />
           <ScrollView horizontal>
             <TarjetaCarro carro={carro} />
             <TarjetaCarro carro={carro} />
@@ -39,7 +41,7 @@ export default function DashboardScreen({ navigation }) {
           </ScrollView>
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Autos eliminados</Text>
+        <Text texto='Autos eliminados' font='PoppinsSemiBold' fontSize={18} color='white' />
           <ScrollView horizontal>
             <TarjetaCarro carro={carro} />
             <TarjetaCarro carro={carro} />
@@ -47,7 +49,7 @@ export default function DashboardScreen({ navigation }) {
           </ScrollView>
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Citas próximas</Text>
+        <Text texto='Citas próximas' font='PoppinsSemiBold' fontSize={18} color='white' />
           <View style={styles.appointments}>
             <TarjetaCarro carro={carro} />
             <TarjetaCarro carro={carro} />
@@ -70,15 +72,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 40,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginRight: 10, // Adding space between the title and the notification icon
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
   },
   searchContainer: {
     flexDirection: 'row',
@@ -116,11 +109,6 @@ const styles = StyleSheet.create({
   section: {
     marginVertical: 10,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff', // Adjusted for better visibility on the red background
-  },
   appointments: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -135,6 +123,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10.01,
+    paddingLeft: 20,
     height: 95,
   },
 });
