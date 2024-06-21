@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import CarCard2 from '../components/carros/carCard2';
+import CarCard2 from '../components/Carros/carCard2';
 
 export default function DashboardScreen({ navigation }) {
   return (
