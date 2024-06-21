@@ -4,11 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-import PanelPrincipal from '../screens/panel_principal';
+//import PanelPrincipal from '../screens/panel_principal';
 import Perfil from '../screens/perfil';
 import Carros from '../screens/carros';
 import Servicios from '../screens/servicios';
 import CitasStack from './citasStack';
+import PanelStack from './panelStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +49,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="Mis Carros" component={Carros} options={{ headerShown: false }} />
       <Tab.Screen name="Mi Perfil" component={Perfil} options={{ headerShown: false }} />
-      <Tab.Screen name="Panel Principal" component={PanelPrincipal}
+      <Tab.Screen name="Panel Principal" component={PanelStack}
         options={{ headerShown: false }} />
         <Tab.Screen name="Citas" component={CitasStack} options={{ headerShown: false }} />
       <Tab.Screen name="Servicios" component={Servicios} options={{ headerShown: false }} />

@@ -8,7 +8,7 @@ export default function DashboardScreen({ navigation }) {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Bienvenido</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Notificaciones')}>
           <MaterialIcons name="notifications" size={30} color="black" />
         </TouchableOpacity>
       </View>

@@ -12,7 +12,7 @@ export default function AppNotificaciones() {
                 <View style={styles.contenedorTitulo}>
                     <Text texto='Notificaciónes' font='PoppinsMedium' fontSize={25} />
                     <Image
-                        source={require('../imagenes/iconCampana.png')} // Ruta de tu imagen
+                        source={require('../images/icons/iconCampana.png')} // Ruta de tu imagen
                         style={styles.image}
                     />
                 </View>

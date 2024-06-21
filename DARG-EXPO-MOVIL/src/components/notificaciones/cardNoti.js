@@ -1,5 +1,5 @@
 import React from 'react';
-import Text from '../text';
+import Text from '../utilidades/text';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 
 export default function CardNoti({ accionCard }) {
