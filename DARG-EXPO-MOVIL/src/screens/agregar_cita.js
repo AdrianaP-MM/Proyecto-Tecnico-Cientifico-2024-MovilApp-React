@@ -2,7 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import Input from '../components/inputs/allBorder';
-import Button from '../components/buttons/btnRojo';
+import Button from '../components/Buttons/btnRojo';
 
 export default function AppAddCita({ route }) {
     const { fecha, hora, auto, movilizacion, zona, ida, regreso } = route.params || {};

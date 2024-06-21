@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Avatar, Dialog, Portal, Provider, RadioButton, TouchableRipple } from 'react-native-paper';
 import Text from '../components/utilidades/text';
-import Button from '../components/buttons/btnRojo';
+import Button from '../components/Buttons/btnRojo';
 import Input from '../components/inputs/allBorder';
 import { StatusBar } from 'expo-status-bar';
 

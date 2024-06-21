@@ -1,7 +1,12 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+<<<<<<< Updated upstream
 import Boton from '../components/buttons/btnRojo';
 import TextC from '../components/utilidades/text';
+=======
+import Boton from '../components/Buttons/botonCarros';
+
+>>>>>>> Stashed changes
 
 const InformacionCarro = ({ route }) => {
   const { carro } = route.params;

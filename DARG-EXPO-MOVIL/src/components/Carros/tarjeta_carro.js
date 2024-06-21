@@ -6,8 +6,12 @@ const TarjetaCarro = ({ carro, onPress }) => {
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.8}>
       <Image source={{ uri: carro.imagen }} style={styles.image} />
       <View style={styles.textContainer}>
-        <Text style={styles.modelText}>{carro.modelo}</Text>
-        <Text style={styles.plateText}>{carro.placa}</Text>
+        <View style={styles.modelContainer}>
+          <Text style={styles.modelText}>{carro.modelo}</Text>
+        </View>
+        <View style={styles.plateContainer}>
+          <Text style={styles.plateText}>{carro.placa}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -16,7 +20,7 @@ const TarjetaCarro = ({ carro, onPress }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
-    borderRadius: 15,
+    borderRadius: 10, // Ajuste de borde redondeado
     margin: 10,
     alignItems: 'center',
     shadowColor: '#000',
@@ -27,30 +31,37 @@ const styles = StyleSheet.create({
     flex: 1,
     maxWidth: '45%',
     overflow: 'hidden',
-    borderWidth: 2,
-    borderColor: '#f44c4c', // Bordes más llamativos en rojo
+    borderWidth: 0, // Eliminado el borde rojo
   },
   image: {
     width: '100%',
-    height: 150,
+    height: 120, // Ajuste de altura de la imagen
   },
   textContainer: {
-    backgroundColor: '#f44c4c', // Rojo vibrante
     width: '100%',
-    paddingVertical: 20,
     alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
+    borderTopWidth: 0, // Eliminada la línea superior
+  },
+  modelContainer: {
+    backgroundColor: '#f4c4c4', // Color de fondo ajustado
+    width: '100%',
+    paddingVertical: 5, // Ajuste del relleno
+    alignItems: 'center',
+  },
+  plateContainer: {
+    backgroundColor: '#ffebeb', // Color de fondo ajustado para la parte inferior
+    width: '100%',
+    paddingVertical: 5, // Ajuste del relleno
+    alignItems: 'center',
   },
   modelText: {
     fontWeight: 'bold',
-    color: 'white', // Texto en blanco para contraste
-    fontSize: 20,
-    marginBottom: 5,
+    color: '#333', // Color de texto ajustado
+    fontSize: 16, // Ajuste del tamaño de fuente
   },
   plateText: {
-    color: 'white', // Texto en blanco para contraste
-    fontSize: 16,
+    color: '#333', // Color de texto ajustado
+    fontSize: 14, // Ajuste del tamaño de fuente
   },
 });
 

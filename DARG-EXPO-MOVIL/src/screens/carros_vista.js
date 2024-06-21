@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import TarjetaCarro from '../components/Carros/tarjeta_carro';
+<<<<<<< Updated upstream
 import Boton from '../components/buttons/btnRojo';
+=======
+import Boton from '../components/Buttons/botonCarros';
+>>>>>>> Stashed changes
 import Text from '../components/utilidades/text';
+
 
 const CarrosVista = ({ navigation }) => {
   const [carros, setCarros] = useState([]);
@@ -13,6 +18,8 @@ const CarrosVista = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Text texto='' font='PoppinsMedium' fontSize={25} />
+       <Text texto='Citas' font='PoppinsMedium' fontSize={25} />
       <Boton
         title="Agregar"
         onPress={() => navigation.navigate('AgregarVehiculo', { agregarCarro })}

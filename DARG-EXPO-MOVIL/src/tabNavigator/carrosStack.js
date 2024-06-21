@@ -1,20 +1,46 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import CarrosVista from '../screens/carros_vista';
 import AgregarVehiculo from '../screens/agregar_vehiculo';
 import InformacionCarro from '../screens/informacion_carro';
+import CustomBackButton from './custom_back_button'; // Asegúrate de que esta ruta es correcta
 
 const Stack = createStackNavigator();
 
-export default function App() {
+const CarrosStack = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="CarrosVista">
-        <Stack.Screen name="CarrosVista" component={CarrosVista} options={{ title: 'Mis carros' }} />
-        <Stack.Screen name="AgregarVehiculo" component={AgregarVehiculo} options={{ title: 'Agregar vehículo' }} />
-        <Stack.Screen name="InformacionCarro" component={InformacionCarro} options={{ title: 'Información' }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator initialRouteName="CarrosVista">
+      <Stack.Screen 
+        name="CarrosVista" 
+        component={CarrosVista} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="AgregarVehiculo" 
+        component={AgregarVehiculo} 
+        options={{
+          headerShown: true, 
+          headerBackImage: () => <CustomBackButton />,
+          headerStyle: {
+            backgroundColor: '#F9FAFB', // Color de fondo del header
+          },
+          title: 'Agregar vehículo',
+        }} 
+      />
+      <Stack.Screen 
+        name="InformacionCarro" 
+        component={InformacionCarro} 
+        options={{
+          headerShown: true, 
+          headerBackImage: () => <CustomBackButton />,
+          headerStyle: {
+            backgroundColor: '#F9FAFB', // Color de fondo del header
+          },
+          title: 'Información',
+        }} 
+      />
+    </Stack.Navigator>
   );
 }
+
+export default CarrosStack;
