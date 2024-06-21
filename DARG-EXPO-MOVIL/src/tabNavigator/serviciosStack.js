@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 const ServiciosStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Servicios" component={GrupoServicios} options={{ headerShown: false }} />
+            <Stack.Screen name="GrupoServicios" component={GrupoServicios} options={{ headerShown: false }} />
             <Stack.Screen name="Servicios" component={Servicios} options={{ headerShown: false }} />
             <Stack.Screen name="AutosEnProceso" component={AutosEnProceso} options={{ headerShown: false }} />
         </Stack.Navigator>
