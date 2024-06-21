@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 //import PanelPrincipal from '../screens/panel_principal';
-import Perfil from '../screens/editar_natural';
+import Perfil from '../screens/editar_juridico';
 import CarrosStack from './carrosStack';
 import Servicios from './serviciosStack';
 import CitasStack from './citasStack';

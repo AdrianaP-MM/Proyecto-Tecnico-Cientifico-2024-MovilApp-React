@@ -56,6 +56,7 @@ export default function EditarJuridico({ navigation }) {
                     <TouchableRipple
                         onPress={() => console.log('Pressed')}
                         rippleColor="rgba(0, 0, 0, .32)"
+                        style={styles.changePhotoButton}
                     >
                         <Text texto='Cambiar foto de perfil' font='PoppinsRegular' fontSize={14} textAlign='center' color='#BA181B' />
                     </TouchableRipple>
@@ -66,7 +67,7 @@ export default function EditarJuridico({ navigation }) {
                         placeholder='Nombre'
                         value={nombre}
                         onChangeText={setNombre}
-                        width='95%'
+                        width='100%' // Cambiado a 100% para ocupar el ancho completo
                         style={styles.input}
                     />
 
@@ -74,7 +75,7 @@ export default function EditarJuridico({ navigation }) {
                         placeholder='Apellido'
                         value={apellido}
                         onChangeText={setApellido}
-                        width='95%'
+                        width='100%' // Cambiado a 100% para ocupar el ancho completo
                         style={styles.input}
                     />
 
@@ -82,7 +83,7 @@ export default function EditarJuridico({ navigation }) {
                         placeholder='Departamento'
                         value={departamento}
                         onChangeText={setDepartamento}
-                        width='95%'
+                        width='100%' // Cambiado a 100% para ocupar el ancho completo
                         style={styles.input}
                     />
 
@@ -90,7 +91,7 @@ export default function EditarJuridico({ navigation }) {
                         placeholder='Correo@ejemplo.com'
                         value={correo}
                         onChangeText={setCorreo}
-                        width='95%'
+                        width='100%' // Cambiado a 100% para ocupar el ancho completo
                         style={styles.input}
                     />
 
@@ -100,7 +101,7 @@ export default function EditarJuridico({ navigation }) {
                                 placeholder='DUI'
                                 value={dui}
                                 onChangeText={(text) => setDui(formatDui(text))}
-                                width='95%'
+                                width='100%' // Cambiado a 100% para ocupar el ancho completo
                                 keyboardType='numeric'
                                 maxLength={10}
                                 style={styles.input}
@@ -112,7 +113,7 @@ export default function EditarJuridico({ navigation }) {
                                 placeholder='NIT'
                                 value={nit}
                                 onChangeText={(text) => setNit(formatNit(text))}
-                                width='95%'
+                                width='100%' // Cambiado a 100% para ocupar el ancho completo
                                 keyboardType='numeric'
                                 maxLength={14}
                                 style={styles.input}
@@ -126,7 +127,7 @@ export default function EditarJuridico({ navigation }) {
                                 placeholder='NRC'
                                 value={nrc}
                                 onChangeText={setNrc}
-                                width='95%'
+                                width='100%' // Cambiado a 100% para ocupar el ancho completo
                                 keyboardType='numeric'
                                 style={styles.input}
                             />
@@ -137,7 +138,7 @@ export default function EditarJuridico({ navigation }) {
                                 placeholder='NRF'
                                 value={nrf}
                                 onChangeText={setNrf}
-                                width='95%'
+                                width='100%' // Cambiado a 100% para ocupar el ancho completo
                                 keyboardType='numeric'
                                 style={styles.input}
                             />
@@ -159,10 +160,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+        paddingBottom: 80,
     },
     avatarContainer: {
         alignItems: 'center',
-        paddingVertical: 50,
+        paddingBottom: 10, // Reducido el padding vertical para acercar los inputs al botón
     },
     avatarIcon: {
         marginBottom: 10,
@@ -174,7 +176,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     input: {
-        marginBottom: 20,
+        marginBottom: 10,
         backgroundColor: 'white',
         borderColor: 'black',
         borderWidth: 0.2,
@@ -197,3 +199,4 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
 });
+
