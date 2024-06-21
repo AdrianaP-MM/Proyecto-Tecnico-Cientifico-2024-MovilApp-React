@@ -183,7 +183,7 @@ export default function Registrate({ navigation }) {
                     maxLength={14}
                     style={styles.input}
                 />
-                <Button textoBoton='Registrate' accionBoton={() => navigation.navigate('TabNavigator')} fontSize={17} width='55%' />
+                <Button textoBoton='Registrate' accionBoton={() => navigation.navigate('TabNavigator')}  fontSize={17} width='55%' />
                 <View style={styles.loginContainer}>
                     <Text texto='¿Ya tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
                     <TouchableRipple
