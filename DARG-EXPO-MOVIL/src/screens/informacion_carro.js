@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import Boton from '../components/Buttons/boton';
-import Text from '../components/utilidades/text';
+import Boton from '../components/buttons/btnRojo';
+import TextC from '../components/utilidades/text';
 
 const InformacionCarro = ({ route }) => {
   const { carro } = route.params;

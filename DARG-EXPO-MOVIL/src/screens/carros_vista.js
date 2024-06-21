@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import TarjetaCarro from '../components/Carros/tarjeta_carro';
-import Boton from '../components/Buttons/boton';
+import Boton from '../components/buttons/btnRojo';
 import Text from '../components/utilidades/text';
 
 const CarrosVista = ({ navigation }) => {

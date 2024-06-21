@@ -39,6 +39,30 @@ export default function Registrate({ navigation }) {
         setShowAdditionalFields(true);
     };
 
+    const formatTel = (value) => {
+        const numericValue = value.replace(/\D/g, '');
+        if (numericValue.length <= 4) {
+            return numericValue;
+        } else if (numericValue.length <= 8) {
+            return numericValue.slice(0, 4) + '-' + numericValue.slice(4);
+        } else {
+            return numericValue.slice(0, 4) + '-' + numericValue.slice(4, 8);
+        }
+    };
+
+    const formatDui = (value) => {
+        const numericValue = value.replace(/\D/g, '');
+        if (numericValue.length <= 8) {
+            return numericValue;
+        } else {
+            return numericValue.slice(0, 8) + '-' + numericValue.slice(8, 9);
+        }
+    };
+
+    const formatNit = (value) => {
+        return value.replace(/\D/g, '').slice(0, 14);
+    };
+
     return (
         <Provider>
             <Portal>
@@ -79,17 +103,17 @@ export default function Registrate({ navigation }) {
                         <Input
                             placeholder='NRC'
                             width='95%'
-                            iconImage={require('../images/icons/iconUser.png')}
+                            iconImage={require('../images/icons/iconNrf.png')}
                         />
                         <Input
                             placeholder='NRF'
                             width='95%'
-                            iconImage={require('../images/icons/iconUser.png')}
+                            iconImage={require('../images/icons/iconNrf.png')}
                         />
                         <Input
                             placeholder='Rubro comercial'
                             width='95%'
-                            iconImage={require('../images/icons/iconUser.png')}
+                            iconImage={require('../images/icons/iconRubro.png')}
                         />
                     </Dialog.Content>
                     <Dialog.Actions style={styles.center}>
@@ -105,49 +129,61 @@ export default function Registrate({ navigation }) {
                     <Text texto='¡Arregla tu carro con nosotros!' font='PoppinsRegular' fontSize={14} textAlign='center' />
                 </View>
                 <Input
-                    placeholder='Nombre Completo'
+                    placeholder='Nombre completo'
                     value={name}
                     onChangeText={setName}
                     width='95%'
                     iconImage={require('../images/icons/iconUser.png')}
+                    style={styles.input}
                 />
                 <Input
                     placeholder='Correo'
                     value={email}
                     onChangeText={setEmail}
                     width='95%'
-                    iconImage={require('../images/icons/iconUser.png')}
+                    iconImage={require('../images/icons/iconCorreo.png')}
+                    style={styles.input}
                 />
                 <Input
                     placeholder='Contraseña'
                     value={password}
                     onChangeText={setPassword}
                     width='95%'
-                    iconImage={require('../images/icons/iconUser.png')}
+                    iconImage={require('../images/icons/iconContra.png')}
                     secureTextEntry={true}
+                    style={styles.input}
                 />
                 <Input
                     placeholder='Teléfono'
                     value={tel}
-                    onChangeText={setTel}
+                    onChangeText={(text) => setTel(formatTel(text))}
                     width='95%'
-                    iconImage={require('../images/icons/iconUser.png')}
+                    iconImage={require('../images/icons/iconTel.png')}
+                    keyboardType='numeric'
+                    maxLength={9} 
+                    style={styles.input}
                 />
                 <Input
                     placeholder='DUI'
                     value={dui}
-                    onChangeText={setDui}
+                    onChangeText={(text) => setDui(formatDui(text))}
                     width='95%'
-                    iconImage={require('../images/icons/iconUser.png')}
+                    iconImage={require('../images/icons/iconDui.png')}
+                    keyboardType='numeric'
+                    maxLength={10} 
+                    style={styles.input}
                 />
                 <Input
                     placeholder='NIT'
                     value={nit}
-                    onChangeText={setNit}
+                    onChangeText={(text) => setNit(formatNit(text))}
                     width='95%'
-                    iconImage={require('../images/icons/iconUser.png')}
+                    iconImage={require('../images/icons/iconNit.png')}
+                    keyboardType='numeric'
+                    maxLength={14}
+                    style={styles.input}
                 />
-                <Button textoBoton='Registrate' accionBoton={handleNavigate} fontSize={17} width='55%' />
+                <Button textoBoton='Registrate' accionBoton={() => navigation.navigate('TabNavigator')} fontSize={17} width='55%' />
                 <View style={styles.loginContainer}>
                     <Text texto='¿Ya tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
                     <TouchableRipple
@@ -168,15 +204,24 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20,
     },
     avatarContainer: {
         alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 10,
+        marginVertical: 15,
     },
     avatarIcon: {
         marginBottom: 10,
         backgroundColor: '#BA181B',
+    },
+    input: {
+        marginBottom: 20,
+        backgroundColor: 'white',
+        borderColor: 'black',
+        borderWidth: 0.2,
+        borderRadius: 3,
+        width: '95%',
+        paddingHorizontal: 10, 
     },
     radioContainer: {
         flexDirection: 'row',
@@ -194,7 +239,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 0,
+        marginTop: 20,
     },
     center: {
         width: '100%',
