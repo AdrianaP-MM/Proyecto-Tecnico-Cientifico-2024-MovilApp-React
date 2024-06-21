@@ -18,7 +18,7 @@ const HorizontalCard = ({ title, imageUrl }) => {
         <Text style={styles.cardTitle}>Nombre del grupo: {title}</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Service', { title })}
+          onPress={() => navigation.navigate('Servicios', { title })}
         >
           <Text style={styles.buttonText}>Ver servicio</Text>
         </TouchableOpacity>

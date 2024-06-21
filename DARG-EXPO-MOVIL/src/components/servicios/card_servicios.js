@@ -27,7 +27,7 @@ const VerticalCard = ({ titulo, tipo }) => {
                 <Text style={styles.cardText}>{tipo}</Text>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('AutosEnServicio')} 
+                    onPress={() => navigation.navigate('AutosEnProceso')} 
                 >
                     <Text style={styles.buttonText}>Ver vehiculos</Text>
                 </TouchableOpacity>
