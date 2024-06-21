@@ -1,7 +1,7 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { Avatar, Button, Text, TextInput, TouchableRipple } from "react-native-paper";
-import ButtonAction from '../components/buttonAction';
+import ButtonAction from '../components/ButtonAction';
 
 export default function EditarJuridico({ navigation }) {
   const [nombre, setNombre] = useState("");

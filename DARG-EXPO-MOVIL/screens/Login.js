@@ -39,7 +39,7 @@ export default function Login({ navigation }) {
       </View>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate('MyCarsScreen')}
+        onPress={() => navigation.navigate('TabNavigator')}
         style={styles.button}
         theme={{ colors: { primary: '#BA181B' } }}
       >
