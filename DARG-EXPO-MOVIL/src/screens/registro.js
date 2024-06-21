@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Avatar, TextInput, Text, Dialog, Portal, Button, Provider, RadioButton, TouchableRipple } from 'react-native-paper';
+import { Avatar, TextInput, Dialog, Portal, Provider, RadioButton, TouchableRipple } from 'react-native-paper';
+import Text from '../components/utilidades/text';
+import Button from '../components/buttons/btnRojo';
+import Input from '../components/inputs/allBorder';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Registrate({ navigation }) {
     const [name, setName] = React.useState('');
@@ -23,7 +27,7 @@ export default function Registrate({ navigation }) {
     };
 
     const handleNavigate = () => {
-        navigation.navigate('MyCarsScreen');
+        navigation.navigate('Login');
     };
 
     const hasErrors = () => {
@@ -43,23 +47,23 @@ export default function Registrate({ navigation }) {
                     onDismiss={() => setVisiblePersonaDialog(false)}
                     style={styles.dialog}
                 >
-                    <Dialog.Title style={styles.dialogTitle}>Elige tu persona</Dialog.Title>
+                    <Dialog.Title style={styles.dialogTitle}>
+                        <Text texto='Elige tu persona' font='PoppinsSemiBold' fontSize={20} textAlign='center' color='#3B3939' />
+                    </Dialog.Title>
                     <Dialog.Content>
                         <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
                             <View style={styles.radioContainer}>
                                 <RadioButton value="natural" color="#BA181B" />
-                                <Text>Persona natural</Text>
+                                <Text texto='Persona natural' font='PoppinsRegular' fontSize={15} textAlign='center' color='#3B3939' />
                             </View>
                             <View style={styles.radioContainer}>
                                 <RadioButton value="juridica" color="#BA181B" />
-                                <Text>Persona jurídica</Text>
+                                <Text texto='Persona jurídica' font='PoppinsRegular' fontSize={15} textAlign='center' color='#3B3939' />
                             </View>
                         </RadioButton.Group>
                     </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={handleNext} theme={{ colors: { primary: '#BA181B' } }}>
-                            Siguiente
-                        </Button>
+                    <Dialog.Actions style={styles.center}>
+                        <Button textoBoton='Siguiente' accionBoton={handleNext} fontSize={15} width='55%' />
                     </Dialog.Actions>
                 </Dialog>
 
@@ -68,7 +72,9 @@ export default function Registrate({ navigation }) {
                     onDismiss={() => setVisibleCamposDialog(false)}
                     style={styles.dialog}
                 >
-                    <Dialog.Title style={styles.dialogTitle}>Completa los siguientes campos</Dialog.Title>
+                    <Dialog.Title style={styles.dialogTitle}>
+                        <Text texto='Completa los siguientes campos' font='PoppinsSemiBold' fontSize={20} textAlign='center' color='#3B3939' />
+                    </Dialog.Title>
                     <Dialog.Content>
                         <TextInput
                             mode="outlined"
@@ -89,10 +95,8 @@ export default function Registrate({ navigation }) {
                             theme={{ colors: { primary: '#BA181B', background: 'white' } }}
                         />
                     </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button onPress={handleNextCampos} theme={{ colors: { primary: '#BA181B' } }}>
-                            Siguiente
-                        </Button>
+                    <Dialog.Actions style={styles.center}>
+                        <Button textoBoton='Siguiente' accionBoton={handleNextCampos} fontSize={15} width='55%' />
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
@@ -100,9 +104,9 @@ export default function Registrate({ navigation }) {
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.avatarContainer}>
                     <Avatar.Icon size={75} icon="alpha-d" style={styles.avatarIcon} />
+                    <Text texto='Registrate' font='PoppinsBold' fontSize={20} textAlign='center' />
+                    <Text texto='¡Arregla tu carro con nosotros!' font='PoppinsRegular' fontSize={14} textAlign='center' />
                 </View>
-                <Text variant="headlineSmall" style={styles.headerText}>Registrate</Text>
-                <Text style={styles.subHeaderText}>¡Arregla tu carro con nosotros!</Text>
                 <TextInput
                     label="Nombre Completo"
                     value={name}
@@ -152,23 +156,14 @@ export default function Registrate({ navigation }) {
                     left={<TextInput.Icon icon="card-account-details" />}
                     theme={{ colors: { primary: '#BA181B', background: 'white' } }}
                 />
-
-                <Button
-                    mode="contained"
-                    onPress={handleNavigate}
-                    style={styles.button}
-                    theme={{ colors: { primary: '#BA181B' } }}
-                >
-                    Registrate
-                </Button>
-
+                <Button textoBoton='Registrate' accionBoton={handleNavigate} fontSize={17} width='55%' />
                 <View style={styles.loginContainer}>
-                    <Text style={styles.accountText}>¿Ya tienes cuenta? </Text>
+                    <Text texto='¿Ya tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
                     <TouchableRipple
                         onPress={() => navigation.navigate('Login')}
                         rippleColor="rgba(0, 0, 0, .32)"
                     >
-                        <Text variant="bodyLarge" style={styles.loginText}>Iniciar sesión</Text>
+                        <Text texto='Iniciar Sesión' font='PoppinsSemiBold' fontSize={15} textAlign='center' color='red' />
                     </TouchableRipple>
                 </View>
             </ScrollView>
@@ -178,24 +173,14 @@ export default function Registrate({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#F9FAFB',
         flexGrow: 1,
-        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     avatarContainer: {
         alignItems: 'center',
-        marginBottom: 30,
-    },
-    headerText: {
-        fontWeight: 'bold',
-        marginTop: 10,
-        textAlign: 'center',
-    },
-    subHeaderText: {
-        fontWeight: 'bold',
-        marginTop: 10,
-        fontSize: 16,
-        textAlign: 'center',
-        marginBottom: 20,
+        marginVertical: 15,
     },
     avatarIcon: {
         marginBottom: 10,
@@ -219,32 +204,24 @@ const styles = StyleSheet.create({
     radioContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10,
+        marginVertical: 5,
     },
     dialog: {
         backgroundColor: 'white',
     },
     dialogTitle: {
         textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    button: {
-        marginTop: 10,
-        backgroundColor: '#BA181B',
-        borderRadius: 5,
+        marginBottom: 25,
     },
     loginContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 0,
     },
-    accountText: {
-        fontSize: 15,
-    },
-    loginText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: 'red',
+    center: {
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });

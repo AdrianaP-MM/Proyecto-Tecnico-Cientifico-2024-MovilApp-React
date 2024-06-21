@@ -25,7 +25,7 @@ const TabNavigator = () => {
               iconName = focused ? 'home' : 'home-outline';
             } else if (route.name === 'Mi Perfil') {
               iconName = focused ? 'person' : 'person-outline';
-            } else if (route.name === 'Mis Carros') {
+            } else if (route.name === 'Mis Automóviles') {
               iconName = focused ? 'car' : 'car-outline';
             } else if (route.name === 'Citas') {
               iconName = focused ? 'calendar' : 'calendar-outline';
@@ -46,12 +46,12 @@ const TabNavigator = () => {
           tabBarStyle: styles.tabBar,
         })}
       >
-        <Tab.Screen name="Mis Carros" component={Carros} />
-        <Tab.Screen name="Mi Perfil" component={Perfil} />
+        <Tab.Screen name="Mis Carros" component={Carros} options={{ headerShown: false }} />
+        <Tab.Screen name="Mi Perfil" component={Perfil} options={{ headerShown: false }} />
         <Tab.Screen name="Panel Principal" component={PanelPrincipal} 
         options={{ headerShown: false }}/>
-        <Tab.Screen name="Citas" component={Citas} />
-        <Tab.Screen name="Servicios" component={Servicios} />
+        <Tab.Screen name="Citas" component={Citas} options={{ headerShown: false }} />
+        <Tab.Screen name="Servicios" component={Servicios} options={{ headerShown: false }}  />
       </Tab.Navigator>
   );
 }
