@@ -4,11 +4,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-import DashboardScreen from '../screens/DashboardScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import CarsScreen from '../screens/MyCarsScreen';
-import AppointmentsScreen from '../screens/AppointmentsScreen';
-import ServicesScreen from '../screens/ServicesScreen';
+import PanelPrincipal from '../screens/panel_principal';
+import Perfil from '../screens/perfil';
+import Carros from '../screens/carros';
+import Citas from '../screens/citas';
+import Servicios from '../screens/servicios';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,12 +46,12 @@ const TabNavigator = () => {
           tabBarStyle: styles.tabBar,
         })}
       >
-        <Tab.Screen name="Mis Carros" component={CarsScreen} />
-        <Tab.Screen name="Mi Perfil" component={ProfileScreen} />
-        <Tab.Screen name="Panel Principal" component={DashboardScreen} 
+        <Tab.Screen name="Mis Carros" component={Carros} />
+        <Tab.Screen name="Mi Perfil" component={Perfil} />
+        <Tab.Screen name="Panel Principal" component={PanelPrincipal} 
         options={{ headerShown: false }}/>
-        <Tab.Screen name="Citas" component={AppointmentsScreen} />
-        <Tab.Screen name="Servicios" component={ServicesScreen} />
+        <Tab.Screen name="Citas" component={Citas} />
+        <Tab.Screen name="Servicios" component={Servicios} />
       </Tab.Navigator>
   );
 }

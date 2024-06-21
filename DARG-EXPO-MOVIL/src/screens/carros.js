@@ -1,7 +1,6 @@
 // screens/MyCarsScreen.js
 import React from 'react';
 import { View, Button, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import CarCard from '../components/CarCard';
 import { Ionicons } from '@expo/vector-icons';
 
 const cars = [
@@ -17,15 +16,6 @@ const MyCarsScreen = ({ navigation }) => {
         <Ionicons name="add-circle-outline" size={24} color="white" />
         <Text style={styles.addButtonText}>Agregar carros</Text>
       </TouchableOpacity>
-      <FlatList
-        data={cars}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <CarCard model={item.model} plate={item.plate} image={item.image} />
-        )}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-      />
     </View>
   );
 };

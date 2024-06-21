@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { FlatList, StyleSheet, View, Animated, Text} from 'react-native';
-import slides from '../components/slides';
-import Paginator from '../components/Paginator';
-import OnboardingItem from '../components/OnboardingItem';
+import Slides from '../components/PrimerUso/slides';
+import Paginator from '../components/PrimerUso/paginator';
+import OnboardingItem from '../';
 
 const Onboarding = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,7 +21,7 @@ const Onboarding = () => {
         <View style={styles.container}>
             <View style={{ flex: 3 }}>
                 <FlatList
-                    data={slides}
+                    data={Slides}
                     renderItem={({ item }) => <OnboardingItem item={item} />}
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -36,7 +36,7 @@ const Onboarding = () => {
                     ref={slidesRef}
                 />
             </View>
-            <Paginator data={slides} scrollX={scrollX} />
+            <Paginator data={Slides} scrollX={scrollX} />
         </View>
     );
 };
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-   
+
 });
 
 export default Onboarding;
