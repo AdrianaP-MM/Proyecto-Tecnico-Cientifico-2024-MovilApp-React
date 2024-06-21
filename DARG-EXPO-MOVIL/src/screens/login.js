@@ -36,7 +36,7 @@ export default function Login({ navigation }) {
         />
         <View>
           <TouchableRipple
-            onPress={() => console.log('Pressed')}
+            onPress={() => navigation.navigate('RestablecerContra')}
             rippleColor="rgba(0, 0, 0, .32)"
           >
             <Text texto='¿Olvidaste tu contraseña?' font='PoppinsMedium' fontSize={14} textAlign='center' />

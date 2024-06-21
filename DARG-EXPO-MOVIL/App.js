@@ -10,6 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import EditarJuridico from './src/screens/editar_juridico.js';
 import EditarNatural from './src/screens/editar_natural.js';
 import Registrate from './src/screens/registro.js';
+import RestablecerContra from './src/screens/restablecer_contra.js';
 import Onboarding from './src/screens/primer_uso.js';
 import { View } from 'react-native';
 import TabNavigator from './src/tabNavigator/TabNavigator.js';
@@ -73,6 +74,7 @@ export default function App() {
           <Stack.Screen name="Onboarding" component={Onboarding} options={{ title: 'Primer uso' }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="Registrate" component={Registrate} options={{ title: 'Registrarse' }} />
+          <Stack.Screen name="RestablecerContra" component={RestablecerContra} options={{ headerShown: false }}/>
           <Stack.Screen name="EditarJuridico" component={EditarJuridico} options={{ title: 'Editar persona juridica' }} />
           <Stack.Screen name="EditarNatural" component={EditarNatural} options={{ title: 'Editar persona natural' }} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />

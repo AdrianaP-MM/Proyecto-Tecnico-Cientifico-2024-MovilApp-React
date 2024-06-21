@@ -1,32 +1,15 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, TouchableOpacity, SafeAreaView  } from 'react-native';
 import Text from '../components/utilidades/text';
 import ButtonPastilla from '../components/citas/btnPastilla';
 import CardCita from '../components/citas/cardCita';
 
-import { useNavigation } from '@react-navigation/native';
-
-export default function AppCitas() {
-    const navigation = useNavigation();
+export default function AppCitas({ navigation }) {
     const [selectedButton, setSelectedButton] = useState('En espera');
 
     const changeEstado = (button) => {
         setSelectedButton(button);
-    };
-
-    // Función para manejar la navegación a Pantalla2
-    const navigateToPantalla2 = () => {
-        navigation.navigate('Agendar');
-    };
-    // Función para manejar la navegación a Pantalla3
-    const navigateToPantalla3 = () => {
-        navigation.navigate('Pantalla3');
-    };
-
-    // Función para manejar la navegación a Pantalla4
-    const navigateToPantalla4 = () => {
-        navigation.navigate('Pantalla4');
     };
 
     const verDetalles = () => {
@@ -40,12 +23,13 @@ export default function AppCitas() {
             regreso: 'Del taller, A mi casa',
         });
     };
+
     return (
-        <View style={styles.contenedorTotal}>
-            <StatusBar style="dark" backgroundColor="#ffffff" />
+        <SafeAreaView  style={styles.contenedorTotal}>
+            <StatusBar style="dark" backgroundColor="#F9FAFB" />
             <View style={styles.contenedorTitulo}>
                 <Text texto='Citas' font='PoppinsMedium' fontSize={25} />
-                <TouchableOpacity onPress={navigateToPantalla2}>
+                <TouchableOpacity onPress={() => navigation.navigate('AgregarCita')}>
                     <Image
                         source={require('../images/icons/iconAdd.png')} // Ruta de tu imagen
                         style={styles.image}
@@ -72,15 +56,9 @@ export default function AppCitas() {
                 </View>
                 <ScrollView style={styles.scrollCitas}>
                     {<CardCita accionCard={verDetalles} />}
-                    <TouchableOpacity onPress={navigateToPantalla3}>
-                        <Text texto=' Ir a Notificaciones' font='PoppinsRegular' fontSize={15} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={navigateToPantalla4}>
-                        <Text texto=' Ir a Restablecer contraseña' font='PoppinsRegular' fontSize={15} />
-                    </TouchableOpacity>
                 </ScrollView>
             </View>
-        </View>
+        </SafeAreaView >
     );
 }
 

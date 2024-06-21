@@ -1,14 +1,14 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 import Input from '../components/inputs/allBorder';
 import Button from '../components/buttons/btnRojo';
 
 export default function AppAddCita({ route }) {
-    const {fecha, hora, auto, movilizacion, zona, ida, regreso } = route.params || {}; 
+    const { fecha, hora, auto, movilizacion, zona, ida, regreso } = route.params || {};
     return (
-        <View style={styles.contenedorTotal}>
-            <StatusBar style="dark" backgroundColor="#ffffff" />
+        <SafeAreaView style={styles.contenedorTotal}>
+            <StatusBar style="dark" backgroundColor="#F9FAFB" />
             <View style={styles.contenedorForm}>
                 <Input
                     placeholder='Fecha de llegada'
@@ -42,7 +42,7 @@ export default function AppAddCita({ route }) {
             <View style={styles.contenedorBtn} >
                 <Button textoBoton='Aceptar' />
             </View>
-        </View>
+        </SafeAreaView >
     );
 }
 
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
+        paddingBottom: 85,
     },
     contenedorForm: {
         height: 'auto',

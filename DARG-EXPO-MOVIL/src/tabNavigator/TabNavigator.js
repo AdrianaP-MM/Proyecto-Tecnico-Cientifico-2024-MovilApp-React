@@ -7,52 +7,52 @@ import { Ionicons } from '@expo/vector-icons';
 import PanelPrincipal from '../screens/panel_principal';
 import Perfil from '../screens/perfil';
 import Carros from '../screens/carros';
-import Citas from '../screens/citas';
 import Servicios from '../screens/servicios';
+import CitasStack from './citasStack';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
-      <Tab.Navigator
-        initialRouteName="Panel Principal"
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+    <Tab.Navigator
+      initialRouteName="Panel Principal"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
 
-            // Asignar iconos a cada pestaña
-            if (route.name === 'Panel Principal') {
-              iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'Mi Perfil') {
-              iconName = focused ? 'person' : 'person-outline';
-            } else if (route.name === 'Mis Automóviles') {
-              iconName = focused ? 'car' : 'car-outline';
-            } else if (route.name === 'Citas') {
-              iconName = focused ? 'calendar' : 'calendar-outline';
-            } else if (route.name === 'Servicios') {
-              iconName = focused ? 'settings' : 'settings-outline';
-            }
+          // Asignar iconos a cada pestaña
+          if (route.name === 'Panel Principal') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Mi Perfil') {
+            iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'Mis Automóviles') {
+            iconName = focused ? 'car' : 'car-outline';
+          } else if (route.name === 'Citas') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Servicios') {
+            iconName = focused ? 'settings' : 'settings-outline';
+          }
 
-            // Retornar el icono con un fondo sombreado si está enfocado
-            return (
-              <View style={focused ? styles.iconContainerFocused : styles.iconContainer}>
-                <Ionicons name={iconName} size={size} color={color} />
-              </View>
-            );
-          },
-          tabBarActiveTintColor: 'white',
-          tabBarInactiveTintColor: 'black',
-          tabBarShowLabel: false, // Ocultar el nombre de la pestaña
-          tabBarStyle: styles.tabBar,
-        })}
-      >
-        <Tab.Screen name="Mis Carros" component={Carros} options={{ headerShown: false }} />
-        <Tab.Screen name="Mi Perfil" component={Perfil} options={{ headerShown: false }} />
-        <Tab.Screen name="Panel Principal" component={PanelPrincipal} 
-        options={{ headerShown: false }}/>
-        <Tab.Screen name="Citas" component={Citas} options={{ headerShown: false }} />
-        <Tab.Screen name="Servicios" component={Servicios} options={{ headerShown: false }}  />
-      </Tab.Navigator>
+          // Retornar el icono con un fondo sombreado si está enfocado
+          return (
+            <View style={focused ? styles.iconContainerFocused : styles.iconContainer}>
+              <Ionicons name={iconName} size={size} color={color} />
+            </View>
+          );
+        },
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'black',
+        tabBarShowLabel: false, // Ocultar el nombre de la pestaña
+        tabBarStyle: styles.tabBar,
+      })}
+    >
+      <Tab.Screen name="Mis Carros" component={Carros} options={{ headerShown: false }} />
+      <Tab.Screen name="Mi Perfil" component={Perfil} options={{ headerShown: false }} />
+      <Tab.Screen name="Panel Principal" component={PanelPrincipal}
+        options={{ headerShown: false }} />
+        <Tab.Screen name="Citas" component={CitasStack} options={{ headerShown: false }} />
+      <Tab.Screen name="Servicios" component={Servicios} options={{ headerShown: false }} />
+    </Tab.Navigator>
   );
 }
 
