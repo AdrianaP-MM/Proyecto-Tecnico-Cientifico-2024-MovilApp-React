@@ -1,11 +1,11 @@
 # Proyecto Técnico Cientifico 2024 Aplicación Movil
 
 ## Información del grupo de desarrolladores 
-Coordinadora: Adriana Paola Mejía Méndez - 20190015@ricaldone.edu.sv
-Sub-Coordinadora: Mélanie Jackeline Ramírez Martínez - 20190148@ricaldone.edu.sv
-Secretaria: Emily Guadalupe Murillo Argueta - 20220021@ricaldone.edu.sv
-Tesorero: Daniel Alejandro Cortez Quintanilla - 20210199@ricaldone.edu.sv
-Vocal: Axel Gabriel García Ramirez - 20220127@ricaldone.edu.sv
+* Coordinadora: Adriana Paola Mejía Méndez - 20190015@ricaldone.edu.sv
+* Sub-Coordinadora: Mélanie Jackeline Ramírez Martínez - 20190148@ricaldone.edu.sv
+* Secretaria: Emily Guadalupe Murillo Argueta - 20220021@ricaldone.edu.sv
+* Tesorero: Daniel Alejandro Cortez Quintanilla - 20210199@ricaldone.edu.sv
+* Vocal: Axel Gabriel García Ramirez - 20220127@ricaldone.edu.sv
 
 Somos un grupo de estudiantes que actualmente cursa el tercer año de bachillerato en el Instituto Técnico Ricaldone, en la especialidad de Desarrollo de Software. Nuestra meta es convertirnos en grandes desarrolladores mientras pulimos nuestras habilidades elaborando diferentes aplicaciones y sistemas en una variedad de lenguajes de programación.
 
