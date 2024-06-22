@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // Importa la card de descripcion del servicio
-import CardDescripcion from '../components/servicios/card_descripcion_servicio';
+import CardDescripcion from '../components/servicios/cardDescripcionServicios';
 // Importa la scrollbar perzonalizada
-import CustomScrollBar from '../components/servicios/scroll_bar_personalizada';
+import CustomScrollBar from '../components/servicios/scrollBarPerzonalizada';
 // Importa la card de auto en proceso
-import AutoEnProceso from '../components/servicios/card_auto_en_proceso';
+import AutoEnProceso from '../components/servicios/cardAutoEnProceso';
 import Text from '../components/utilidades/text';
 
 export default function App() {
@@ -126,9 +126,10 @@ const styles = StyleSheet.create({
     },
     scrollViewContainer: {
         width: '94%',
-        maxHeight: '40%',
-        minHeight: '40%',
+        maxHeight: '37%',
+        minHeight: '37%',
         position: 'relative',
+        marginBottom: 35,
     },
     scrollView: {
         width: '100%',

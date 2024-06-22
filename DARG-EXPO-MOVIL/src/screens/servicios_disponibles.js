@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';// 
-import VerticalCard from '../components/servicios/card_servicios';
+import VerticalCard from '../components/servicios/cardServicios';
 // Importa la scroll bar personalizada
-import CustomScrollBar from '../components/servicios/scroll_bar_personalizada';
+import CustomScrollBar from '../components/servicios/scrollBarPerzonalizada';
 import Text from '../components/utilidades/text';
 
 
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FAFB',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 10,
   },
   titulo: {
     flexDirection: 'row',

@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, ScrollView, Animated } from 'react-native';
 // Importa la card que se utiliza para mostrar el contenido
-import HorizontalCard from '../components/servicios/card_grupos_servicios';
+import HorizontalCard from '../components/servicios/cardGruposServicios';
 // Importa la barra de scroll personalizada
-import CustomScrollBar from '../components/servicios/scroll_bar_personalizada';
+import CustomScrollBar from '../components/servicios/scrollBarPerzonalizada';
 import Text from '../components/utilidades/text';
 
 export default function App() {
