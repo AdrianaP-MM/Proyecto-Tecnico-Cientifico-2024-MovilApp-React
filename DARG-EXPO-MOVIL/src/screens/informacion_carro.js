@@ -8,15 +8,15 @@ const InformacionCarro = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>hiundai elantra</Text>
+      <Text style={styles.label}>Modelo</Text>
       <Text style={styles.text}>{carro.modelo}</Text>
-      <Text style={styles.label}>Rojo</Text>
+      <Text style={styles.label}>Color</Text>
       <Text style={styles.text}>{carro.color}</Text>
       <Text style={styles.label}>Tipo automovil</Text>
       <Text style={styles.text}>{carro.tipo}</Text>
-      <Text style={styles.label}>2008</Text>
+      <Text style={styles.label}>Año automovil</Text>
       <Text style={styles.text}>{carro.fecha}</Text>
-      <Text style={styles.label}>999-999</Text>
+      <Text style={styles.label}>placa</Text>
       <Text style={styles.text}>{carro.placa}</Text>
       <Image source={{ uri: carro.imagen }} style={styles.image} />
       <Boton title="Modificar" onPress={() => { /* Lógica para editar */ }} />
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: 'white',
+    paddingBottom: 80,
   },
   title: {
     fontSize: 24,
