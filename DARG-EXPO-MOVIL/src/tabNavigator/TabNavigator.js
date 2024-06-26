@@ -4,25 +4,25 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-//import PanelPrincipal from '../screens/panel_principal';
-import Perfil from '../screens/editar_juridico';
-import CarrosStack from './carrosStack';
-import Servicios from './serviciosStack';
-import CitasStack from './citasStack';
-import PanelStack from './panelStack';
+//import PanelPrincipal from '../screens/panel_principal'; // Importación comentada, no utilizada actualmente
+import Perfil from '../screens/editar_juridico';  // Importación de la pantalla de perfil
+import CarrosStack from './carrosStack'; // Importación de la navegación en stack para Carros
+import Servicios from './serviciosStack'; // Importación de la navegación en stack para Servicios
+import CitasStack from './citasStack'; // Importación de la navegación en stack para Citas
+import PanelStack from './panelStack'; // Importación de la navegación en stack para Panel Principal
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Panel Principal"
+      initialRouteName="Panel Principal" // Establece la pantalla inicial
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          // Asignar iconos a cada pestaña
-          if (route.name === 'Panel Principal') {
+          // Asignar iconos a cada pestaña basado en la ruta
+          if (route.name === 'Panel Principal') { 
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Mi Perfil') {
             iconName = focused ? 'person' : 'person-outline';
@@ -34,17 +34,17 @@ const TabNavigator = () => {
             iconName = focused ? 'settings' : 'settings-outline';
           }
 
-          // Retornar el icono con un fondo sombreado si está enfocado
+           // Retornar el icono con un contenedor que cambia de estilo si está enfocado
           return (
             <View style={focused ? styles.iconContainerFocused : styles.iconContainer}>
               <Ionicons name={iconName} size={size} color={color} />
             </View>
           );
         },
-        tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: 'black',
-        tabBarShowLabel: false, // Ocultar el nombre de la pestaña
-        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: 'white', // Color del ícono activo
+        tabBarInactiveTintColor: 'black', // Color del ícono inactivo
+        tabBarShowLabel: false, // Ocultar etiquetas de texto de las pestañas
+        tabBarStyle: styles.tabBar, // Estilos personalizados para la barra de pestañas
       })}
     >
       <Tab.Screen name="CarrosVista" component={CarrosStack} options={{ headerShown: false }} />
@@ -57,37 +57,37 @@ const TabNavigator = () => {
   );
 }
 
+//Estilos aplicados a la pantalla de pestañas
 const styles = StyleSheet.create({
   tabBar: {
-    position: 'absolute',
+    position: 'absolute', // Posicionamiento absoluto en la parte inferior
     left: 0,
     right: 0,
     bottom: 0,
-    height: 80,
-    backgroundColor: 'white',
-    borderTopWidth: 2,
-    borderTopColor: 'red',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    overflow: 'hidden',
+    height: 80, // Altura de la barra de pestañas
+    backgroundColor: 'white', // Color de fondo de la barra de pestañas
+    borderTopWidth: 2, // Grosor del borde superior
+    borderTopColor: 'red', // Color del borde superior
+    borderTopLeftRadius: 50, // Radio de esquina superior izquierda
+    borderTopRightRadius: 50, // Radio de esquina superior derecha
+    borderBottomLeftRadius: 0, // Radio de esquina inferior izquierda
+    borderBottomRightRadius: 0, // Radio de esquina inferior derecha
+    overflow: 'hidden', // Ocultar desbordamiento de contenido
   },
   iconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 50,
-    height: 50,
+    justifyContent: 'center', // Centrado verticalmente
+    alignItems: 'center', // Centrado horizontalmente
+    width: 50, // Ancho del contenedor de icono
+    height: 50, // Altura del contenedor de icono
   },
   iconContainerFocused: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 50,
-    height: 50,
-    backgroundColor: 'rgb(229,56,59)',
-    borderRadius: 10,
+    justifyContent: 'center', // Centrado verticalmente
+    alignItems: 'center', // Centrado horizontalmente
+    width: 50, // Ancho del contenedor de icono
+    height: 50, // Altura del contenedor de icono
+    backgroundColor: 'rgb(229,56,59)', // Color de fondo cuando la pestaña está enfocada
+    borderRadius: 10, // Radio de borde para resaltar el contenedor
   },
 });
 
-export default TabNavigator;
-
+export default TabNavigator; // Exportar el componente de navegación de pestañas
