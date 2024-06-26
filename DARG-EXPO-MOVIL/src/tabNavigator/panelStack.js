@@ -9,7 +9,7 @@ const Stack = createStackNavigator(); // Crea un nuevo StackNavigator
 const PanelStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Panel Principal" component={PanelPrincipal} options={{ headerShown: false }} />  {/* Pantalla PanelPrincipal sin mostrar el header */}
+            <Stack.Screen name="Panel Principal" component={PanelPrincipal} options={{ headerShown: false }} />
             <Stack.Screen name="Notificaciones" component={NotificacionesSub} options={{
                 headerShown: true, headerBackImage: () => <CustomBackButton />, // Componente personalizado para el botón de retroceso
                 headerStyle: {

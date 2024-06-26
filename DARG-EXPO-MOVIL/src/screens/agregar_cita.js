@@ -9,9 +9,8 @@ export default function AppAddCita({ route }) {
     const { fecha, hora, auto, movilizacion, zona, ida, regreso } = route.params || {}; // Extrae los parámetros de la ruta si existen
     return (
         <SafeAreaView style={styles.contenedorTotal}>
-            <StatusBar style="dark" backgroundColor="#F9FAFB" /> {/* Barra de estado con estilo oscuro y fondo */}
+            <StatusBar style="dark" backgroundColor="#F9FAFB" />
             <View style={styles.contenedorForm}>
-                {/* Inputs para mostrar los datos de la cita */}
                 <Input
                     placeholder='Fecha de llegada'
                     value={fecha} // Valor de la fecha recibida
@@ -42,7 +41,7 @@ export default function AppAddCita({ route }) {
                 />
             </View>
             <View style={styles.contenedorBtn} >
-                <Button textoBoton='Aceptar' /> {/* Botón para aceptar */}
+                <Button textoBoton='Aceptar' />
             </View>
         </SafeAreaView >
     );

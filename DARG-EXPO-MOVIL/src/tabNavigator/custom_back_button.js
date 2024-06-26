@@ -8,7 +8,7 @@ export default function CustomBackButton() {
     const navigation = useNavigation(); // Obtiene el objeto de navegación
 
     return (
-        <TouchableOpacity onPress={() => navigation.goBack()}> {/* Al presionar el boton se regresara a la pantalla anterior */}
+        <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
                 source={require('../images/icons/btnBack.png')} // Ruta a la imagen del boton
                 style={{ width: 35, height: 27 }} // Estilo para el tamaño de la imagen

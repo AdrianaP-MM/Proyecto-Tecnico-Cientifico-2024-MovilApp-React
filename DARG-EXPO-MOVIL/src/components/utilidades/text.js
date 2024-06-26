@@ -12,7 +12,7 @@ export default function TextC({ texto = 'Indefinido', font = 'PoppinsRegular', f
 
     return (
         <Text style={[styles.titleText, textStyle]}>
-            {texto} {/* Texto a mostrar */}
+            {texto} 
         </Text>
     );
 }

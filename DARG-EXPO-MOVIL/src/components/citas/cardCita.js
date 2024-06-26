@@ -14,39 +14,39 @@ export default function CardCita({ accionCard }) {
                     />
                     <View style={styles.cardHeaderTextContainer}>
                         <View style={styles.rowUpper}>
-                            <Text texto='Fecha y hora de llegada:' font='PoppinsLightItalic' fontSize={12} color='white' /> {/* Texto de fecha y hora de llegada */}
+                            <Text texto='Fecha y hora de llegada:' font='PoppinsLightItalic' fontSize={12} color='white' /> 
                         </View>
                         <View style={styles.row}>
-                            <Text texto='Fecha: ' font='PoppinsSemiBold' fontSize={11} color='white' /> {/* Texto de fecha */}
-                            <Text texto=' Lunes 22 de Marzo' fontSize={12} color='white' /> {/* Fecha específica */}
+                            <Text texto='Fecha: ' font='PoppinsSemiBold' fontSize={11} color='white' /> 
+                            <Text texto=' Lunes 22 de Marzo' fontSize={12} color='white' />
                         </View>
                         <View style={styles.row}>
-                            <Text texto='hora: ' font='PoppinsSemiBold' fontSize={11} color='white' />  {/* Texto de hora */}
-                            <Text texto='3:30pm' fontSize={12} color='white' />  {/* Hora específica */}
+                            <Text texto='hora: ' font='PoppinsSemiBold' fontSize={11} color='white' />
+                            <Text texto='3:30pm' fontSize={12} color='white' />  
                         </View>
                     </View>
                 </View>
                 <View style={styles.cardBody}>
                     <View style={styles.col}>
                         <View style={styles.colUpper}>
-                            <Text texto='Información del carro:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' /> {/* Texto de información del automóvil */}
+                            <Text texto='Información del carro:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' /> 
                         </View>
                         <View style={styles.row}>
-                            <Text texto='Marca: ' font='PoppinsSemiBold' fontSize={11} />  {/* Texto de marca */}
-                            <Text texto='Ferrari Electra' fontSize={12} /> {/* Marca específica */}
+                            <Text texto='Marca: ' font='PoppinsSemiBold' fontSize={11} /> 
+                            <Text texto='Ferrari Electra' fontSize={12} />
                         </View>
                         <View style={styles.row}>
-                            <Text texto='Placa: ' font='PoppinsSemiBold' fontSize={11} /> {/* Texto de placa */}
-                            <Text texto='123456789' fontSize={12} /> {/* Número de placa */}
+                            <Text texto='Placa: ' font='PoppinsSemiBold' fontSize={11} /> 
+                            <Text texto='123456789' fontSize={12} /> 
                         </View>
                     </View>
                     <View style={styles.col}>
                         <View style={styles.colUpper}>
-                            <Text texto='Detalles de la cita:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' />  {/* Texto de detalles de la cita */}
+                            <Text texto='Detalles de la cita:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' /> 
                         </View>
                         <View>
-                            <Text texto='Movilización' font='PoppinsSemiBold' fontSize={11} /> {/* Texto de movilización */}
-                            <Text texto='Dejaré el automovil' fontSize={12} /> {/* Detalle específico de la cita */}
+                            <Text texto='Movilización' font='PoppinsSemiBold' fontSize={11} /> 
+                            <Text texto='Dejaré el automovil' fontSize={12} />
                         </View>
                     </View>
                 </View>

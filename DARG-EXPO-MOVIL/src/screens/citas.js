@@ -28,9 +28,9 @@ export default function AppCitas({ navigation }) {
 
     return (
         <SafeAreaView  style={styles.contenedorTotal}>
-            <StatusBar style="dark" backgroundColor="#F9FAFB" /> {/* Barra de estado personalizada */}
+            <StatusBar style="dark" backgroundColor="#F9FAFB" />
             <View style={styles.contenedorTitulo}>
-                <Text texto='Citas' font='PoppinsMedium' fontSize={25} /> {/* Texto personalizado para el título */}
+                <Text texto='Citas' font='PoppinsMedium' fontSize={25} /> 
                 <TouchableOpacity onPress={() => navigation.navigate('AgregarCita')}>
                     <Image
                         source={require('../images/icons/iconAdd.png')} /// Ruta de la imagen de botón de agregar
@@ -40,7 +40,6 @@ export default function AppCitas({ navigation }) {
             </View>
             <View style={styles.contenedorCuerpo}>
                 <View style={styles.contenedorOpciones}>
-                        {/* Botones personalizados para filtrar citas */}
                     <ButtonPastilla
                         textoBoton='En espera'
                         accionBoton={() => changeEstado('En espera')}
@@ -58,7 +57,6 @@ export default function AppCitas({ navigation }) {
                     />
                 </View>
                 <ScrollView style={styles.scrollCitas}>
-                    {/* Tarjetas de cita personalizadas */}
                     <CardCita accionCard={verDetalles} />
                     <CardCita accionCard={verDetalles} />
                     <CardCita accionCard={verDetalles} />
