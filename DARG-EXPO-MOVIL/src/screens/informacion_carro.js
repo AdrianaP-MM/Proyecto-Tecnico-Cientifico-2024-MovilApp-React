@@ -15,13 +15,13 @@ const InformacionCarro = ({ route }) => {
       <Text style={styles.label}>Color</Text>
       <Text style={styles.text}>{carro.color}</Text>
 
-      <Text style={styles.label}>Tipo automovil</Text>
+      <Text style={styles.label}>Tipo automóvil</Text>
       <Text style={styles.text}>{carro.tipo}</Text>
 
-      <Text style={styles.label}>Año automovil</Text>
+      <Text style={styles.label}>Año automóvil</Text>
       <Text style={styles.text}>{carro.fecha}</Text>
 
-      <Text style={styles.label}>placa</Text>
+      <Text style={styles.label}>Placa</Text>
       <Text style={styles.text}>{carro.placa}</Text>
 
       <Image source={{ uri: carro.imagen }} style={styles.image} />

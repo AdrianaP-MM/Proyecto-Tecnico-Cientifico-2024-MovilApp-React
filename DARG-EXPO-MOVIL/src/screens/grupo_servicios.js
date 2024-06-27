@@ -37,11 +37,11 @@ export default function App() {
         >
 
           <HorizontalCard
-            title="Electronica basica"
+            title="Electrónica básica"
             imageUrl="https://motor.elpais.com/wp-content/uploads/2019/04/cambio-aceite-coche.jpg"
           />
           <HorizontalCard
-            title="Iluminacion y señalizacion"
+            title="Iluminación y señalización"
             imageUrl="https://motor.elpais.com/wp-content/uploads/2019/04/cambio-aceite-coche.jpg"
           />
           <HorizontalCard
@@ -49,7 +49,7 @@ export default function App() {
             imageUrl="https://motor.elpais.com/wp-content/uploads/2019/04/cambio-aceite-coche.jpg"
           />
           <HorizontalCard
-            title="Revision de direccion"
+            title="Revisión de dirección"
             imageUrl="https://motor.elpais.com/wp-content/uploads/2019/04/cambio-aceite-coche.jpg"
           />
 

@@ -39,7 +39,7 @@ export default function App() {
 
             <CardDescripcion //Card de descripcion del servicio
                 titulo="Cambio de aceite"
-                descripcion="El cambio de aceite es para pues cambiarselo ya esta viejo xd despues termina como gelatina el aceite del carter."
+                descripcion="El cambio de aceite es para pues cambiarselo ya esta viejo después termina como gelatina el aceite del carter."
             />
 
             <View style={styles.line} /*Linea para dividir la descripcion de las cards*/ />

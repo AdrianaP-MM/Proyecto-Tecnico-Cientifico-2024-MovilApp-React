@@ -57,19 +57,19 @@ export default function App() {
 
           <VerticalCard //Card con contenido de ejemplo
             titulo="Example Card 1"
-            tipo="Revision y cambio de fusibles"
+            tipo="Revisión y cambio de fusibles"
           />
           <VerticalCard //Card con contenido de ejemplo
             titulo="Example Card 2"
-            tipo="Revision de electronica"
+            tipo="Revisin de electrónica"
           />
           <VerticalCard //Card con contenido de ejemplo
             titulo="Example Card 3"
-            tipo="Computadora del vehiculo"
+            tipo="Computadora del vehículo"
           />
           <VerticalCard //Card con contenido de ejemplo
             titulo="Example Card 4"
-            tipo="Diagnostico electronico"
+            tipo="Diagnostico electrónico"
           />
         </ScrollView>
 

@@ -24,7 +24,7 @@ export default function AppAddCita({ route }) {
                     value={auto} // Valor del automóvil recibido
                 />
                 <Input
-                    placeholder='Movilizacion del vehiculo' 
+                    placeholder='Movilizacion del vehículo' 
                     value={movilizacion} // Valor de la movilización recibida
                 />
                 <Input
@@ -32,11 +32,11 @@ export default function AppAddCita({ route }) {
                     value={zona}  // Valor de la zona recibida
                 />
                 <Input
-                    placeholder='Dirección ida'
+                    placeholder='Dirección de ida'
                     value={ida} // Valor de la dirección de ida recibida
                 />
                 <Input
-                    placeholder='Dirección regreso'
+                    placeholder='Dirección de regreso'
                     value={regreso} // Valor de la dirección de regreso recibida
                 />
             </View>

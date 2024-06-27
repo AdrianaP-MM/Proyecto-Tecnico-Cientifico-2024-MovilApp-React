@@ -19,9 +19,9 @@ export default function AppCitas({ navigation }) {
             fecha: '22/03/2024',
             hora: '3:30pm',
             auto: 'Ferrari Electra',
-            movilizacion: 'Dejaré el automovil',
+            movilizacion: 'Dejaré el automóvil',
             zona: 'San Salvador',
-            ida: 'De mi casa al taller',
+            ida: 'De mí casa al taller',
             regreso: 'Del taller, A mi casa',
         });
     };
