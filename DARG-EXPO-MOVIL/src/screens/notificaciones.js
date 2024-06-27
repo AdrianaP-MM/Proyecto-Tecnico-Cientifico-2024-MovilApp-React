@@ -10,13 +10,13 @@ export default function AppNotificaciones() {
             <StatusBar style="dark" backgroundColor="#ffffff" /> 
             <View style={styles.col}>
                 <View style={styles.contenedorTitulo}>
-                    <Text texto='Notificaciónes' font='PoppinsMedium' fontSize={25} /> 
+                    <Text texto='Notificaciones' font='PoppinsMedium' fontSize={25} /> 
                     <Image
                         source={require('../images/icons/iconCampana.png')}  // Ruta de la imagen de campana
                         style={styles.image}
                     />
                 </View>
-                <Text texto='Tienes n notificaciónes nuevas' font='PoppinsRegular' fontSize={14} color='#6A6A6A' /> 
+                <Text texto='Tienes n notificaciones nuevas' font='PoppinsRegular' fontSize={14} color='#6A6A6A' /> 
             </View>
             <ScrollView style={styles.scrollCards}>
                 {<CardNoti />} 

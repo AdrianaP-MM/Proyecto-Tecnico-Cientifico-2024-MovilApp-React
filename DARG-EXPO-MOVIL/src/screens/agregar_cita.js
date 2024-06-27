@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
 import Input from '../components/inputs/allBorder'; // Importa el componente Input desde su ruta
 import Button from '../components/buttons/btnRojo'; // Importa el componente Button desde su ruta
 
@@ -8,7 +8,7 @@ import Button from '../components/buttons/btnRojo'; // Importa el componente But
 export default function AppAddCita({ route }) {
     const { fecha, hora, auto, movilizacion, zona, ida, regreso } = route.params || {}; // Extrae los parámetros de la ruta si existen
     return (
-        <SafeAreaView style={styles.contenedorTotal}>
+        <ScrollView contentContainerStyle={styles.contenedorTotal}>
             <StatusBar style="dark" backgroundColor="#F9FAFB" />
             <View style={styles.contenedorForm}>
                 <Input
@@ -43,18 +43,18 @@ export default function AppAddCita({ route }) {
             <View style={styles.contenedorBtn} >
                 <Button textoBoton='Aceptar' />
             </View>
-        </SafeAreaView >
+        </ScrollView >
     );
 }
 
 // Estilos para el componente AppAddCita utilizando StyleSheet.create
 const styles = StyleSheet.create({
     contenedorTotal: {
-        flex: 1, // Ocupa todo el espacio disponible
+        flexGrow: 1, // Ocupa todo el espacio disponible
         backgroundColor: 'white', // Fondo blanco
         alignItems: 'flex-start', // Alinea elementos al inicio horizontalmente
         justifyContent: 'flex-start', // Alinea elementos al inicio verticalmente
-        paddingBottom: 85, // Espacio inferior para evitar que el botón quede oculto por el teclado
+        paddingBottom: 100, // Espacio inferior para evitar que el botón quede oculto por el teclado
     },
     contenedorForm: {
         height: 'auto', // Altura automática basada en su contenido

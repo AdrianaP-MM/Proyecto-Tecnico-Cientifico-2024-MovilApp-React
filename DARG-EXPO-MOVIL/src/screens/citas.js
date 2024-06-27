@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start', // Alinea elementos al inicio verticalmente
         marginTop: 20, // Margen superior de 20 unidades
         paddingTop: 20, // Relleno superior de 20 unidades
+        paddingBottom: 100,
         padding: 0, // Sin relleno horizontal adicional
     },
     contenedorTitulo: {

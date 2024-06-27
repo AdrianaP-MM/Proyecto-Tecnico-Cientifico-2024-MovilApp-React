@@ -55,8 +55,10 @@ export default function DashboardScreen({ navigation }) {
         <View style={styles.section}>
           <Text texto='Citas próximas' font='PoppinsSemiBold' fontSize={18} color='white' />
           <View style={styles.appointments}>
-            <TarjetaCarro carro={carro} />
-            <TarjetaCarro carro={carro} />
+            <ScrollView horizontal>
+              <TarjetaCarro carro={carro} />
+              <TarjetaCarro carro={carro} />
+            </ScrollView>
           </View>
         </View>
       </View>
