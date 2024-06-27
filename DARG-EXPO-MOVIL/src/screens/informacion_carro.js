@@ -8,30 +8,30 @@ const InformacionCarro = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {/* Etiqueta y valor del modelo del carro */}
+
       <Text style={styles.label}>Modelo</Text>
       <Text style={styles.text}>{carro.modelo}</Text>
       
-      {/* Etiqueta y valor del color del carro */}
+
       <Text style={styles.label}>Color</Text>
       <Text style={styles.text}>{carro.color}</Text>
       
-      {/* Etiqueta y valor del tipo de automóvil */}
+      
       <Text style={styles.label}>Tipo automovil</Text>
       <Text style={styles.text}>{carro.tipo}</Text>
       
-      {/* Etiqueta y valor del año del automóvil */}
+    
       <Text style={styles.label}>Año automovil</Text>
       <Text style={styles.text}>{carro.fecha}</Text>
       
-      {/* Etiqueta y valor de la placa del carro */}
+    
       <Text style={styles.label}>placa</Text>
       <Text style={styles.text}>{carro.placa}</Text>
       
-      {/* Imagen del carro */}
+
       <Image source={{ uri: carro.imagen }} style={styles.image} />
       
-      {/* Botón para modificar la información del carro */}
+     
       <Boton title="Modificar" onPress={() => { /* Lógica para editar */ }} />
     </View>
   );

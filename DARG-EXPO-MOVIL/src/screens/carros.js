@@ -16,7 +16,7 @@ const CarrosVista = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.contenedorTitulo}>
-        <Text texto='Carros' font='PoppinsMedium' fontSize={25} /> // Título de la pantalla
+        <Text texto='Carros' font='PoppinsMedium' fontSize={25} /> 
         <TouchableOpacity onPress={() => navigation.navigate('AgregarVehiculo', { agregarCarro })}>
           <Image
             source={require('../images/icons/iconAdd.png')} // Ruta de la imagen del icono para agregar un carro
