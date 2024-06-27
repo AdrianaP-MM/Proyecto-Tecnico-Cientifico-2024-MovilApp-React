@@ -70,26 +70,26 @@ export default function App() {
 // Hoja de estilos para el contenedor
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex: 1, /*Propiedad flex*/
+    backgroundColor: '#F9FAFB', /*Fondo del contenedor*/
+    alignItems: 'center', /*Alinear al centro verticalmente*/
+    justifyContent: 'center', /*Alinear al centro horizontamente*/
   },
   scrollView: {
-    width: '97%',
+    width: '97%', /*Ancho del contenedor scroll*/
   },
   containerCards: {
-    paddingBottom: 20,
+    paddingBottom: 20, /*Separacion inferior del contendor de las cards*/
   },
   titulo: {
-    alignItems: 'flex-start',
-    width: '100%',
-    paddingHorizontal: 20,
-    marginVertical: 20,
+    alignItems: 'flex-start', /*Alinear a inicio*/
+    width: '100%', /*Ancho del titulo*/
+    paddingHorizontal: 20, /*Separacion interior del titulo*/
+    marginVertical: 20, /*Separacion vertical del titulo*/
   },
   scrollViewContainer: {
-    width: '92%',
-    maxHeight: '78%',
-    position: 'relative',
+    width: '92%', /*Ancho del contenedor scroll*/
+    maxHeight: '78%', /*Alto Maximo del contenedor scroll*/
+    position: 'relative', /*Posicion del contenedor scroll*/
   },
 });

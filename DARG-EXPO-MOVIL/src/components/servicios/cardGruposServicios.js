@@ -31,36 +31,36 @@ const HorizontalCard = ({ title, imageUrl }) => {
 //Hoja de estilos especificos para la card
 const styles = StyleSheet.create({
   horizontalCard: {
-    width: '100%',
-    borderRadius: 10,
-    marginBottom: 16,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 4,
-    elevation: 5,
+    width: '100%', /*Ancho de la card*/
+    borderRadius: 10, /*Borde redondeado de la card*/
+    marginBottom: 16, /*Separacion inferior entre cards*/
+    backgroundColor: '#fff', /*Fondo de color de la card*/
+    shadowColor: '#000', /*Color de la sombra*/
+    shadowOffset: { width: 0, height: 2 }, /*Orientacion de la sombra*/
+    shadowOpacity: 0.8, /*Opacidad de la sombra*/
+    shadowRadius: 4, /*Borde redondeado de la sombra*/
+    elevation: 5, /*Dispersion de la sombra*/
   },
   cardImage: {
-    width: '100%',
-    height: 200,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    resizeMode: 'cover',
-  },
+    width: '100%', /*Ancho de la imagen de la card*/
+    height: 200, /*Alto de la imagen de la card*/
+    borderTopLeftRadius: 10, /*Borde superior izquierdo redondeado*/
+    borderTopRightRadius: 10, /*Borde superior derecho redondeado*/
+    resizeMode: 'cover', /*Forma de contener la imagen*/
+  }, 
   cardContent: {
-    padding: 16,
-    flex: 1,
-    justifyContent: 'space-between',
+    padding: 16, /*Separacion interior del contenido*/
+    flex: 1, /*Propiedad flex*/
+    justifyContent: 'space-between', /*Contenido alienado a los extremos*/
   },
   row: {
-    width: '100%',
-    alignItems: 'center',
+    width: '100%', /*Ancho del contenedor del boton*/
+    alignItems: 'center', /*Alinear el contenido verticalmente*/
   },
   grup: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
+    flexDirection: 'row', /*Contenido alineado horizontalmente*/
+    flexWrap: 'wrap', /*Propiedad wrap*/
+    width: '100%', /*Ancho del contenedor del nombre del grupo*/
   },
 });
 

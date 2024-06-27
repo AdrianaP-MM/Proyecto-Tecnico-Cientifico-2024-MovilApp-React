@@ -26,42 +26,42 @@ const CardDescripcion = ({ titulo, descripcion }) => {
 //Hoja de estilos de la card de descripcion
 const styles = StyleSheet.create({
     horizontalCard: {
-        flexDirection: 'row', // Disposición horizontal
-        width: '92%',
-        borderRadius: 10,
-        marginBottom: 16,
-        backgroundColor: '#fff',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
-        elevation: 5,
-        alignItems: 'center', // Alinea el contenido al centro horizontalmente
-        padding: 10,
+        flexDirection: 'row', /*Dispocion horizontal*/
+        width: '92%', /*Ancho de la card*/
+        borderRadius: 10, /*Borde redondeado de la card*/
+        marginBottom: 16, /*Separacion inferior entre cards*/
+        backgroundColor: '#fff', /*Fondo de color para la card*/
+        shadowColor: '#000', /*Color de la sombra*/
+        shadowOffset: { width: 0, height: 2 }, /*Orientacion de la sombra*/
+        shadowOpacity: 0.8, /*Opacidad de la sombra*/
+        shadowRadius: 4, /*Borde redodndeado de la sombra*/
+        elevation: 5, /*Doispersion de la sombra*/
+        alignItems: 'center', /*Alineacion horizontal al centro*/
+        padding: 10, /*Separacion interior de los elementos de la card con respecto al borde*/
     },
     imageContainer: {
-        marginRight: 10, // Espacio entre la imagen y el contenido
+        marginRight: 10, /*Espacio entre la imagen y contenido*/
     },
     cardImage: {
-        width: 160,
-        height: 170, // Altura de la imagen
-        resizeMode: 'cover',
-        borderRadius: 10,
+        width: 160, /*Ancho de la imagen*/
+        height: 170, /*Alto de la imagen*/
+        resizeMode: 'cover', /*Forma de contener la imagen*/
+        borderRadius: 10, /*Borde redondeado de la imagen*/
     },
     cardContent: {
-        flex: 1,
-        justifyContent: 'flex-start', // Alinea el contenido al principio verticalmente
-        alignItems: 'flex-start', // Alinea el contenido al principio horizontalmente
-        height: '100%',
+        flex: 1, /*Propiedad flex*/
+        justifyContent: 'flex-start', /*Aliena el contenido al principio horizontalmente*/
+        alignItems: 'flex-start', /*Alinea el contenido al principio verticalmente*/
+        height: '100%', /*Alto del contenedor de la inforamcion de la carta*/
     },
     cardTitle: {
-        fontSize: 13,
-        marginBottom: 5,
-        fontWeight: 'bold',
+        fontSize: 13, /*Tamaño de la fuente*/
+        marginBottom: 5, /*Separacion inferior del titulo de la card*/
+        fontWeight: 'bold', /*Tipo de fuente*/
     },
     cardText: {
-        fontSize: 12,
-        marginBottom: 15,
+        fontSize: 12, /*Tamaño de la fuente*/
+        marginBottom: 15, /*Separacion inferior del texto de la card*/
     },
 });
 

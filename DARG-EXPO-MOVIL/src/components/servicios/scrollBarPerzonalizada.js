@@ -33,12 +33,12 @@ const CustomScrollBar = ({ scrollY, contentHeight, containerHeight }) => {
 //Hoja de estilos para la barra perzonalizada
 const styles = StyleSheet.create({
   scrollBar: {
-    width: 5,
-    backgroundColor: '#BA181B',
-    borderRadius: 2.5,
-    position: 'absolute',
-    right: 2,
-    marginLeft: 15,
+    width: 5, /*Ancho de la scrollbar*/
+    backgroundColor: '#BA181B', /*Color de la scrollbar*/
+    borderRadius: 2.5, /*Borde redondeado la scrollbar*/
+    position: 'absolute', /*Posicion de la scrollbar para que sea visible*/
+    right: 2, /*Separacion a la derecha de la scrollbar*/
+    marginLeft: 15, /*Separacion a la izquierda de la scrollbar*/
   },
 });
 

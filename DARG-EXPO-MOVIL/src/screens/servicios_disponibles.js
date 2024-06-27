@@ -88,41 +88,41 @@ export default function App() {
 //Hoja de estilos la vista general de la pantalla
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10,
+    flex: 1, /*Propiedad flex*/
+    backgroundColor: '#F9FAFB', /*Fondo de color*/
+    alignItems: 'center', /*Alinear verticalmente*/
+    justifyContent: 'center', /*Alinear horizontalmente*/
+    marginBottom: 10, /*Separacion inferior del contenedor*/
   },
   titulo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: 20,
-    marginVertical: 20,
+    flexDirection: 'row', /*Agrupar horizontalmente*/
+    alignItems: 'center', /*Alinear verticalmente*/
+    width: '100%', /*Ancho del titulo*/
+    paddingHorizontal: 20, /*Separcion horzontal interior*/
+    marginVertical: 20, /*Separacopm vertical del contenedor*/
   },
   backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 'auto',
-    marginBottom: 20,
+    flexDirection: 'row', /*Ordenar horizontalmente*/
+    alignItems: 'center', /*Alinear verticalmente*/
+    marginLeft: 'auto', /*Separacion a la izquierda*/
+    marginBottom: 20, /*Separacion inferior*/
   },
   backButtonText: {
-    fontSize: 16,
-    marginLeft: 5,
+    fontSize: 16, /*Tamaño de fuente*/
+    marginLeft: 5, /*Separacion a la izquierda*/
   },
   scrollViewContainer: {
-    width: '92%',
-    maxHeight: '78%',
-    position: 'relative',
-    marginBottom: 30,
+    width: '92%', /*Ancho del contenedor del scroll*/
+    maxHeight: '78%', /*Altura maxima del contenedor*/
+    position: 'relative', /*Posicion del contenedor*/
+    marginBottom: 30, /*Separacion inferior*/
   },
   scrollView: {
-    width: '100%',
+    width: '100%', /*Ancho del contenedor scroll*/
   },
   containerCards: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    flexDirection: 'row', /*Ordrnar horizontalmente*/
+    flexWrap: 'wrap', /*Propiedad wrap*/
+    justifyContent: 'space-around', /*Alinear a los extremos*/
   },
 });

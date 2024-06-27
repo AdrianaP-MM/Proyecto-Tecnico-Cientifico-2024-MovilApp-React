@@ -102,48 +102,48 @@ export default function App() {
 //Hoja de estilos la vista general de la pantalla
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#F9FAFB',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1, /*Propiedad flex*/
+        backgroundColor: '#F9FAFB', /*Fondo de color*/
+        alignItems: 'center', /*Alinear verticalmente*/
+        justifyContent: 'center', /*Alinear al centro*/
     },
     titulo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%',
-        paddingHorizontal: 20,
-        marginVertical: 20,
+        flexDirection: 'row', /*Ordenar horizontalmente*/
+        alignItems: 'center', /*Alinear verticalmente*/
+        width: '100%', /*Ancho del titulo*/
+        paddingHorizontal: 20, /*Separacion interna a los lados verticamente*/
+        marginVertical: 20, /*Separacion vertical del titulo*/
     },
     backButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 'auto',
-        marginBottom: 20,
+        flexDirection: 'row', /*Ordenar horizontalmente*/
+        alignItems: 'center', /*Alinear verticalmente*/
+        marginLeft: 'auto', /*Ancho del titulo*/
+        marginBottom: 20, /*Separacion inferior*/
     },
     backButtonText: {
-        fontSize: 16,
-        marginLeft: 5,
+        fontSize: 16, /*Tamaño de fuente*/
+        marginLeft: 5, /*Separacion a la izquierada*/
     },
     scrollViewContainer: {
-        width: '94%',
-        maxHeight: '37%',
-        minHeight: '37%',
-        position: 'relative',
-        marginBottom: 35,
+        width: '94%', /*Ancho del contenedor scroll*/
+        maxHeight: '37%', /*Altura maxima*/
+        minHeight: '37%', /*Altura minima*/
+        position: 'relative', /*Posicion del contenedor*/
+        marginBottom: 35, /*Separacion inferior*/
     },
     scrollView: {
-        width: '100%',
+        width: '100%', /*Ancho del scroll view*/
     },
     containerCards: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        flexDirection: 'row', /*Ordenar horizontalmente*/
+        flexWrap: 'wrap', /*Propiedad wrap*/
+        justifyContent: 'space-around', /*Alinear a los extremos*/
     },
     line: {
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        width: '92%',
-        marginTop: 20,
-        marginBottom: 16,
+        borderBottomColor: 'black', /*Color de la linea*/
+        borderBottomWidth: 1, /*Ancho inferior del borde*/
+        width: '92%', /*Ancho de la linea*/
+        marginTop: 20, /*Separacion superior de la linea*/
+        marginBottom: 16, /*Separacion inferior*/
     },
 });

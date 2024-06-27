@@ -36,51 +36,51 @@ const AutoEnProceso = ({ marca, modelo, tipoVehiculo, placa, fechaDeRegistro }) 
 //Hoja de estilos para la card de autos en proceso
 const styles = StyleSheet.create({
     horizontalCard: {
-        flexDirection: 'row', 
-        width: '95%',
-        borderRadius: 10,
-        marginBottom: 16,
-        backgroundColor: '#fff',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
-        elevation: 5,
-        alignItems: 'center', 
-        padding: 10,
+        flexDirection: 'row', /*Direccion de la card en horizontal*/
+        width: '95%', /*Ancho de la card con respecto al contenedor en el que se encuentra*/
+        borderRadius: 10, /*Borde de la card redondeado*/
+        marginBottom: 16, /*Separacion inferior entre cards*/
+        backgroundColor: '#fff', /*Color de fondo de la card*/
+        shadowColor: '#000', /*Color de la sombra de la card*/
+        shadowOffset: { width: 0, height: 2 }, /*Orientacion de la sombra*/
+        shadowOpacity: 0.8, /*Opacidad de la sombra*/
+        shadowRadius: 4, /*Borde redondeado para la sombra*/
+        elevation: 5, /*Elevacion de la card para la silueta de sombra*/
+        alignItems: 'center',  /*Elementos de la card alineados al centro*/
+        padding: 10, /*Separacion interior de los elementos de la card con respecto al borde*/
     },
     imageContainer: {
-        marginRight: 0, 
+        marginRight: 0, /*Margen derecho del contendor de la imagen*/
     },
     cardImage: {
-        width: 160,
-        height: 170, 
-        resizeMode: 'cover',
-        borderRadius: 10,
+        width: 160, /*Ancho de la imagen de la card*/
+        height: 170, /*Alto de la imagen de la card*/
+        resizeMode: 'cover', /*Forma de contener la imagen*/
+        borderRadius: 10, /*Borde redondeado de la imagen*/
     },
     verticalLine: {
-        width: 1, 
-        backgroundColor: '#000', 
-        height: '100%',
-        marginHorizontal: 10,
+        width: 1, /*Ancho de la linea vertical*/
+        backgroundColor: '#000', /*Fondo de la linea vertical*/
+        height: '100%', /*Alto de la linea vertical*/
+        marginHorizontal: 10, /*Separacion izquierdo y derecho de la linea horizontal*/
     },
     cardContentContainer: {
-        flex: 1,
-        maxHeight: 170, 
+        flex: 1, /*Propiedad flex*/
+        maxHeight: 170, /*Alto maximo que se puede extender el contenedor de informacion de la card*/
     },
     cardTitle: {
-        fontSize: 13,
-        marginBottom: 5,
-        fontWeight: 'bold',
+        fontSize: 13, /*Tamaño de fuente*/
+        marginBottom: 5, /*Separacion del titulo de la card*/
+        fontWeight: 'bold', /*Tipo de fuente negrita*/
     },
     cardInfo: {
-        fontSize: 12,
-        marginBottom: 5,
-        fontWeight: 'bold',
+        fontSize: 12, /*Tamaño de fuente*/
+        marginBottom: 5, /*Separacion inferior*/
+        fontWeight: 'bold', /*Tipo de fuente negrita*/
     },
     cardText: {
-        fontSize: 12,
-        marginBottom: 15,
+        fontSize: 12, /*Tamaño de fuente*/
+        marginBottom: 15, /*Separacion inferior*/
     },
 });
 
