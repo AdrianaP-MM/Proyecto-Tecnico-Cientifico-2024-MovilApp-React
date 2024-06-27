@@ -11,28 +11,22 @@ const InformacionCarro = ({ route }) => {
 
       <Text style={styles.label}>Modelo</Text>
       <Text style={styles.text}>{carro.modelo}</Text>
-      
 
       <Text style={styles.label}>Color</Text>
       <Text style={styles.text}>{carro.color}</Text>
-      
-      
+
       <Text style={styles.label}>Tipo automovil</Text>
       <Text style={styles.text}>{carro.tipo}</Text>
-      
-    
+
       <Text style={styles.label}>Año automovil</Text>
       <Text style={styles.text}>{carro.fecha}</Text>
-      
-    
+
       <Text style={styles.label}>placa</Text>
       <Text style={styles.text}>{carro.placa}</Text>
-      
 
       <Image source={{ uri: carro.imagen }} style={styles.image} />
-      
-     
-      <Boton title="Modificar" onPress={() => { /* Lógica para editar */ }} />
+
+      <Boton textoBoton="Modificar" accionBoton={() => { /* Lógica para editar */ }} />
     </View>
   );
 };
@@ -43,7 +37,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: 'white',
-    paddingBottom: 80, // Espacio adicional en la parte inferior
+    paddingBottom: 100, // Espacio adicional en la parte inferior
   },
   title: {
     fontSize: 24,
@@ -68,7 +62,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 200,
+    height: 150,
     borderRadius: 10,
     marginTop: 10, // Espacio superior para la imagen
   },
