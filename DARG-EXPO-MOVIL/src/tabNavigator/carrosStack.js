@@ -13,13 +13,13 @@ const Stack = createStackNavigator();
 const CarrosStack = () => {
   return (
     <Stack.Navigator initialRouteName="CarrosVista">
-      {/* Pantalla principal de la lista de carros */}
+      
       <Stack.Screen 
         name="CarrosVista" 
         component={CarrosVista} 
         options={{ headerShown: false }} // Oculta el header
       />
-      {/* Pantalla para agregar un vehículo */}
+      
       <Stack.Screen 
         name="AgregarVehiculo" 
         component={AgregarVehiculo} 
@@ -32,7 +32,7 @@ const CarrosStack = () => {
           title: 'Agregar vehículo', // Título del header
         }} 
       />
-      {/* Pantalla de información de un carro */}
+      
       <Stack.Screen 
         name="InformacionCarro" 
         component={InformacionCarro} 
