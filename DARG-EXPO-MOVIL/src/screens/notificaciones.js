@@ -7,19 +7,19 @@ import CardNoti from '../components/notificaciones/cardNoti'; // Importación de
 export default function AppNotificaciones() {
     return (
         <View style={styles.contenedorTotal}>
-            <StatusBar style="dark" backgroundColor="#ffffff" /> {/* Barra de estado personalizada */}
+            <StatusBar style="dark" backgroundColor="#ffffff" /> 
             <View style={styles.col}>
                 <View style={styles.contenedorTitulo}>
-                    <Text texto='Notificaciónes' font='PoppinsMedium' fontSize={25} /> {/* Texto personalizado para el título */}
+                    <Text texto='Notificaciónes' font='PoppinsMedium' fontSize={25} /> 
                     <Image
                         source={require('../images/icons/iconCampana.png')}  // Ruta de la imagen de campana
                         style={styles.image}
                     />
                 </View>
-                <Text texto='Tienes n notificaciónes nuevas' font='PoppinsRegular' fontSize={14} color='#6A6A6A' /> {/* Texto personalizado para el subtitulo */}
+                <Text texto='Tienes n notificaciónes nuevas' font='PoppinsRegular' fontSize={14} color='#6A6A6A' /> 
             </View>
             <ScrollView style={styles.scrollCards}>
-                {<CardNoti />}  {/* Renderizado del componente de tarjeta de notificación */}
+                {<CardNoti />} 
             </ScrollView>
         </View>
     );

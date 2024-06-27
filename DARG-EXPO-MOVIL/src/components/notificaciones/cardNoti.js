@@ -8,15 +8,15 @@ export default function CardNoti({ accionCard }) {
         <TouchableOpacity onPress={accionCard}>
             <View style={styles.contenedorTotalCard}>
                 <View style={styles.cardHeader}>
-                    <Text texto='¡Revisa tu calendario!' font='PoppinsLightItalic' fontSize={15} color='white' />  {/* Texto principal de la notificación */}
+                    <Text texto='¡Revisa tu calendario!' font='PoppinsLightItalic' fontSize={15} color='white' />  
                 </View>
                 <View style={styles.cardBody}>
                     <View style={styles.row}>
-                        <Text texto='Se acerca tú próximo cambio de aceite para tú vehículo:' fontSize={11} font='PoppinsRegular' /> {/* Descripción de la notificación */}
-                        <Text texto='Hyundai Bayon' font='PoppinsRegular' color='blue' /> {/* Modelo del vehículo */}
+                        <Text texto='Se acerca tú próximo cambio de aceite para tú vehículo:' fontSize={11} font='PoppinsRegular' /> 
+                        <Text texto='Hyundai Bayon' font='PoppinsRegular' color='blue' /> 
                     </View>
                     <View style={styles.cardFooter}>
-                        <Text texto='Recibido a las: 09:30 am.' font='PoppinsSemiBold' color='#E5383B' fontSize={10} />  {/* Detalle de la hora de recepción */}
+                        <Text texto='Recibido a las: 09:30 am.' font='PoppinsSemiBold' color='#E5383B' fontSize={10} />  
                     </View>
                 </View>
 

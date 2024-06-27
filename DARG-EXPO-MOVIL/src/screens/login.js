@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Avatar, TouchableRipple } from 'react-native-paper';
-import Text from '../components/utilidades/text';
-import Button from '../components/buttons/btnRojo';
-import Input from '../components/inputs/allBorder';
-import { StatusBar } from 'expo-status-bar';
+import Text from '../components/utilidades/text'; // Importa el componente de texto personalizado
+import Button from '../components/buttons/btnRojo'; // Importa el botón personalizado
+import Input from '../components/inputs/allBorder'; // Importa el componente de entrada personalizado
+import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
 
 export default function Login({ navigation }) {
+  // Define los estados para el correo electrónico y la contraseña
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -59,29 +60,29 @@ export default function Login({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-    justifyContent: 'center',
-    padding: 20,
+    flex: 1, // Hace que el contenedor ocupe todo el espacio disponible
+    backgroundColor: '#F9FAFB', // Color de fondo
+    justifyContent: 'center', // Centra el contenido verticalmente
+    padding: 20, // Padding alrededor del contenedor
   },
   containerTotal: {
-    width: '100%',
-    backgroundColor: '#F9FAFB',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '100%', // Ancho completo del contenedor
+    backgroundColor: '#F9FAFB', // Color de fondo
+    justifyContent: 'center', // Centra el contenido verticalmente
+    alignItems: 'center', // Centra el contenido horizontalmente
   },
   avatarContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 50,
+    alignItems: 'center', // Centra el avatar horizontalmente
+    justifyContent: 'center', // Centra el avatar verticalmente
+    marginBottom: 50, // Espacio debajo del avatar
   },
   avatarIcon: {
-    marginBottom: 10,
+    marginBottom: 10, // Espacio debajo del icono del avatar
   },
   registerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
+    flexDirection: 'row', // Organiza los elementos en fila
+    justifyContent: 'center', // Centra el contenido horizontalmente
+    alignItems: 'center', // Centra el contenido verticalmente
+    marginTop: 20, // Espacio encima del contenedor de registro
   },
 });
