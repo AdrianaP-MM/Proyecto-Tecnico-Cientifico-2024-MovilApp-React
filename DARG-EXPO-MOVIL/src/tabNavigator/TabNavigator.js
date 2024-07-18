@@ -7,9 +7,9 @@ import { Ionicons } from '@expo/vector-icons';
 //import PanelPrincipal from '../screens/PanelPrincipal'; // Importación comentada, no utilizada actualmente
 import Perfil from '../screens/EditarPerfil';  // Importación de la pantalla de perfil
 import CarrosStack from './CarrosStack'; // Importación de la navegación en stack para Carros
-import Servicios from './serviciosStack'; // Importación de la navegación en stack para Servicios
-import CitasStack from './citasStack'; // Importación de la navegación en stack para Citas
-import PanelStack from './panelStack'; // Importación de la navegación en stack para Panel Principal
+import Servicios from './ServiciosStack'; // Importación de la navegación en stack para Servicios
+import CitasStack from './CitasStack'; // Importación de la navegación en stack para Citas
+import PanelStack from './PanelStack'; // Importación de la navegación en stack para Panel Principal
 
 const Tab = createBottomTabNavigator();
 

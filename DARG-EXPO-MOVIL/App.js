@@ -14,7 +14,7 @@ import RestablecerContra from './src/screens/RestablecerContra.js';
 import Onboarding from './src/screens/PrimerUso.js';
 import { View } from 'react-native';
 import TabNavigator from './src/tabNavigator/TabNavigator.js';
-import CustomBackButton from './src/tabNavigator/custom_back_button';
+import CustomBackButton from './src/tabNavigator/CustomBackButton.js';
 
 const Stack = createStackNavigator();
 

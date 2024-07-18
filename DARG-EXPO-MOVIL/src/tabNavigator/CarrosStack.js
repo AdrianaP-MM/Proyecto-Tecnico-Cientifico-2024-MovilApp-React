@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import CarrosVista from '../screens/Carros'; // Importa la pantalla CarrosVista
 import AgregarVehiculo from '../screens/AgregarCarro'; // Importa la pantalla AgregarVehiculo
 import InformacionCarro from '../screens/InfoCarro'; // Importa la pantalla InformacionCarro
-import CustomBackButton from './custom_back_button'; // Importa el componente CustomBackButton
+import CustomBackButton from './CustomBackButton'; // Importa el componente CustomBackButton
 
 // Crea un Stack Navigator
 const Stack = createStackNavigator();
