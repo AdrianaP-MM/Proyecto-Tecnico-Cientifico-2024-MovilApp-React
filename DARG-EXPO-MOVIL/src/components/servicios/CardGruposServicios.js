@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 //Import de la navegacion para poder cambiar la pantalla
 import { useNavigation } from '@react-navigation/native';
-import Text from '../utilidades/text';
+import Text from '../utilidades/Text';
 import Button from '../buttons/ButtonRojo';
 
 //Constante de la card de grupos de servicios

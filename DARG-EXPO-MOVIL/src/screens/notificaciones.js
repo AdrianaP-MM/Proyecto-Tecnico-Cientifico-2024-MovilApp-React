@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
-import Text from '../components/utilidades/text'; // Importación del componente de texto personalizado
+import Text from '../components/utilidades/Text'; // Importación del componente de texto personalizado
 import CardNoti from '../components/notificaciones/CardNotif'; // Importación del componente de tarjeta de notificación personalizado
 
 export default function AppNotificaciones() {

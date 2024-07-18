@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import TarjetaCarro from '../components/carros/CardCarro';
-import Text from '../components/utilidades/text';
+import Text from '../components/utilidades/Text';
 
 
 // Componente principal del dashboard

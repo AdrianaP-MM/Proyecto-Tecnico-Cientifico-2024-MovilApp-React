@@ -4,7 +4,7 @@ import { StyleSheet, View, ScrollView, Animated } from 'react-native';
 import HorizontalCard from '../components/servicios/CardGruposServicios';
 // Importa la barra de scroll personalizada
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
-import Text from '../components/utilidades/text';
+import Text from '../components/utilidades/Text';
 
 export default function App() {
   // Constantes para ver las dimensiones para la barra de scroll

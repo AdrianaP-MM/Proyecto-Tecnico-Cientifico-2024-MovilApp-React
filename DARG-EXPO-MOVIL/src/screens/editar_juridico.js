@@ -1,7 +1,7 @@
 import * as React from 'react'; // Importa todas las funcionalidades de React
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'; // Importa componentes necesarios de react-native
 import { Avatar, TouchableRipple } from 'react-native-paper'; // Importa componentes necesarios de react-native-paper
-import Text from '../components/utilidades/text'; // Importa el componente de texto personalizado
+import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
 import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 

@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';//
 import VerticalCard from '../components/servicios/CardServicios';
 // Importa la scroll bar personalizada
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
-import Text from '../components/utilidades/text';
+import Text from '../components/utilidades/Text';
 
 
 export default function App() {

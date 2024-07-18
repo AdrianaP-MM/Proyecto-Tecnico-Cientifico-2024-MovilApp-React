@@ -1,5 +1,5 @@
 import React from 'react';
-import Text from '../utilidades/text'; // Importa el componente de texto personalizado
+import Text from '../utilidades/Text'; // Importa el componente de texto personalizado
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'; // Importa los estilos y componentes necesarios de React Native
 
 export default function CardCita({ accionCard }) {

@@ -4,7 +4,7 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 //Import de imagen dentro del proyecto
 import fixedImage from '../../images/servicios/serviciosIcon.png';
-import Text from '../utilidades/text';
+import Text from '../utilidades/Text';
 import Button from '../buttons/ButtonRojo';
 
 //Constante de la card de servicios 

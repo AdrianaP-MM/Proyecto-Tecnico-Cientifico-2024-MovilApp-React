@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
 //Se importa una imagen dentro del proyecto como ejemplo
 import fixedImage from '../../images/carros/imagenAuto.png';
-import Text from '../utilidades/text';
+import Text from '../utilidades/Text';
 //Constante de la card de autos en proceso con sus parametros requeridos
 const AutoEnProceso = ({ marca, modelo, tipoVehiculo, placa, fechaDeRegistro }) => {
     return (

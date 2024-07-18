@@ -7,7 +7,7 @@ import CardDescripcion from '../components/servicios/CardDescripcionServicios';
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
 // Importa la card de auto en proceso
 import AutoEnProceso from '../components/servicios/CardAutoEnProceso';
-import Text from '../components/utilidades/text';
+import Text from '../components/utilidades//Text';
 
 export default function App() {
     // Constantes para ver las dimensiones para la barra de scroll
