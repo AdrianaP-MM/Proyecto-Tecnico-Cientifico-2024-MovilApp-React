@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Image, ScrollView, TouchableOpacity, SafeAreaView  } from 'react-native';
 import Text from '../components/utilidades/text'; // Importación del componente de texto personalizado
 import ButtonPastilla from '../components/citas/ButtonPastilla'; // Importación del componente de botón personalizado
-import CardCita from '../components/citas/cardCita'; // Importación del componente de tarjeta de cita personalizado
+import CardCita from '../components/citas/CardCita'; // Importación del componente de tarjeta de cita personalizado
 
 export default function AppCitas({ navigation }) {
     const [selectedButton, setSelectedButton] = useState('En espera'); // Estado para el botón seleccionado
