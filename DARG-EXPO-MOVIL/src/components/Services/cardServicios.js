@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 //Import de imagen dentro del proyecto
 import fixedImage from '../../images/servicios/serviciosIcon.png';
 import Text from '../utilidades/text';
-import Button from '../buttons/btnRojo';
+import Button from '../buttons/ButtonRojo';
 
 //Constante de la card de servicios 
 const VerticalCard = ({ titulo, tipo }) => {

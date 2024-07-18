@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import TarjetaCarro from '../components/carros/tarjeta_carro';
+import TarjetaCarro from '../components/carros/CardCarro';
 import Text from '../components/utilidades/text';
 
 

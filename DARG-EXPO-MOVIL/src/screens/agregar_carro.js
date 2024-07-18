@@ -1,7 +1,7 @@
 // AgregarVehiculo.js
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import Button from '../components/buttons/btnRojo'; // Importa el componente de botón personalizado
+import Button from '../components/buttons/ButtonRojo'; // Importa el componente de botón personalizado
 import Input from '../components/inputs/allBorder'; // Importa el componente de entrada personalizado
 
 // URL de la imagen predeterminada

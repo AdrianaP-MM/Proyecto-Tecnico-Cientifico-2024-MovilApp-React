@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Text from '../components/utilidades/text'; // Importación del componente de texto personalizado
-import Button from '../components/buttons/btnRojo'; // Importación del componente de botón personalizado
+import Button from '../components/buttons/ButtonRojo'; // Importación del componente de botón personalizado
 import Input from '../components/inputs/allBorder'; // Importación del componente de entrada de texto personalizado
 
 export default function AppRestablecerContra() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import Boton from '../components/buttons/btnRojo'; // Importa el componente de botón personalizado
+import Boton from '../components/buttons/ButtonRojo'; // Importa el componente de botón personalizado
 import TextC from '../components/utilidades/text'; // Importa un componente de texto personalizado (aunque no se usa en este componente)
 
 const InformacionCarro = ({ route }) => {

@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 //Import de la navegacion para poder cambiar la pantalla
 import { useNavigation } from '@react-navigation/native';
 import Text from '../utilidades/text';
-import Button from '../buttons/btnRojo';
+import Button from '../buttons/ButtonRojo';
 
 //Constante de la card de grupos de servicios
 const HorizontalCard = ({ title, imageUrl }) => {

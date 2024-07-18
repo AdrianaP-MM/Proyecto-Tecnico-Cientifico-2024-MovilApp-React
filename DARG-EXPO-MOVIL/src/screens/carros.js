@@ -1,7 +1,7 @@
 // Importa las dependencias necesarias
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import TarjetaCarro from '../components/carros/tarjeta_carro'; // Importa el componente TarjetaCarro
+import TarjetaCarro from '../components/carros/CardCarro'; // Importa el componente TarjetaCarro
 import Text from '../components/utilidades/text'; // Importa el componente Text
 
 // Componente principal de la vista de carros
