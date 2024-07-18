@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Citas from '../screens/citas'; // Importa la pantalla Citas desde su ruta
+import Citas from '../screens/Citas'; // Importa la pantalla Citas desde su ruta
 import AgregarCita from '../screens/AgregarCita'; // Importa la pantalla AgregarCita desde su ruta
 import CustomBackButton from './custom_back_button'; // Importa el componente CustomBackButton desde su ruta
 

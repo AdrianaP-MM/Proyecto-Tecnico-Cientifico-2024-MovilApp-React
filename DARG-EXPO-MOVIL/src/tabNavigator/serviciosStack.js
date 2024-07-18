@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import GrupoServicios from '../screens/grupo_servicios';
+import GrupoServicios from '../screens/GrupoServicios';
 import Servicios from '../screens/servicios_disponibles';
-import AutosEnProceso from '../screens/autos_en_servicio';
+import AutosEnProceso from '../screens/CarrosEnServicio';
 
 const Stack = createStackNavigator();
 

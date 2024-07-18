@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 //import PanelPrincipal from '../screens/panel_principal'; // Importación comentada, no utilizada actualmente
-import Perfil from '../screens/editar_juridico';  // Importación de la pantalla de perfil
+import Perfil from '../screens/EditarPerfil';  // Importación de la pantalla de perfil
 import CarrosStack from './carrosStack'; // Importación de la navegación en stack para Carros
 import Servicios from './serviciosStack'; // Importación de la navegación en stack para Servicios
 import CitasStack from './citasStack'; // Importación de la navegación en stack para Citas
