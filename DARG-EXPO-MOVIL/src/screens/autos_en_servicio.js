@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // Importa la card de descripcion del servicio
-import CardDescripcion from '../components/servicios/cardDescripcionServicios';
+import CardDescripcion from '../components/servicios/CardDescripcionServicios';
 // Importa la scrollbar perzonalizada
-import CustomScrollBar from '../components/servicios/scrollBarPerzonalizada';
+import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
 // Importa la card de auto en proceso
-import AutoEnProceso from '../components/servicios/cardAutoEnProceso';
+import AutoEnProceso from '../components/servicios/CardAutoEnProceso';
 import Text from '../components/utilidades/text';
 
 export default function App() {

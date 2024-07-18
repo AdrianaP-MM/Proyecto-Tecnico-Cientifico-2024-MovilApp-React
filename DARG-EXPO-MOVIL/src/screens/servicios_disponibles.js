@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';// 
-import VerticalCard from '../components/servicios/cardServicios';
+import VerticalCard from '../components/servicios/CardServicios';
 // Importa la scroll bar personalizada
-import CustomScrollBar from '../components/servicios/scrollBarPerzonalizada';
+import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
 import Text from '../components/utilidades/text';
 
 
