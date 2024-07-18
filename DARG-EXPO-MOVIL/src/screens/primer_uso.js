@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { FlatList, StyleSheet, View, Animated, Text } from 'react-native';
 import Slides from '../components/primerUso/slides'; // Importa los datos de las diapositivas
 import Paginator from '../components/primerUso/paginator'; // Importa el paginador
-import OnboardingItem from '../components/primerUso/onboardingItem'; // Importa el componente de cada elemento de onboarding
+import OnboardingItem from '../components/primerUso/OnBoardingItems'; // Importa el componente de cada elemento de onboarding
 
 
 const Onboarding = () => {
