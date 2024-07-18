@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Avatar, Button as PaperButton, Text, TouchableRipple } from "react-native-paper";
-import Input from '../components/inputs/allBorder'; // Importa el componente Input personalizado
+import Input from '../components/inputs/AllBorder'; // Importa el componente Input personalizado
 import Button from '../components/buttons/ButtonRojo'; // Renombra la importación de tu componente personalizado
 
 export default function EditarNatural({ navigation }) {

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente de botón personalizado
-import Input from '../components/inputs/allBorder'; // Importa el componente de entrada personalizado
+import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 
 // URL de la imagen predeterminada
 const defaultImageUrl = 'https://th.bing.com/th/id/OIP.xxMt6xG7kaLu7P6llDKWyAHaEK?w=318&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7';

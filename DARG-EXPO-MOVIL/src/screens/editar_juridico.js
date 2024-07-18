@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 're
 import { Avatar, TouchableRipple } from 'react-native-paper'; // Importa componentes necesarios de react-native-paper
 import Text from '../components/utilidades/text'; // Importa el componente de texto personalizado
 import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
-import Input from '../components/inputs/allBorder'; // Importa el componente de entrada personalizado
+import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 
 
 // Componente principal que exporta la pantalla de edición jurídica

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
-import Input from '../components/inputs/allBorder'; // Importa el componente Input desde su ruta
+import Input from '../components/inputs/AllBorder'; // Importa el componente Input desde su ruta
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente Button desde su ruta
 
 // Componente funcional para agregar una cita
