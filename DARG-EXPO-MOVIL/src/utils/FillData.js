@@ -23,11 +23,11 @@ export const fillData = async ({ php, accion, method = 'GET', formData }) => {
             // Retornar el conjunto de datos si la solicitud fue exitosa
             if (result && result.dataset !== undefined && result.dataset !== null) {
                 return result.dataset;
-            } else { return 'Status 1'; }//Si se hizo la accion, pero no retorna nada 
+            } else { return result; }//Si se hizo la accion, pero no retorna nada 
 
         } else {
             // Retornar un objeto de error si la solicitud no fue exitosa
-            return { error: result.message === 'Acceso denegado' ? 'Acceso denegado' : result.message };
+            return { error: result.message === 'Acceso denegado' ? 'Acceso denegado' : result.error };
         }
     } catch (error) {
         // Manejar y registrar cualquier error que ocurra durante la solicitud

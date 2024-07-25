@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, Image } from 'react-native'; // Importa los estilos de React Native
 
-const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry }) => {
+const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key}) => {
     return (
         <View style={[styles.container, { width }]}>
             {iconImage && (
@@ -18,6 +18,7 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, iconI
                 onChangeText={onChangeText}
                 maxLength={maxLength}// Propiedad para manejar cambios en el texto ingresado
                 secureTextEntry={secureTextEntry}
+                key={key}
             />
         </View>
     );

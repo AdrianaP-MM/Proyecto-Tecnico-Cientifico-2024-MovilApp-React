@@ -7,6 +7,7 @@ import Input from '../components/inputs/AllBorder'; // Importación del componen
 
 import { Config } from '../utils/Constantes'; //Importacion de la consntante IP
 import { fillData } from '../utils/FillData';
+import { func } from 'prop-types';
 
 export default function AppRestablecerContra() {
 
@@ -21,8 +22,9 @@ export default function AppRestablecerContra() {
         setStep(prevStep => prevStep - 1); // Función para retroceder al paso anterior
     };
 
-    //---------------- Constantes utilizadas para la recuperacion de contraseña
+    //---------------- Constantes y funciones utilizadas para mandar el correo electronico
     const [correo, setCorreo] = useState(''); // Estado para almacenar el correo electrónico ingresado
+    const [codeSend, setCodeSend] = useState('');
     const [isValidCorreo, setIsValidCorreo] = useState(false); // Estado para verificar si el correo es válido
 
     // Función para enviar el código de verificación al correo ingresado
@@ -40,8 +42,8 @@ export default function AppRestablecerContra() {
 
             // Validar y usar la respuesta de tallas
             if (confirmCorreo.id_usuario_cliente) {
-                console.log('El usuario con correo existe', confirmCorreo);
-                formData.append('nombre_destinatario', 'ASASA');
+                //console.log('El usuario con correo existe', confirmCorreo);
+                //formData.append('nombre_destinatario', 'ASASA');
 
                 const sendCorreo = await fillData({
                     php: 'usuarios_clientes',
@@ -49,23 +51,42 @@ export default function AppRestablecerContra() {
                     method: 'POST',
                     formData: formData
                 });
-                console.log(formData)
+                //console.log(formData)
                 if (sendCorreo) {
                     Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
-                    handleNextStep();
+                    setCodeSend(sendCorreo.codigo);
+                    console.log('Código: ', sendCorreo.codigo)
+                    return true;
                 } else {
                     Alert.alert('Error', sendCorreo.error);
+                    return false;
                 }
             } else {
                 Alert.alert('No se encontró el usuario', 'Necesita un usuario con ese correo electrónico para restablecer su contraseña');
+                return false;
             }
 
         } catch (error) {
             console.error(error);
             Alert.alert('Error', 'Hubo un problema al enviar el código.');
+            return false;
         }
     };
 
+    // Función para manejar el envío del correo 1
+    function sendCorreo1() {
+        // Llamar handleSendCode y luego handleNextStep si handleSendCode devuelve verdadero
+        handleSendCode().then((success) => {
+            if (success) {
+                handleNextStep(); // Ejecutar la siguiente acción después del éxito del envío del código
+            }
+        });
+    }
+
+    // Función para manejar el envío del correo 2
+    function sendCorreo2() {
+        handleSendCode(); // Llamar handleSendCode directamente
+    }
     // Función para validar el formato del correo electrónico utilizando una expresión regular
     const validateEmail = (correo) => {
         const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar formato de email
@@ -76,6 +97,88 @@ export default function AppRestablecerContra() {
     const handleEmailChange = (correo) => {
         setCorreo(correo); // Actualiza el estado 'correo' con el valor ingresado
         setIsValidCorreo(validateEmail(correo)); // Actualiza el estado 'isValidEmail' con el resultado de la validación
+    };
+
+    //---------------------- Constantes y funciones utilizadas para confirmar el código
+    const [codeInputs, setCodeInputs] = useState(['', '', '', '', '', '', '', '']);
+
+    const handleConcatenate = () => {
+        // Verificar si todos los inputs están completos
+        for (let i = 0; i < codeInputs.length; i++) {
+            if (codeInputs[i].trim() === '') {
+                Alert.alert('Alerta', 'Por favor complete todos los campos.');
+                return;
+            }
+        }
+
+        // Concatenar los valores de los inputs
+        const concatenatedCode = codeInputs.join('');
+        console.log('Código concatenado:', concatenatedCode);
+        handleVerify(concatenatedCode);
+
+        // Aquí podrías hacer algo con el código concatenado, como enviarlo a un servidor, etc.
+    };
+
+    // Función para manejar la verificación del código
+    const handleVerify = (code) => {
+        console.log('Código verify: ', codeSend)
+        if (code.trim() === codeSend) {
+            Alert.alert('Éxito', 'Código ingresado correctamente');
+            handleNextStep();
+        } else {
+            Alert.alert('Error', 'El código no coincide con el que se le envió en el correo.');
+        }
+    };
+
+    const handleInputChange = (text, index) => {
+        // Actualizar el estado de los inputs cuando se modifica el texto
+        const newInputs = [...codeInputs];
+        newInputs[index] = text;
+        setCodeInputs(newInputs);
+    };
+    //---------------------- Constantes y funciones utilizadas para restablecer la contraseña
+    const [contra, setContra] = useState(''); // Estado para almacenar el correo electrónico ingresado
+    const [confirmContra, setConfirmContra] = useState('');
+
+    // Función para manejar el restablecimiento de la contraseña
+    const handleResetPassword = async () => {
+        if (contra !== confirmContra) {
+            Alert.alert('Error', 'Las contraseñas no coinciden');
+            return;
+        }
+
+        // Creamos un objeto FormData para enviar los datos al servidor
+        const formData = new FormData();
+        formData.append('user_contra', contra);
+        formData.append('user_correo', correo);
+
+        try {
+            const response = await fillData({
+                php: 'usuarios_clientes',
+                accion: 'updatePassword',
+                method: 'POST',
+                formData: formData
+            });
+            if (!response.error) {
+                Alert.alert('Éxito', 'Contraseña restablecida correctamente');
+                navigation.navigate('Login'); // Navegamos a la pantalla 'Login'
+            } else {
+                Alert.alert('Error', response.error);
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'Hubo un problema al restablecer la contraseña.');
+        }
+    };
+
+    // Función para manejar el cambio en el campo de texto de la contraseña
+    const handlePasswordChange = (text) => {
+        setContra(text); // Actualizamos el estado 'password' con el valor ingresado
+    };
+
+    // Función para manejar el cambio en el campo de texto de la confirmación de la contraseña
+    const handleConfirmPasswordChange = (text) => {
+        setConfirmContra(text); // Actualizamos el estado 'confirmPassword' con el valor ingresado
     };
 
     return (
@@ -106,7 +209,7 @@ export default function AppRestablecerContra() {
                         marginBottom={55}
 
                         isValidCorreo={isValidCorreo}
-                        accionBoton={handleSendCode} />
+                        accionBoton={sendCorreo1} />
 
                     <Text texto='Volver al inicio de sesión' font='PoppinsRegular' fontSize={15} color='#6A6A6A' />
                     <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -125,39 +228,27 @@ export default function AppRestablecerContra() {
                         style={styles.image}
                     />
                     <View style={styles.contenedorInputs}>
-                        {/* Inputs para los digitos del codigo */}
-                        <Input
-                            placeholder='1'
-                            keyboardType='numeric'
-                            maxLength={1}
-                            width='20%'
-                            textAlign='center'
-                        />
-                        <Input
-                            placeholder='2'
-                            keyboardType='numeric'
-                            maxLength={1}
-                            width='20%'
-                            textAlign='center'
-                        />
-                        <Input
-                            placeholder='3'
-                            keyboardType='numeric'
-                            maxLength={1}
-                            width='20%'
-                            textAlign='center'
-                        />
-                        <Input
-                            placeholder='4'
-                            keyboardType='numeric'
-                            maxLength={1}
-                            width='20%'
-                            textAlign='center'
-                        />
+                        {codeInputs.map((value, index) => (
+                            <Input
+                                key={index}
+                                width='12%'
+                                placeholder={(index + 1).toString()}
+                                maxLength={1}
+                                textAlign='center'
+                                value={value}
+                                onChangeText={(text) => handleInputChange(text, index)}
+                            />
+                        ))}
                     </View>
-                    <Button textoBoton='Aceptar' fontSize={17} width={250} accionBoton={handleNextStep} marginTop={35} marginBottom={55} />
+                    <Button
+                        textoBoton='Aceptar'
+                        fontSize={17}
+                        width={250}
+                        marginTop={35}
+                        marginBottom={55}
+                        accionBoton={handleConcatenate} />
                     <Text texto='¿No te ha caído nada?' font='PoppinsRegular' fontSize={15} color='#6A6A6A' />
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={sendCorreo2}>
                         <Text texto='Vuelve a generarlo aquí' font='PoppinsMedium' fontSize={15} color='#BA181B' />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handlePrevStep} style={styles.col}>
@@ -180,14 +271,20 @@ export default function AppRestablecerContra() {
                         width='95%'
                         iconImage={(require('../images/icons/iconLock.png'))} // Icono de candado
                         secureTextEntry={true}
+                        onChangeText={handlePasswordChange}
                     />
                     <Input
                         placeholder='Confirmar contraseña'
                         width='95%'
                         iconImage={(require('../images/icons/iconLock.png'))} // Icono de candado
                         secureTextEntry={true}
+                        onChangeText={handleConfirmPasswordChange}
                     />
-                    <Button textoBoton='Restablecer' fontSize={17} width={250} accionBoton={() => navigation.navigate('Login')} marginTop={35} marginBottom={55} />
+                    <Button 
+                    textoBoton='Restablecer'
+                     fontSize={17} width={250} 
+                     accionBoton={handleResetPassword} 
+                     marginTop={35} marginBottom={55} />
                     <TouchableOpacity onPress={handlePrevStep}>
                         <Text texto='Volver al paso anterior, Aquí' font='PoppinsRegular' fontSize={15} color='#6A6A6A' />
                     </TouchableOpacity>
@@ -226,7 +323,7 @@ const styles = StyleSheet.create({
     contenedorInputs: {
         flexDirection: 'row', // Disposición en fila para los inputs de código
         width: '100%', // Ancho completo
-        justifyContent: 'space-around', // Espacio uniformemente distribuido entre elementos
+        justifyContent: 'space-between', // Espacio uniformemente distribuido entre elementos
     },
     image2: {
         marginVertical: 35, // Margen vertical de 35 unidades para la imagen
