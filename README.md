@@ -29,5 +29,5 @@ Taller Revolution Garage, especializado en el mantenimiento y reparación de aut
 
 ## Para tener en cuenta
 
-Carpetas: nombreCarpeta
-Archivos: NombreArchivo
+* Carpetas: nombreCarpeta
+* Archivos: NombreArchivo
