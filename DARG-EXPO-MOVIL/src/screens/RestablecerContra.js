@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Text from '../components/utilidades/Text'; // Importación del componente de texto personalizado
 import Button from '../components/buttons/ButtonRojo'; // Importación del componente de botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importación del componente de entrada de texto personalizado
 
+import { Config } from '../utils/Constantes'; //Importacion de la consntante IP
+import { fillData } from '../utils/FillData';
+
 export default function AppRestablecerContra() {
+
+    // ---------------- Constantes utilizadas para navegar entre los presentes elementos de la pantalla
     const navigation = useNavigation();
     const [step, setStep] = useState(1); // Estado para controlar el paso del proceso de restablecimiento
 
@@ -14,6 +19,63 @@ export default function AppRestablecerContra() {
     };
     const handlePrevStep = () => {
         setStep(prevStep => prevStep - 1); // Función para retroceder al paso anterior
+    };
+
+    //---------------- Constantes utilizadas para la recuperacion de contraseña
+    const [correo, setCorreo] = useState(''); // Estado para almacenar el correo electrónico ingresado
+    const [isValidCorreo, setIsValidCorreo] = useState(false); // Estado para verificar si el correo es válido
+
+    // Función para enviar el código de verificación al correo ingresado
+    const handleSendCode = async () => {
+        const formData = new FormData();
+        formData.append('user_correo', correo);
+
+        try {
+            const confirmCorreo = await fillData({
+                php: 'usuarios_clientes',
+                accion: 'checkCorreo',
+                method: 'POST',
+                formData: formData
+            });
+
+            // Validar y usar la respuesta de tallas
+            if (confirmCorreo.id_usuario_cliente) {
+                console.log('El usuario con correo existe', confirmCorreo);
+                formData.append('nombre_destinatario', 'ASASA');
+
+                const sendCorreo = await fillData({
+                    php: 'usuarios_clientes',
+                    accion: 'enviarCodigoRecuperacion',
+                    method: 'POST',
+                    formData: formData
+                });
+                console.log(formData)
+                if (sendCorreo) {
+                    Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
+                    handleNextStep();
+                } else {
+                    Alert.alert('Error', sendCorreo.error);
+                }
+            } else {
+                Alert.alert('No se encontró el usuario', 'Necesita un usuario con ese correo electrónico para restablecer su contraseña');
+            }
+
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'Hubo un problema al enviar el código.');
+        }
+    };
+
+    // Función para validar el formato del correo electrónico utilizando una expresión regular
+    const validateEmail = (correo) => {
+        const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar formato de email
+        return correoRegex.test(correo); // Devuelve true si el email cumple con el formato, false si no
+    };
+
+    // Función para manejar el cambio en el campo de texto del correo electrónico
+    const handleEmailChange = (correo) => {
+        setCorreo(correo); // Actualiza el estado 'correo' con el valor ingresado
+        setIsValidCorreo(validateEmail(correo)); // Actualiza el estado 'isValidEmail' con el resultado de la validación
     };
 
     return (
@@ -32,8 +94,20 @@ export default function AppRestablecerContra() {
                         placeholder='Correo'
                         width='95%'
                         iconImage={(require('../images/icons/iconUser.png'))}
+                        value={correo}
+                        onChangeText={handleEmailChange}
                     />
-                    <Button textoBoton='Siguiente' fontSize={17} width={250} accionBoton={handleNextStep} marginTop={35} marginBottom={55} />
+
+                    <Button
+                        textoBoton='Siguiente'
+                        fontSize={17}
+                        width={250}
+                        marginTop={35}
+                        marginBottom={55}
+
+                        isValidCorreo={isValidCorreo}
+                        accionBoton={handleSendCode} />
+
                     <Text texto='Volver al inicio de sesión' font='PoppinsRegular' fontSize={15} color='#6A6A6A' />
                     <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                         <Text texto='Aquí' font='PoppinsMedium' fontSize={15} color='#BA181B' />

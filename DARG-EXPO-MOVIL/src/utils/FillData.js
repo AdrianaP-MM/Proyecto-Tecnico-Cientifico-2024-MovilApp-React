@@ -1,4 +1,4 @@
-import { Config } from './Constantess'; 
+import { Config } from './Constantes';
 
 // Función para obtener datos de una API
 export const fillData = async ({ php, accion, method = 'GET', formData }) => {
@@ -21,7 +21,10 @@ export const fillData = async ({ php, accion, method = 'GET', formData }) => {
         // Verificar si la solicitud fue exitosa
         if (result.status) {
             // Retornar el conjunto de datos si la solicitud fue exitosa
-            return result.dataset;
+            if (result && result.dataset !== undefined && result.dataset !== null) {
+                return result.dataset;
+            } else { return 'Status 1'; }//Si se hizo la accion, pero no retorna nada 
+
         } else {
             // Retornar un objeto de error si la solicitud no fue exitosa
             return { error: result.message === 'Acceso denegado' ? 'Acceso denegado' : result.message };
