@@ -41,7 +41,7 @@ export default function AppRestablecerContra() {
             });
 
             // Validar y usar la respuesta de tallas
-            if (confirmCorreo.id_usuario_cliente) {
+            if (!confirmCorreo.error) {
                 //console.log('El usuario con correo existe', confirmCorreo);
                 //formData.append('nombre_destinatario', 'ASASA');
 
@@ -52,7 +52,7 @@ export default function AppRestablecerContra() {
                     formData: formData
                 });
                 //console.log(formData)
-                if (sendCorreo) {
+                if (!sendCorreo.error) {
                     Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
                     setCodeSend(sendCorreo.codigo);
                     console.log('Código: ', sendCorreo.codigo)
