@@ -4,6 +4,7 @@ import { StyleSheet, View, Image, ScrollView, TouchableOpacity, SafeAreaView, An
 import Text from '../components/utilidades/Text'; // Importación del componente de texto personalizado
 import ButtonPastilla from '../components/citas/ButtonPastilla'; // Importación del componente de botón personalizado
 import CardCita from '../components/citas/CardCita'; // Importación del componente de tarjeta de cita personalizado
+import Input from '../components/inputs/AllBorder';
 
 export default function AppCitas({ navigation }) {
     const [selectedButton, setSelectedButton] = useState('En espera'); // Estado para el botón seleccionado
@@ -28,10 +29,14 @@ export default function AppCitas({ navigation }) {
 
     const [showFilters, setShowFilters] = useState(false); // Estado para mostrar/ocultar el menú de filtros
     const animation = useRef(new Animated.Value(0)).current; // Valor de animación
+    const [heightContainers, setHeight] = useState(0); // Valor de animación
+    const [opacity, setOpacity] = useState(0);
 
     // Función para manejar el toggle del menú de filtros
     const toggleFilters = () => {
         const toValue = showFilters ? 0 : 120; // Altura del menú de filtros cuando está visible
+        setHeight(showFilters ? 0 : 55); // Altura del menú de filtros cuando está visible
+        setOpacity(showFilters ? 0 : 1);
         setShowFilters(!showFilters);
 
         Animated.timing(animation, {
@@ -64,10 +69,23 @@ export default function AppCitas({ navigation }) {
                         />
                     </TouchableOpacity>
                     <Animated.View style={[styles.contenedorFiltros, { height: animation }]}>
-                        <View style={styles.contenedorFecha}>
-
+                        <View style={[styles.contenedorFecha, { height: heightContainers }]}>
+                            <Image
+                                source={require('../images/icons/iconCalendar.png')}
+                                style={styles.iconCalendar}
+                            /// Ruta de la imagen de botón de agregar
+                            />
+                            <Text texto='Buscar por fecha de llegada' fontSize={12}
+                                paddingHorizontal={10} font='PoppinsMedium'/>
+                            <Input
+                                placeholder='27/06/24'
+                                width={90}
+                                textAlign='center'
+                                opacity={opacity}
+                                padding={0}
+                            />
                         </View>
-                        <View style={styles.contenedorNumero}>
+                        <View style={[styles.contenedorNumero, { height: heightContainers }]}>
 
                         </View>
                     </Animated.View>
@@ -88,8 +106,6 @@ export default function AppCitas({ navigation }) {
                             selected={selectedButton === 'Finalizadas'}
                         />
                     </View>
-
-
                 </View>
                 <ScrollView style={styles.scrollCitas}>
                     <CardCita accionCard={verDetalles} />
@@ -178,24 +194,28 @@ const styles = StyleSheet.create({
     contenedorFiltros: {
         width: '100%', // Ancho completo
         height: 'auto', // Altura automática basada en su contenido
-        backgroundColor: 'pink', // Fondo gris claro
+        backgroundColor: 'white', // Fondo gris claro
         alignItems: 'center', // Alinea elementos al centro verticalmente
         justifyContent: 'space-between', // Espacio uniformemente distribuido entre elementos
         top: 0, // Desde la parte superior
         zIndex: 1, // Orden en la pila
         borderRadius: 15,
     },
-    contenedorFecha:{
+    contenedorFecha: {
         width: '100%',
-        height: 55,
         borderRadius: 15,
-        backgroundColor: 'red',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 15,
     },
-    contenedorNumero:{
+    contenedorNumero: {
         width: '100%',
-        height: 55,
+        height: 0,
         borderRadius: 15,
-        backgroundColor: 'red',
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+
     },
     scrollCitas: {
         flex: 1, // Ocupa todo el espacio disponible
@@ -203,4 +223,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', // Fondo blanco para el área de desplazamiento
         paddingHorizontal: 15,
     },
+    iconCalendar: {
+        width: 28,
+        height: 30,
+    }
 });

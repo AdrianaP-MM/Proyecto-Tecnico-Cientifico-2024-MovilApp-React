@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, Image } from 'react-native'; // Importa los estilos de React Native
 
-const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key}) => {
+const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key, opacity =1, padding = 15}) => {
     return (
-        <View style={[styles.container, { width }]}>
+        <View style={[styles.container, { width, opacity}]}>
             {iconImage && (
                 <Image
                     source={iconImage} // Fuente de la imagen del ícono
@@ -11,7 +11,7 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, iconI
                 />
             )}
             <TextInput
-                style={[styles.input, { textAlign }]} // Estilo para el TextInput definido en los estilos
+                style={[styles.input, { textAlign, padding }]} // Estilo para el TextInput definido en los estilos
                 placeholder={placeholder} // Propiedad para mostrar un texto de ejemplo cuando el campo está vacío
                 keyboardType={keyboardType} // Propiedad para especificar el tipo de teclado (numérico, email, etc.)
                 value={value} // Propiedad para almacenar y mostrar el valor actual del campo
@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1, // Ocupa el espacio restante en la fila
-        padding: 15, // Relleno interior del TextInput
         fontSize: 14,
         fontFamily: 'PoppinsRegular',
     },
