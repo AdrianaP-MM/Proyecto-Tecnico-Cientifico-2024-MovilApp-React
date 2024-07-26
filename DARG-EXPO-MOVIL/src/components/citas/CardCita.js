@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
         borderRadius: 15, // Borde redondeado
         borderBottomWidth: 2, // Ancho del borde inferior
         borderColor: '#E4E5EB', // Color del borde
-        marginVertical: 20, // Margen vertical
+        marginBottom: 30, // Margen vertical
+        marginTop: 12,
     },
     cardHeader: {
         width: '100%', // Ancho total del encabezado de la tarjeta

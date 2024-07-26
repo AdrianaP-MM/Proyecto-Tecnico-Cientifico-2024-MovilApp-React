@@ -21,22 +21,21 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Centra el contenido horizontalmente
         justifyContent: 'center', // Centra el contenido verticalmente
         height: 'auto', // Altura automática basada en el contenido
-        width: '30%', // Ancho del botón fijo al 30% del contenedor
+        width: '26%', // Ancho del botón fijo al 30% del contenedor
         backgroundColor: '#F9FAFB', // Color de fondo del botón por defecto
         padding: 5, // Relleno interno del botón
         paddingVertical: 7, // Relleno vertical adicional
         //borderRadius: 15,
         //borderBottomWidth: 2,  
         //borderBottomColor: '#E5383B',
+        marginHorizontal: 7,
 
         borderColor: '#E4E5EB', // Color del borde por defecto
-        borderBottomWidth: 0, // Ancho del borde inferior
         borderWidth: 1, // Ancho del borde general
-        borderTopLeftRadius: 10, // Radio de borde superior izquierdo
-        borderTopRightRadius: 10, // Radio de borde superior derecho
+        borderRadius: 15,
     },
     selectedButton: {
-        borderColor: '#E4E5EB', // Color del borde cuando el botón está seleccionado
+        borderColor: '#FF0000', // Color del borde cuando el botón está seleccionado
         backgroundColor: 'white', // Color de fondo cuando el botón está seleccionado
     },
 });
