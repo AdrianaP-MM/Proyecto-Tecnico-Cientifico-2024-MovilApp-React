@@ -5,11 +5,40 @@ import Text from '../components/utilidades/Text'; // Importa el componente de te
 import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
+import { fillData } from '../utils/FillData';
 
 export default function Login({ navigation }) {
   // Define los estados para el correo electrónico y la contraseña
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  /* // Función para manejar la entrada al sistema
+  const handleLogin = async () => {
+    // Creamos un objeto FormData para enviar los datos al servidor
+    const formData = new FormData();
+    formData.append('user_correo', email);
+    formData.append('user_clave', password);
+
+    try {
+      const response = await fillData({
+        php: 'usuarios_clientes',
+        accion: 'logIn',
+        method: 'POST',
+        formData: formData
+      });
+      if (!response.error) {
+        Alert.alert('Éxito', 'Auntenticacion completada.');
+        navigation.navigate('PanelPrincipal'); // Navegamos a la pantalla 'Panel Principal'
+      } else {
+        Alert.alert('Error', response.error);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Hubo un problema al auntenticarse.');
+    }
+  };*/
+
+ 
 
   return (
     <View style={styles.container}>

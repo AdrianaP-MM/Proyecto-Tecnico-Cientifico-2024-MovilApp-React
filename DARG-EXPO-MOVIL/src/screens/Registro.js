@@ -8,12 +8,92 @@ import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
 
 export default function Registrate({ navigation }) {
     // Define los estados para los campos del formulario
-    const [name, setName] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [tel, setTel] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [nombres, setNombres] = React.useState('');
+    const [apellidos, setApellidos] = React.useState('');
+    const [correo, setCorreo] = React.useState('');
+    const [telefono, setTelefono] = React.useState('');
+    const [contraseña, setContraseña] = React.useState('');
+    const [confirmarContraseña, setconfirmarContraseña] = React.useState('');
+    const [departemento, setdepartemento] = React.useState('');
+    const [tipoUsuario, setTipoUsuario] = React.useState('');
     const [dui, setDui] = React.useState('');
     const [nit, setNit] = React.useState('');
+    const [nrc, setNrc] = React.useState('');
+    const [nrf, setNrf] = React.useState('');
+    const [rubro, setRubro] = React.useState('');
+
+    /*// Función para manejar la entrada el registro al sistema
+    const handleRegistroNatural = async () => {
+        // Creamos un objeto FormData para enviar los datos al servidor
+        const formData = new FormData();
+        formData.append('user_dui', dui);
+        formData.append('user_telefono', telefono);
+        formData.append('user_correo', correo);
+        formData.append('user_clave', contraseña);
+        formData.append('confirmarClave', confirmarContraseña);
+        formData.append('user_nombres', nombres);
+        formData.append('user_apellidos', apellidos);
+        formData.append('user_tipo', tipoUsuario);
+        formData.append('user_departamento', departemento);
+        formData.append('user_nit', nit);
+        
+
+        try {
+            const response = await fillData({
+                php: 'usuarios_clientes',
+                accion: 'signUpPersonaNatural',
+                method: 'POST',
+                formData: formData
+            });
+            if (!response.error) {
+                Alert.alert('Éxito', 'Registro como persona natural exitoso.');
+                navigation.navigate('login'); // Navegamos a la pantalla 'Panel Principal'
+            } else {
+                Alert.alert('Error', response.error);
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'Hubo un problema registrarse.');
+        }
+    };
+
+    // Función para manejar la entrada el registro al sistema
+    const handleRegistroJuridico = async () => {
+        // Creamos un objeto FormData para enviar los datos al servidor
+        const formData = new FormData();
+        formData.append('user_dui', dui);
+        formData.append('user_telefono', telefono);
+        formData.append('user_correo', correo);
+        formData.append('user_clave', contraseña);
+        formData.append('confirmarClave', confirmarContraseña);
+        formData.append('user_nombres', nombres);
+        formData.append('user_apellidos', apellidos);
+        formData.append('user_tipo', tipoUsuario);
+        formData.append('user_departamento', departemento);
+        formData.append('user_nit', nit);
+        formData.append('user_nrc', nrc);
+        formData.append('user_nrf', nrf);
+        formData.append('user_rubro', rubro);
+
+        try {
+            const response = await fillData({
+                php: 'usuarios_clientes',
+                accion: 'signUpPersonaJuridica',
+                method: 'POST',
+                formData: formData
+            });
+            if (!response.error) {
+                Alert.alert('Éxito', 'Registro como persona juridica exitoso.');
+                navigation.navigate('login'); // Navegamos a la pantalla 'Panel Principal'
+            } else {
+                Alert.alert('Error', response.error);
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'Hubo un problema registrarse.');
+        }
+    };*/
+
 
     // Define los estados para los diálogos
     const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true);
@@ -57,7 +137,7 @@ export default function Registrate({ navigation }) {
         }
     };
 
-     // Formatea el DUI
+    // Formatea el DUI
     const formatDui = (value) => {
         const numericValue = value.replace(/\D/g, '');
         if (numericValue.length <= 8) {
@@ -138,25 +218,42 @@ export default function Registrate({ navigation }) {
                     <Text texto='¡Arregla tu carro con nosotros!' font='PoppinsRegular' fontSize={14} textAlign='center' />
                 </View>
                 <Input
-                    placeholder='Nombre completo'
-                    value={name}
-                    onChangeText={setName}
+                    placeholder='Nombres'
+                    value={nombres}
+                    onChangeText={setNombres}
+                    width='95%'
+                    iconImage={require('../images/icons/iconUser.png')}
+                    style={styles.input}
+                />
+                <Input
+                    placeholder='Apellidos'
+                    value={apellidos}
+                    onChangeText={setApellidos}
                     width='95%'
                     iconImage={require('../images/icons/iconUser.png')}
                     style={styles.input}
                 />
                 <Input
                     placeholder='Correo'
-                    value={email}
-                    onChangeText={setEmail}
+                    value={correo}
+                    onChangeText={setCorreo}
                     width='95%'
                     iconImage={require('../images/icons/iconCorreo.png')}
                     style={styles.input}
                 />
                 <Input
                     placeholder='Contraseña'
-                    value={password}
-                    onChangeText={setPassword}
+                    value={contraseña}
+                    onChangeText={setContraseña}
+                    width='95%'
+                    iconImage={require('../images/icons/iconContra.png')}
+                    secureTextEntry={true}
+                    style={styles.input}
+                />
+                <Input
+                    placeholder='Confirmar contraseña'
+                    value={confirmarContraseña}
+                    onChangeText={setconfirmarContraseña}
                     width='95%'
                     iconImage={require('../images/icons/iconContra.png')}
                     secureTextEntry={true}
@@ -164,8 +261,8 @@ export default function Registrate({ navigation }) {
                 />
                 <Input
                     placeholder='Teléfono'
-                    value={tel}
-                    onChangeText={(text) => setTel(formatTel(text))}
+                    value={telefono}
+                    onChangeText={(text) => setTelefono(formatTel(text))}
                     width='95%'
                     iconImage={require('../images/icons/iconTel.png')}
                     keyboardType='numeric'
@@ -192,6 +289,7 @@ export default function Registrate({ navigation }) {
                     maxLength={14}
                     style={styles.input}
                 />
+                /*Agregar un combobox para que el cliente elija el departamento*/
                 <Button textoBoton='Registrate' accionBoton={() => navigation.navigate('TabNavigator')} fontSize={17} width='55%' />
                 <View style={styles.loginContainer}>
                     <Text texto='¿Ya tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
