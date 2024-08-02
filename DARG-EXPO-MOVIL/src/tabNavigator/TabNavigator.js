@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 //import PanelPrincipal from '../screens/PanelPrincipal'; // Importación comentada, no utilizada actualmente
 import Perfil from '../screens/EditarPerfil';  // Importación de la pantalla de perfil
+import Login from '../screens/login';  // Importación de la pantalla de perfil
 import CarrosStack from './CarrosStack'; // Importación de la navegación en stack para Carros
 import Servicios from './ServiciosStack'; // Importación de la navegación en stack para Servicios
 import CitasStack from './CitasStack'; // Importación de la navegación en stack para Citas

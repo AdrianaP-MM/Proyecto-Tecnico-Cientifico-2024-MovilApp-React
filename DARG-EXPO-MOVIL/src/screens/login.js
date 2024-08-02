@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Avatar, TouchableRipple } from 'react-native-paper';
 import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
 import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
@@ -12,7 +12,6 @@ export default function Login({ navigation }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  /* // Función para manejar la entrada al sistema
   const handleLogin = async () => {
     // Creamos un objeto FormData para enviar los datos al servidor
     const formData = new FormData();
@@ -28,7 +27,9 @@ export default function Login({ navigation }) {
       });
       if (!response.error) {
         Alert.alert('Éxito', 'Auntenticacion completada.');
-        navigation.navigate('PanelPrincipal'); // Navegamos a la pantalla 'Panel Principal'
+        navigation.navigate('TabNavigator'); // Navegamos a la pantalla 'Panel Principal'
+        setEmail('');
+        setPassword('');
       } else {
         Alert.alert('Error', response.error);
       }
@@ -36,9 +37,24 @@ export default function Login({ navigation }) {
       console.error(error);
       Alert.alert('Error', 'Hubo un problema al auntenticarse.');
     }
-  };*/
+  };
 
- 
+  const handleCerrarSesion = async () => {
+    try {
+      const response = await fillData({
+        php: 'usuarios_clientes',
+        accion: 'logOut'
+      });
+      if (!response.error) {
+        Alert.alert('Éxito', 'Sesesion cerrada.');
+      } else {
+        Alert.alert('Error', response.error);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Hubo un problema al cerrar sesion.');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -72,7 +88,7 @@ export default function Login({ navigation }) {
             <Text texto='¿Olvidaste tu contraseña?' font='PoppinsMedium' fontSize={14} textAlign='center' />
           </TouchableRipple>
         </View>
-        <Button textoBoton='Iniciar sesión' accionBoton={() => navigation.navigate('TabNavigator')} fontSize={17} width='90%' marginTop={50} />
+        <Button textoBoton='Iniciar sesión' accionBoton={handleLogin} fontSize={17} width='90%' marginTop={50} />
         <View style={styles.registerContainer}>
           <Text texto='¿No tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
           <TouchableRipple

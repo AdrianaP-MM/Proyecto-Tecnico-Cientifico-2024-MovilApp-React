@@ -1,10 +1,10 @@
 import * as React from 'react'; // Importa todas las funcionalidades de React
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'; // Importa componentes necesarios de react-native
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native'; // Importa componentes necesarios de react-native
 import { Avatar, TouchableRipple } from 'react-native-paper'; // Importa componentes necesarios de react-native-paper
 import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
 import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
-
+import { fillData } from '../utils/FillData';
 
 // Componente principal que exporta la pantalla de edición jurídica
 export default function EditarJuridico({ navigation }) {
@@ -17,6 +17,24 @@ export default function EditarJuridico({ navigation }) {
     const [nit, setNit] = React.useState('');
     const [nrc, setNrc] = React.useState('');
     const [nrf, setNrf] = React.useState('');
+
+    const handleCerrarSesion = async () => {
+        try {
+            const response = await fillData({
+                php: 'usuarios_clientes',
+                accion: 'logOut'
+            });
+            if (!response.error) {
+                Alert.alert('Éxito', 'Sesesion cerrada.');
+                navigation.navigate('Login');
+            } else {
+                Alert.alert('Error', response.error);
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'Hubo un problema al cerrar sesion.');
+        }
+    };
 
     // Función para formatear el número de teléfono
     const formatTel = (value) => {
@@ -69,7 +87,7 @@ export default function EditarJuridico({ navigation }) {
                     </TouchableRipple>
                 </View>
 
-                <View style={styles.ContainerInputs}> 
+                <View style={styles.ContainerInputs}>
                     <Input
                         placeholder='Nombre'
                         value={nombre}
@@ -129,6 +147,7 @@ export default function EditarJuridico({ navigation }) {
                     </View>
 
                     <View style={styles.dui_nit}>
+                        
                         <View style={styles.inputContainer}>
                             <Input
                                 placeholder='NRC'
@@ -150,10 +169,13 @@ export default function EditarJuridico({ navigation }) {
                                 style={styles.input}
                             />
                         </View>
+
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <Button textoBoton='Actualizar' accionBoton={handleNavigate} fontSize={17} width='55%' />
+                        <Button textoBoton='Actualizar' accionBoton={handleNavigate} fontSize={17} width='47%' />
+
+                        <Button textoBoton='Cerrar sesion' accionBoton={handleCerrarSesion} fontSize={17} width='47%' />
                     </View>
                 </View>
             </ScrollView>
@@ -203,6 +225,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 5, // Espacio horizontal entre los contenedores
     },
     buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         alignItems: 'center', // Centra el contenido horizontalmente
         marginTop: 20, // Espacio superior antes del botón
     },
