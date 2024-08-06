@@ -5,37 +5,48 @@ import HorizontalCard from '../components/servicios/CardGruposServicios';
 // Importa la barra de scroll personalizada
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
 import Text from '../components/utilidades/Text';
-import { Config } from '../utils/Constantes'; //Importacion de la constante IP
-import { fillData } from '../utils/FillData';
-import { func } from 'prop-types';
+import fetchData from '../utils/FetchData';
 
 export default function App() {
   // Constantes para ver las dimensiones para la barra de scroll
   const scrollY = useRef(new Animated.Value(0)).current;
   const [contentHeight, setContentHeight] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
+  const [readAll, setreadAll] = useState([]);
 
-  // Estado para manejar el correo ingresado
-  const [correo, setCorreo] = useState('');
-
-  // Función para enviar el código de verificación al correo ingresado
-  const handleSendCode = async () => {
-    const formData = new FormData();
-    formData.append('user_correo', correo);
-
+  const selectGrupoServicios = async () => {
     try {
-      const confirmCorreo = await fillData({
-        php: 'usuarios_clientes',
-        accion: 'checkCorreo',
-        method: 'POST',
-        formData: formData
-      });
-
-      // Manejo de la respuesta aquí
-      console.log(confirmCorreo);
+      const DATA = await fetchData('grupo_servicio.php', 'readAll');
+      if (DATA.status) {
+        const data = DATA.dataset.map(item => ({
+          nombre: item.nombre_tipo_servicio,
+        }));
+        setreadAll(data);
+      } else {
+        console.log(DATA.error);
+        setreadAll([]);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching data:", error);
+      setreadAll([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
     }
+  };
+
+  useEffect(() => {
+    selectGrupoServicios();
+  }, []);
+
+  const renderServicios = (servicios) => {
+    return servicios.map((servicio, index) => (
+      <HorizontalCard 
+        key={index} 
+        title={servicio.nombre} 
+        imageUrl={servicio.imageUrl} // Ajusta esto si tienes una URL de imagen en tus datos
+      />
+    ));
   };
 
   return (
@@ -60,23 +71,10 @@ export default function App() {
           })}
           /*Se oculta la scroll bar predeterminada*/
           showsVerticalScrollIndicator={false}
-        >
-          <HorizontalCard
-            title="Electrónica básica"
-            imageUrl="https://motor.elpais.com/wp-content/uploads/2019/04/cambio-aceite-coche.jpg"
-          />
-          <HorizontalCard
-            title="Iluminación y señalización"
-            imageUrl="https://motor.elpais.com/wp-content/uploads/2019/04/cambio-aceite-coche.jpg"
-          />
-          <HorizontalCard
-            title="Sensores y sistemas de control"
-            imageUrl="https://motor.elpais.com/wp-content/uploads/2019/04/cambio-aceite-coche.jpg"
-          />
-          <HorizontalCard
-            title="Revisión de dirección"
-            imageUrl="https://motor.elpais.com/wp-content/uploads/2019/04/cambio-aceite-coche.jpg"
-          />
+        />
+
+        <ScrollView>
+          {renderServicios(readAll)}
         </ScrollView>
 
         <CustomScrollBar /*Se agregan los parametros que espera recibir la custom bar*/
@@ -84,16 +82,6 @@ export default function App() {
           contentHeight={contentHeight}
           containerHeight={containerHeight}
         />
-      </View>
-
-      <View style={styles.inputContainer} /*Contenedor del input y botón*/>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingresa tu correo"
-          value={correo}
-          onChangeText={setCorreo}
-        />
-        <Button title="Enviar Código" onPress={handleSendCode} />
       </View>
     </View>
   );
