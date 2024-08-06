@@ -5,10 +5,17 @@ import Text from '../components/utilidades/Text'; // Importación del componente
 import Button from '../components/buttons/ButtonRojo'; // Importación del componente de botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importación del componente de entrada de texto personalizado
 
-import fetchData from '../utils/FetchData';
-import { func } from 'prop-types';
+//import fetchData from '../utils/FetchData';
+//import { func } from 'prop-types';
 
 export default function AppRestablecerContra() {
+
+    return (
+        <View>
+            <Text texto='Estoy arreglando esta mierda porque alguien quiso usar otro metodo pipipipip'
+                font='PoppinsMedium' fontSize={13} textAlign='center' />
+        </View>
+    );
 
     /*
     const navigation = useNavigation();
@@ -179,10 +186,9 @@ export default function AppRestablecerContra() {
     const handleConfirmPasswordChange = (text) => {
         setConfirmContra(text); // Actualizamos el estado 'confirmPassword' con el valor ingresado
     };
-    */
+
     return (
         <View style={styles.contenedorTotal}>
-            {/* Paso 1: Ingresar correo */}
             {step === 1 && (
                 <View style={styles.contenedor}>
                     <Text texto='¿Olvidó su contraseña?' font='PoppinsSemiBold' fontSize={25} />
@@ -216,7 +222,6 @@ export default function AppRestablecerContra() {
                     </TouchableOpacity>
                 </View>
             )}
-            {/* Paso 2: Ingresar codigo de verificacion */}
             {step === 2 && (
                 <View style={styles.contenedor}>
                     <Text texto='¡Revisa tu correo!' font='PoppinsSemiBold' fontSize={25} />
@@ -255,7 +260,6 @@ export default function AppRestablecerContra() {
                     </TouchableOpacity>
                 </View>
             )}
-            {/* Paso 3: Ingresar tu nueva contraseña */}
             {step === 3 && (
                 <View style={styles.contenedor}>
                     <Text texto='¡Último paso!' font='PoppinsSemiBold' fontSize={25} />
@@ -291,6 +295,7 @@ export default function AppRestablecerContra() {
             )}
         </View>
     );
+    */
 }
 
 // Estilos para los componentes de la pantalla de restablecimiento de contraseña
