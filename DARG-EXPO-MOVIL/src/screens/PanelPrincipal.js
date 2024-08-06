@@ -1,22 +1,110 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import TarjetaCarro from '../components/carros/CardCarro';
 import Text from '../components/utilidades/Text';
-
+import fetchData from '../utils/FetchData';
+import { useFocusEffect } from '@react-navigation/native';
+import * as contants from '../utils/Constantes';
 
 // Componente principal del dashboard
 export default function DashboardScreen({ navigation }) {
+  const [allCars, setAllCars] = useState([]);
+  const [deletedCars, setDeletedCars] = useState([]);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const API = 'automoviles.php';
 
-  // Objeto de ejemplo para un carro
-  const carro =
-  {
-    imagen: 'https://th.bing.com/th/id/OIP.xxMt6xG7kaLu7P6llDKWyAHaEK?w=318&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-    modelo: 'Toyota Corolla',
-    placa: 'XYZ 123',
-  }
-  // Estilos para los componentes de la pantalla de inicio
-  // Esto inclute el header, la barra de búsqueda, las tarjetas de autos y las citas
+  const fillCardsCarsAll = async () => {
+    try {
+      const DATA = await fetchData(API, 'readAllMyCars');
+      if (DATA.status) {
+        const data = DATA.dataset.map(item => ({
+          imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          modelo: item.nombre_modelo,
+          placa: item.placa_automovil
+        }));
+        setAllCars(data);
+      } else {
+        console.log(DATA.error);
+        setAllCars([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setAllCars([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const fillCardsCarsDelete = async () => {
+    try {
+      const DATA = await fetchData(API, 'readAllDelete');
+      if (DATA.status) {
+        const data = DATA.dataset.map(item => ({
+          imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          modelo: item.nombre_modelo,
+          placa: item.placa_automovil
+        }));
+        setDeletedCars(data);
+      } else {
+        console.log(DATA.error);
+        setDeletedCars([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setDeletedCars([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const fillCardsCarAppointments = async () => {
+    try {
+      const DATA = await fetchData(API, 'readAll');
+      if (DATA.status) {
+        const data = DATA.dataset.map(item => ({
+          imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          modelo: item.nombre_modelo,
+          placa: item.placa_automovil
+        }));
+        setAppointments(data);
+      } else {
+        console.log(DATA.error);
+        setAppointments([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setAppointments([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fillCardsCarsAll();
+    fillCardsCarsDelete();
+    fillCardsCarAppointments();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fillCardsCarsAll();
+      fillCardsCarsDelete();
+      fillCardsCarAppointments();
+    }, [])
+  );
+
+  const renderCarros = (carros) => {
+    return carros.map((carro, index) => (
+      <TarjetaCarro key={index} carro={carro} />
+    ));
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -36,31 +124,32 @@ export default function DashboardScreen({ navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.upperSection}>
-        <View style={styles.section}>
-          <Text texto='Vista previa de tus autos' font='PoppinsSemiBold' fontSize={18} color='white' />
-          <ScrollView horizontal>
-            <TarjetaCarro carro={carro} />
-            <TarjetaCarro carro={carro} />
-            <TarjetaCarro carro={carro} />
-          </ScrollView>
-        </View>
-        <View style={styles.section}>
-          <Text texto='Autos eliminados' font='PoppinsSemiBold' fontSize={18} color='white' />
-          <ScrollView horizontal>
-            <TarjetaCarro carro={carro} />
-            <TarjetaCarro carro={carro} />
-            <TarjetaCarro carro={carro} />
-          </ScrollView>
-        </View>
-        <View style={styles.section}>
-          <Text texto='Citas próximas' font='PoppinsSemiBold' fontSize={18} color='white' />
-          <View style={styles.appointments}>
+        {allCars.length > 0 && (
+          <View style={styles.section}>
+            <Text texto='Vista previa de tus autos' font='PoppinsSemiBold' fontSize={18} color='white' />
             <ScrollView horizontal>
-              <TarjetaCarro carro={carro} />
-              <TarjetaCarro carro={carro} />
+              {renderCarros(allCars)}
             </ScrollView>
           </View>
-        </View>
+        )}
+        {deletedCars.length > 0 && (
+          <View style={styles.section}>
+            <Text texto='Autos eliminados' font='PoppinsSemiBold' fontSize={18} color='white' />
+            <ScrollView horizontal>
+              {renderCarros(deletedCars)}
+            </ScrollView>
+          </View>
+        )}
+        {appointments.length > 0 && (
+          <View style={styles.section}>
+            <Text texto='Citas próximas' font='PoppinsSemiBold' fontSize={18} color='white' />
+            <View style={styles.appointments}>
+              <ScrollView horizontal>
+                {renderCarros(appointments)}
+              </ScrollView>
+            </View>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
