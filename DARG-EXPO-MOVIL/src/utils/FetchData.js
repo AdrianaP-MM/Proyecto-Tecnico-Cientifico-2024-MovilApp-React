@@ -1,8 +1,8 @@
-import * as contants from './Constantes';
+import {Config} from './Constantes';
 // Función que maneja las peticiones fetch
 export default async function fetchData(filename, action, form = null) {
     // URL base del servidor
-    const SERVER_URL = contants.SERVER_URL;
+    const SERVER_URL = Config.SERVER_URL;
     console.log(SERVER_URL);
     // Opciones para la petición fetch
     const OPTIONS = {

@@ -5,13 +5,12 @@ import Text from '../components/utilidades/Text'; // Importación del componente
 import Button from '../components/buttons/ButtonRojo'; // Importación del componente de botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importación del componente de entrada de texto personalizado
 
-import { Config } from '../utils/Constantes'; //Importacion de la consntante IP
-import { fillData } from '../utils/FillData';
+import fetchData from '../utils/FetchData';
 import { func } from 'prop-types';
 
 export default function AppRestablecerContra() {
 
-    // ---------------- Constantes utilizadas para navegar entre los presentes elementos de la pantalla
+    /*
     const navigation = useNavigation();
     const [step, setStep] = useState(1); // Estado para controlar el paso del proceso de restablecimiento
 
@@ -33,7 +32,7 @@ export default function AppRestablecerContra() {
         formData.append('user_correo', correo);
 
         try {
-            const confirmCorreo = await fillData({
+            const confirmCorreo = await fetchData({
                 php: 'usuarios_clientes',
                 accion: 'checkCorreo',
                 method: 'POST',
@@ -180,7 +179,7 @@ export default function AppRestablecerContra() {
     const handleConfirmPasswordChange = (text) => {
         setConfirmContra(text); // Actualizamos el estado 'confirmPassword' con el valor ingresado
     };
-
+    */
     return (
         <View style={styles.contenedorTotal}>
             {/* Paso 1: Ingresar correo */}
@@ -280,11 +279,11 @@ export default function AppRestablecerContra() {
                         secureTextEntry={true}
                         onChangeText={handleConfirmPasswordChange}
                     />
-                    <Button 
-                    textoBoton='Restablecer'
-                     fontSize={17} width={250} 
-                     accionBoton={handleResetPassword} 
-                     marginTop={35} marginBottom={55} />
+                    <Button
+                        textoBoton='Restablecer'
+                        fontSize={17} width={250}
+                        accionBoton={handleResetPassword}
+                        marginTop={35} marginBottom={55} />
                     <TouchableOpacity onPress={handlePrevStep}>
                         <Text texto='Volver al paso anterior, Aquí' font='PoppinsRegular' fontSize={15} color='#6A6A6A' />
                     </TouchableOpacity>
