@@ -6,8 +6,7 @@ import VerticalCard from '../components/servicios/CardServicios';
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
 import Text from '../components/utilidades/Text';
 import { Config } from '../utils/Constantes'; //Importacion de la consntante IP
-import { fillData } from '../utils/FillData';
-import { func } from 'prop-types';
+import fetchData from '../utils/FetchData';
 
 
 
@@ -16,6 +15,7 @@ export default function App() {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [contentHeight, setContentHeight] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
+  const [readAll, setreadAll] = useState([]);
 
   //Constante de navegacion
   const navigation = useNavigation();
@@ -23,6 +23,43 @@ export default function App() {
   // Función para manejar la acción de regresar
   const handleGoBack = () => {
     navigation.goBack(); // Navega a la pantalla anterior
+  };
+
+  const selectServiciosDisponibles = async () => {
+    try {
+      const DATA = await fetchData('servicio.php', 'readAll');
+      if (DATA.status) {
+        const data = DATA.dataset.map(item => ({
+          nombre: item.nombre_tipo_servicio,
+          descripcion: item.descripcion_servicio,
+        }));
+        setreadAll(data);
+      } else {
+        console.log(DATA.error);
+        setreadAll([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setreadAll([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    selectServiciosDisponibles();
+  }, []);
+
+  const renderServicios = (servicios) => {
+    return servicios.map((servicio, index) => (
+      <VerticalCard
+        key={index}
+        titulo={servicio.nombre}
+        tipo={servicio.descripcion}
+        imageUrl={servicio.imageUrl} // Ajusta esto si tienes una URL de imagen en tus datos
+      />
+    ));
   };
 
   return (
@@ -57,31 +94,17 @@ export default function App() {
           })}
           /*Se oculta la scroll bar predeterminada*/
           showsVerticalScrollIndicator={false}
-        >
-
-          <VerticalCard //Card con contenido de ejemplo
-            titulo="Example Card 1"
-            tipo="Revisión y cambio de fusibles"
-          />
-          <VerticalCard //Card con contenido de ejemplo
-            titulo="Example Card 2"
-            tipo="Revisin de electrónica"
-          />
-          <VerticalCard //Card con contenido de ejemplo
-            titulo="Example Card 3"
-            tipo="Computadora del vehículo"
-          />
-          <VerticalCard //Card con contenido de ejemplo
-            titulo="Example Card 4"
-            tipo="Diagnostico electrónico"
-          />
-        </ScrollView>
-
-        <CustomScrollBar /*Se agregan los parametros que espera recibir la custom bar*/
-          scrollY={scrollY}
-          contentHeight={contentHeight}
-          containerHeight={containerHeight}
         />
+
+          <ScrollView>
+            {renderServicios(readAll)}
+          </ScrollView>
+
+          <CustomScrollBar /*Se agregan los parametros que espera recibir la custom bar*/
+            scrollY={scrollY}
+            contentHeight={contentHeight}
+            containerHeight={containerHeight}
+          />
 
       </View>
 
