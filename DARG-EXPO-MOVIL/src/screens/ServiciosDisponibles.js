@@ -5,6 +5,10 @@ import VerticalCard from '../components/servicios/CardServicios';
 // Importa la scroll bar personalizada
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
 import Text from '../components/utilidades/Text';
+import { Config } from '../utils/Constantes'; //Importacion de la consntante IP
+import { fillData } from '../utils/FillData';
+import { func } from 'prop-types';
+
 
 
 export default function App() {
