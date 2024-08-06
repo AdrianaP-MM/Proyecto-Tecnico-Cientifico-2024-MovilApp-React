@@ -89,6 +89,7 @@ export default function Login({ navigation }) {
           </TouchableRipple>
         </View>
         <Button textoBoton='Iniciar sesión' accionBoton={handleLogin} fontSize={17} width='90%' marginTop={50} />
+        <Button textoBoton='cerrar wea' accionBoton={handleCerrarSesion} fontSize={17} width='90%' marginTop={50} />
         <View style={styles.registerContainer}>
           <Text texto='¿No tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
           <TouchableRipple

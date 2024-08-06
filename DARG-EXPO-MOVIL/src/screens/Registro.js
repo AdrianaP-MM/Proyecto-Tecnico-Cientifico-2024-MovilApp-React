@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Avatar, Dialog, Portal, Provider, RadioButton, TouchableRipple } from 'react-native-paper';
-import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
-import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
-import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
-import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
+import Text from '../components/utilidades/Text'; // Import the custom Text component
+import Button from '../components/buttons/ButtonRojo'; // Import the custom button
+import Input from '../components/inputs/AllBorder'; // Import the custom input
+import CustomPicker from '../components/inputs/ComboBox'; // Import the custom input
+import { StatusBar } from 'expo-status-bar'; // Import the status bar
 
 export default function Registrate({ navigation }) {
-    // Define los estados para los campos del formulario
+    // Define states for form fields
     const [nombres, setNombres] = React.useState('');
     const [apellidos, setApellidos] = React.useState('');
     const [correo, setCorreo] = React.useState('');
@@ -22,7 +23,30 @@ export default function Registrate({ navigation }) {
     const [nrf, setNrf] = React.useState('');
     const [rubro, setRubro] = React.useState('');
 
-    /*// Función para manejar la entrada el registro al sistema
+    // Define los states para los dialogos
+    const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true);
+    const [visibleCamposDialog, setVisibleCamposDialog] = React.useState(false);
+    const [checked, setChecked] = React.useState('natural');
+    const [showAdditionalFields, setShowAdditionalFields] = React.useState(false);
+
+    const departamentos = [
+        { label: 'Departamento', value: '' },
+        { label: 'Ahuachapán', value: 'Ahuachapán' },
+        { label: 'Cabañas', value: 'Cabañas' },
+        { label: 'Chalatenango', value: 'Chalatenango' },
+        { label: 'Cuscatlán', value: 'Cuscatlán' },
+        { label: 'La Libertad', value: 'La Libertad' },
+        { label: 'La Paz', value: 'La Paz' },
+        { label: 'La Unión', value: 'La Unión' },
+        { label: 'Morazán', value: 'Morazán' },
+        { label: 'San Miguel', value: 'San Miguel' },
+        { label: 'San Salvador', value: 'San Salvador' },
+        { label: 'San Vicente', value: 'San Vicente' },
+        { label: 'Santa Ana', value: 'Santa Ana' },
+        { label: 'Sonsonate', value: 'Sonsonate' },
+        { label: 'Usulután', value: 'Usulután' },
+    ]
+
     const handleRegistroNatural = async () => {
         // Creamos un objeto FormData para enviar los datos al servidor
         const formData = new FormData();
@@ -36,7 +60,7 @@ export default function Registrate({ navigation }) {
         formData.append('user_tipo', tipoUsuario);
         formData.append('user_departamento', departemento);
         formData.append('user_nit', nit);
-        
+
 
         try {
             const response = await fillData({
@@ -92,16 +116,10 @@ export default function Registrate({ navigation }) {
             console.error(error);
             Alert.alert('Error', 'Hubo un problema registrarse.');
         }
-    };*/
+    };
 
 
-    // Define los estados para los diálogos
-    const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true);
-    const [visibleCamposDialog, setVisibleCamposDialog] = React.useState(false);
-    const [checked, setChecked] = React.useState('natural');
-    const [showAdditionalFields, setShowAdditionalFields] = React.useState(false);
-
-    // Maneja el botón siguiente del primer diálogo
+    // Handle the next button of the first dialog
     const handleNext = () => {
         setVisiblePersonaDialog(false);
         if (checked === 'juridica') {
@@ -109,23 +127,23 @@ export default function Registrate({ navigation }) {
         }
     };
 
-    // Navega a la pantalla de inicio de sesión
+    // Navigate to the login screen
     const handleNavigate = () => {
         navigation.navigate('Login');
     };
 
-    // Verifica si el correo es válido
+    // Check if the email is valid
     const hasErrors = () => {
-        return !email.includes('@');
+        return !correo.includes('@');
     };
 
-    // Maneja el botón siguiente del segundo diálogo
+    // Handle the next button of the second dialog
     const handleNextCampos = () => {
         setVisibleCamposDialog(false);
         setShowAdditionalFields(true);
     };
 
-    // Formatea el número de teléfono
+    // Format the phone number
     const formatTel = (value) => {
         const numericValue = value.replace(/\D/g, '');
         if (numericValue.length <= 4) {
@@ -137,7 +155,7 @@ export default function Registrate({ navigation }) {
         }
     };
 
-    // Formatea el DUI
+    // Format the DUI
     const formatDui = (value) => {
         const numericValue = value.replace(/\D/g, '');
         if (numericValue.length <= 8) {
@@ -147,7 +165,7 @@ export default function Registrate({ navigation }) {
         }
     };
 
-    // Formatea el NIT
+    // Format the NIT
     const formatNit = (value) => {
         return value.replace(/\D/g, '').slice(0, 14);
     };
@@ -191,16 +209,22 @@ export default function Registrate({ navigation }) {
                     <Dialog.Content>
                         <Input
                             placeholder='NRC'
+                            value={nrc}
+                            onChangeText={setNrc}
                             width='95%'
                             iconImage={require('../images/icons/iconNrf.png')}
                         />
                         <Input
                             placeholder='NRF'
+                            value={nrf}
+                            onChangeText={setNrf}
                             width='95%'
                             iconImage={require('../images/icons/iconNrf.png')}
                         />
                         <Input
                             placeholder='Rubro comercial'
+                            value={rubro}
+                            onChangeText={setRubro}
                             width='95%'
                             iconImage={require('../images/icons/iconRubro.png')}
                         />
@@ -269,6 +293,14 @@ export default function Registrate({ navigation }) {
                     maxLength={9}
                     style={styles.input}
                 />
+
+                <CustomPicker
+                    selectedValue={departemento}
+                    onValueChange={(itemValue) => setdepartemento(itemValue)}
+                    iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
+                    items={departamentos}
+                />
+
                 <Input
                     placeholder='DUI'
                     value={dui}
@@ -289,7 +321,6 @@ export default function Registrate({ navigation }) {
                     maxLength={14}
                     style={styles.input}
                 />
-                /*Agregar un combobox para que el cliente elija el departamento*/
                 <Button textoBoton='Registrate' accionBoton={() => navigation.navigate('TabNavigator')} fontSize={17} width='55%' />
                 <View style={styles.loginContainer}>
                     <Text texto='¿Ya tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
@@ -307,50 +338,50 @@ export default function Registrate({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F9FAFB', // Color de fondo
-        flexGrow: 1, // Permite el crecimiento del contenedor para llenar la pantalla
-        justifyContent: 'center', // Centra el contenido verticalmente
-        alignItems: 'center', // Centra el contenido horizontalmente
-        padding: 20, // Espacio alrededor del contenedor
+        backgroundColor: '#F9FAFB',
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
     },
     avatarContainer: {
-        alignItems: 'center', // Centra el avatar horizontalmente
-        marginVertical: 15, // Espacio vertical alrededor del avatar
+        alignItems: 'center',
+        marginVertical: 15,
     },
     avatarIcon: {
-        marginBottom: 10, // Espacio debajo del icono del avatar
-        backgroundColor: '#BA181B', // Color de fondo del avatar
+        marginBottom: 10,
+        backgroundColor: '#BA181B',
     },
     input: {
-        marginBottom: 20, // Espacio debajo de cada campo de entrada
-        backgroundColor: 'white', // Color de fondo del campo de entrada
-        borderColor: 'black', // Color del borde del campo de entrada
-        borderWidth: 0.2, // Grosor del borde del campo de entrada
-        borderRadius: 3, // Radio de borde del campo de entrada
-        width: '95%', // Ancho del campo de entrada
-        paddingHorizontal: 10, // Espacio horizontal dentro del campo de entrada
+        marginBottom: 20,
+        backgroundColor: 'white',
+        borderColor: 'black',
+        borderWidth: 0.2,
+        borderRadius: 3,
+        width: '95%',
+        paddingHorizontal: 10,
     },
     radioContainer: {
-        flexDirection: 'row', // Organiza los elementos en fila
-        alignItems: 'center', // Centra los elementos verticalmente
-        marginVertical: 5, // Espacio vertical alrededor del contenedor de radio
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 5,
     },
     dialog: {
-        backgroundColor: 'white', // Color de fondo del diálogo
+        backgroundColor: 'white',
     },
     dialogTitle: {
-        textAlign: 'center', // Centra el título del diálogo
-        marginBottom: 25, // Espacio debajo del título del diálogo
+        textAlign: 'center',
+        marginBottom: 25,
     },
     loginContainer: {
-        flexDirection: 'row', // Organiza los elementos en fila
-        justifyContent: 'center', // Centra los elementos horizontalmente
-        alignItems: 'center', // Centra los elementos verticalmente
-        marginTop: 20, // Espacio encima del contenedor de inicio de sesión
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
     },
     center: {
-        width: '100%', // Ancho completo del contenedor
-        justifyContent: 'center', // Centra los elementos horizontalmente
-        alignItems: 'center', // Centra los elementos verticalmente
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
