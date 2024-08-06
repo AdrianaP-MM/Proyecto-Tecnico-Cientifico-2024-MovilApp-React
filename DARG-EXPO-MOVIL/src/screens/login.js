@@ -5,12 +5,13 @@ import Text from '../components/utilidades/Text'; // Importa el componente de te
 import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
-import { fillData } from '../utils/FillData';
+import fetchData from '../utils/FetchData';
 
 export default function Login({ navigation }) {
   // Define los estados para el correo electrónico y la contraseña
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const API = 'usuarios_clientes.php';
 
   const handleLogin = async () => {
     // Creamos un objeto FormData para enviar los datos al servidor
@@ -19,19 +20,15 @@ export default function Login({ navigation }) {
     formData.append('user_clave', password);
 
     try {
-      const response = await fillData({
-        php: 'usuarios_clientes',
-        accion: 'logIn',
-        method: 'POST',
-        formData: formData
-      });
-      if (!response.error) {
+      const DATA = await fetchData(API, 'logIn', formData);
+
+      if (!DATA.error) {
         Alert.alert('Éxito', 'Auntenticacion completada.');
         navigation.navigate('TabNavigator'); // Navegamos a la pantalla 'Panel Principal'
         setEmail('');
         setPassword('');
       } else {
-        Alert.alert('Error', response.error);
+        Alert.alert('Error', DATA.error);
       }
     } catch (error) {
       console.error(error);
@@ -41,14 +38,11 @@ export default function Login({ navigation }) {
 
   const handleCerrarSesion = async () => {
     try {
-      const response = await fillData({
-        php: 'usuarios_clientes',
-        accion: 'logOut'
-      });
-      if (!response.error) {
+      const DATA = await fetchData(API, 'logOut');
+      if (!DATA.error) {
         Alert.alert('Éxito', 'Sesesion cerrada.');
       } else {
-        Alert.alert('Error', response.error);
+        Alert.alert('Error', DATA.error);
       }
     } catch (error) {
       console.error(error);

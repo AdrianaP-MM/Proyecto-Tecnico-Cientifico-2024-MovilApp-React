@@ -26,7 +26,7 @@ export default function Registrate({ navigation }) {
     // Define los states para los dialogos
     const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true);
     const [visibleCamposDialog, setVisibleCamposDialog] = React.useState(false);
-    const [checked, setChecked] = React.useState('natural');
+    const [checked, setChecked] = React.useState('');
     const [showAdditionalFields, setShowAdditionalFields] = React.useState(false);
 
     const departamentos = [
@@ -182,14 +182,32 @@ export default function Registrate({ navigation }) {
                         <Text texto='Elige tu persona' font='PoppinsSemiBold' fontSize={20} textAlign='center' color='#3B3939' />
                     </Dialog.Title>
                     <Dialog.Content>
-                        <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
+                        <RadioButton.Group
+                            onValueChange={value => {
+                                setChecked(value); // Actualiza el estado
+                                console.log('Opción seleccionada:', value); // Imprime en consola la opción seleccionada
+                            }}
+                            value={checked}
+                        >
                             <View style={styles.radioContainer}>
-                                <RadioButton value="natural" color="#BA181B" />
-                                <Text texto='Persona natural' font='PoppinsRegular' fontSize={15} textAlign='center' color='#3B3939' />
+                                <RadioButton value="Persona natural" color="#BA181B" />
+                                <Text
+                                    texto="Persona natural"
+                                    font="PoppinsRegular"
+                                    fontSize={15}
+                                    textAlign="center"
+                                    color="#3B3939"
+                                />
                             </View>
                             <View style={styles.radioContainer}>
-                                <RadioButton value="juridica" color="#BA181B" />
-                                <Text texto='Persona jurídica' font='PoppinsRegular' fontSize={15} textAlign='center' color='#3B3939' />
+                                <RadioButton value="Persona juridica" color="#BA181B" />
+                                <Text
+                                    texto="Persona jurídica"
+                                    font="PoppinsRegular"
+                                    fontSize={15}
+                                    textAlign="center"
+                                    color="#3B3939"
+                                />
                             </View>
                         </RadioButton.Group>
                     </Dialog.Content>
