@@ -7,8 +7,7 @@ import Login from './src/screens/login.js';
 import { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import EditarJuridico from './src/screens/EditarPerfil.js';
-import EditarNatural from './src/screens/EditarPerfilNatural.js';
+import EditaPerfil from './src/screens/EditarPerfil.js';
 import Registrate from './src/screens/Registro.js';
 import RestablecerContra from './src/screens/RestablecerContra.js';
 import Onboarding from './src/screens/PrimerUso.js';
@@ -82,8 +81,7 @@ export default function App() {
             },
           }} />
           <Stack.Screen name="RestablecerContra" component={RestablecerContra} options={{ headerShown: false }} />
-          <Stack.Screen name="EditarJuridico" component={EditarJuridico} options={{ title: 'Editar persona juridica' }} />
-          <Stack.Screen name="EditarNatural" component={EditarNatural} options={{ title: 'Editar persona natural' }} />
+          <Stack.Screen name="EditaPerfil" component={EditaPerfil} options={{ title: 'Editar persona juridica' }} />
           <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

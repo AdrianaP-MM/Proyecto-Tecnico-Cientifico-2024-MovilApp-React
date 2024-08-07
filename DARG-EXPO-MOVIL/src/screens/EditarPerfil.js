@@ -1,4 +1,4 @@
-import * as React from 'react'; // Importa todas las funcionalidades de React
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native'; // Importa componentes necesarios de react-native
 import { Avatar, TouchableRipple } from 'react-native-paper'; // Importa componentes necesarios de react-native-paper
 import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
@@ -7,17 +7,65 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 import fetchData from '../utils/FetchData';
 
 // Componente principal que exporta la pantalla de edición jurídica
-export default function EditarJuridico({ navigation }) {
+export default function EditarPerfil({ navigation }) {
     // Declaración de estados para cada campo de entrada
-    const [nombre, setNombre] = React.useState('');
-    const [apellido, setApellido] = React.useState('');
-    const [departamento, setDepartamento] = React.useState('');
-    const [correo, setCorreo] = React.useState('');
-    const [dui, setDui] = React.useState('');
-    const [nit, setNit] = React.useState('');
-    const [nrc, setNrc] = React.useState('');
-    const [nrf, setNrf] = React.useState('');
+    const [nombre, setNombre] = useState('');
+    const [apellido, setApellido] = useState('');
+    const [telefono, setTelefono] = useState('');
+    const [correo, setCorreo] = useState('');
+    const [dui, setDui] = useState('');
+    const [nit, setNit] = useState('');
+    const [nrc, setNrc] = useState('');
+    const [nrf, setNrf] = useState('');
+    const [pickerValuesDepa, setPickerValuesDepa] = useState([]);
+    const [pickerValuesRubro, setPickerValuesRubro] = useState([]);
+    const [rubroSeleccionado, setRubroSeleccionado] = useState('');
+    const [depaSeleccionado, setDepaSeleccionado] = useState('');
+
     const API = 'usuarios_clientes.php';
+
+    const readElements = async () => {
+        try {
+            setPickerValuesDepa([
+                { id: 'Ahuachapán', nombre: 'Ahuachapán' },
+                { id: 'Cabañas', nombre: 'Cabañas' },
+                { id: 'Chalatenango', nombre: 'Chalatenango' },
+                { id: 'Cuscatlán', nombre: 'Cuscatlán' },
+                { id: 'La Libertad', nombre: 'La Libertad' },
+                { id: 'La Paz', nombre: 'La Paz' },
+                { id: 'La Unión', nombre: 'La Unión' },
+                { id: 'Morazán', nombre: 'Morazán' },
+                { id: 'San Miguel', nombre: 'San Miguel' },
+                { id: 'San Salvador', nombre: 'San Salvador' },
+                { id: 'San Vicente', nombre: 'San Vicente' },
+                { id: 'Santa Ana', nombre: 'Santa Ana' },
+                { id: 'Sonsonate', nombre: 'Sonsonate' },
+                { id: 'Usulután', nombre: 'Usulután' },
+            ]);
+            setPickerValuesRubro([
+                { id: 'Ahuachapán', nombre: 'Ahuachapán' },
+                { id: 'Cabañas', nombre: 'Cabañas' },
+                { id: 'Chalatenango', nombre: 'Chalatenango' },
+                { id: 'Cuscatlán', nombre: 'Cuscatlán' },
+                { id: 'La Libertad', nombre: 'La Libertad' },
+                { id: 'La Paz', nombre: 'La Paz' },
+                { id: 'La Unión', nombre: 'La Unión' },
+                { id: 'Morazán', nombre: 'Morazán' },
+                { id: 'San Miguel', nombre: 'San Miguel' },
+                { id: 'San Salvador', nombre: 'San Salvador' },
+                { id: 'San Vicente', nombre: 'San Vicente' },
+                { id: 'Santa Ana', nombre: 'Santa Ana' },
+                { id: 'Sonsonate', nombre: 'Sonsonate' },
+                { id: 'Usulután', nombre: 'Usulután' },
+            ]);
+        } catch (error) {
+            console.log('ERROR');
+        }
+    }
+
+    useEffect(() => {
+        readElements();
+    }, []);
 
     const handleCerrarSesion = async () => {
         try {
@@ -87,44 +135,65 @@ export default function EditarJuridico({ navigation }) {
 
                 <View style={styles.ContainerInputs}>
                     <Input
-                        placeholder='Nombre'
+                        placeholder='Nombres'
                         value={nombre}
                         onChangeText={setNombre}
-                        width='100%' // Cambiado a 100% para ocupar el ancho completo
+                        width='100%'
+                        iconImage={require('../images/icons/iconUser.png')}
+                        maxLength={50}
                         style={styles.input}
                     />
-
                     <Input
-                        placeholder='Apellido'
+                        placeholder='Apellidos'
                         value={apellido}
                         onChangeText={setApellido}
-                        width='100%' // Cambiado a 100% para ocupar el ancho completo
+                        width='100%'
+                        iconImage={require('../images/icons/iconUser.png')}
+                        maxLength={50}
                         style={styles.input}
                     />
-
+                    <Input
+                        placeholder='Teléfono'
+                        value={telefono}
+                        onChangeText={(text) => setTelefono(formatTel(text))}
+                        width='100%'
+                        iconImage={require('../images/icons/iconTel.png')}
+                        keyboardType='numeric'
+                        maxLength={9}
+                        style={styles.input}
+                    />
                     <Input
                         placeholder='Departamento'
-                        value={departamento}
-                        onChangeText={setDepartamento}
-                        width='100%' // Cambiado a 100% para ocupar el ancho completo
-                        style={styles.input}
+                        value={depaSeleccionado}
+                        onChangeText={setDepaSeleccionado} // Actualiza el estado
+                        keyboardType='picker'
+                        pickerValues={pickerValuesDepa}
                     />
-
                     <Input
-                        placeholder='Correo@ejemplo.com'
+                        placeholder='Correo'
                         value={correo}
                         onChangeText={setCorreo}
-                        width='100%' // Cambiado a 100% para ocupar el ancho completo
+                        width='100%'
+                        iconImage={require('../images/icons/iconCorreo.png')}
+                        maxLength={50}
                         style={styles.input}
                     />
-
+                     <Input
+                        placeholder='Rubro comercial'
+                        value={rubroSeleccionado}
+                        onChangeText={setRubroSeleccionado} // Actualiza el estado
+                        keyboardType='picker'
+                        pickerValues={pickerValuesRubro}
+                    />
+                    
                     <View style={styles.dui_nit}>
                         <View style={styles.inputContainer}>
                             <Input
                                 placeholder='DUI'
                                 value={dui}
                                 onChangeText={(text) => setDui(formatDui(text))}
-                                width='100%' // Cambiado a 100% para ocupar el ancho completo
+                                width='100%'
+                                iconImage={require('../images/icons/iconDui.png')}
                                 keyboardType='numeric'
                                 maxLength={10}
                                 style={styles.input}
@@ -132,28 +201,32 @@ export default function EditarJuridico({ navigation }) {
                         </View>
 
                         <View style={styles.inputContainer}>
+
                             <Input
                                 placeholder='NIT'
                                 value={nit}
                                 onChangeText={(text) => setNit(formatNit(text))}
-                                width='100%' // Cambiado a 100% para ocupar el ancho completo
+                                width='100%'
+                                iconImage={require('../images/icons/iconNit.png')}
                                 keyboardType='numeric'
-                                maxLength={14}
+                                maxLength={17}
                                 style={styles.input}
                             />
                         </View>
+
+
                     </View>
 
                     <View style={styles.dui_nit}>
-
                         <View style={styles.inputContainer}>
                             <Input
                                 placeholder='NRC'
                                 value={nrc}
                                 onChangeText={setNrc}
-                                width='100%' // Cambiado a 100% para ocupar el ancho completo
+                                width='100%'
+                                iconImage={require('../images/icons/iconNrf.png')}
                                 keyboardType='numeric'
-                                style={styles.input}
+                                maxLength={11}
                             />
                         </View>
 
@@ -162,11 +235,14 @@ export default function EditarJuridico({ navigation }) {
                                 placeholder='NRF'
                                 value={nrf}
                                 onChangeText={setNrf}
-                                width='100%' // Cambiado a 100% para ocupar el ancho completo
+                                width='95%'
+                                iconImage={require('../images/icons/iconNrf.png')}
                                 keyboardType='numeric'
-                                style={styles.input}
+                                maxLength={11}
                             />
                         </View>
+
+
 
                     </View>
 
