@@ -4,66 +4,54 @@ import { View, StyleSheet, Image } from 'react-native';
 import fixedImage from '../../images/servicios/imagenServicio.png';
 import Text from '../utilidades/Text';
 
-//Constante de la card de descipcion con los parametros requeridoss
 const CardDescripcion = ({ title, descripcion }) => {
+    console.log('CardDescripcion props:', { title, descripcion });
 
     return (
-        //Contenedor general de la card
         <View style={styles.horizontalCard}>
-            <View style={styles.imageContainer} /*Contenedor de la imagen*/>
+            <View style={styles.imageContainer}>
                 <Image source={fixedImage} style={styles.cardImage} />
             </View>
-            <View style={styles.cardContent} /*Contenedor del contenido de la card*/>
+            <View style={styles.cardContent}>
                 <Text texto='Nombre de servicio: ' font='PoppinsSemiBold' fontSize={15} />
-                <Text texto={`${title}`} font='PoppinsMedium'/>
-                <Text texto='¿En que consiste?: ' font='PoppinsSemiBold' fontSize={15} />
-                <Text texto={`${descripcion}`}/>
+                <Text texto={title} font='PoppinsMedium'/>
+                <Text texto='¿En qué consiste?: ' font='PoppinsSemiBold' fontSize={15} />
+                <Text texto={descripcion}/>
             </View>
         </View>
     );
 };
 
-//Hoja de estilos de la card de descripcion
 const styles = StyleSheet.create({
     horizontalCard: {
-        flexDirection: 'row', /*Dispocion horizontal*/
-        width: '92%', /*Ancho de la card*/
-        borderRadius: 10, /*Borde redondeado de la card*/
-        marginBottom: 16, /*Separacion inferior entre cards*/
-        backgroundColor: '#fff', /*Fondo de color para la card*/
-        shadowColor: '#000', /*Color de la sombra*/
-        shadowOffset: { width: 0, height: 2 }, /*Orientacion de la sombra*/
-        shadowOpacity: 0.8, /*Opacidad de la sombra*/
-        shadowRadius: 4, /*Borde redodndeado de la sombra*/
-        elevation: 5, /*Doispersion de la sombra*/
-        alignItems: 'center', /*Alineacion horizontal al centro*/
-        padding: 10, /*Separacion interior de los elementos de la card con respecto al borde*/
+        flexDirection: 'row',
+        width: '92%',
+        borderRadius: 10,
+        marginBottom: 16,
+        backgroundColor: '#fff',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 4,
+        elevation: 5,
+        alignItems: 'center',
+        padding: 10,
     },
     imageContainer: {
-        marginRight: 10, /*Espacio entre la imagen y contenido*/
+        marginRight: 10,
     },
     cardImage: {
-        width: 160, /*Ancho de la imagen*/
-        height: 170, /*Alto de la imagen*/
-        resizeMode: 'cover', /*Forma de contener la imagen*/
-        borderRadius: 10, /*Borde redondeado de la imagen*/
+        width: 160,
+        height: 170,
+        resizeMode: 'cover',
+        borderRadius: 10,
     },
     cardContent: {
-        flex: 1, /*Propiedad flex*/
-        justifyContent: 'flex-start', /*Aliena el contenido al principio horizontalmente*/
-        alignItems: 'flex-start', /*Alinea el contenido al principio verticalmente*/
-        height: '100%', /*Alto del contenedor de la inforamcion de la carta*/
-    },
-    cardTitle: {
-        fontSize: 13, /*Tamaño de la fuente*/
-        marginBottom: 5, /*Separacion inferior del titulo de la card*/
-        fontWeight: 'bold', /*Tipo de fuente*/
-    },
-    cardText: {
-        fontSize: 12, /*Tamaño de la fuente*/
-        marginBottom: 15, /*Separacion inferior del texto de la card*/
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        height: '100%',
     },
 });
 
 export default CardDescripcion;
-

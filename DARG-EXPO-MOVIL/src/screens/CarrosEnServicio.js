@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import CardDescripcion from '../components/servicios/CardDescripcionServicios';
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
@@ -50,16 +50,22 @@ export default function App() {
     useEffect(() => {
         selectCarrosEnServicio();
     }, []);
+    
+    useEffect(() => {
+        console.log('Data fetched:', readCarrosenProceso);
+    }, [readCarrosenProceso]);
+    
 
     const renderCarrosEnServicio = (servicios) => {
-        return servicios.map((servicio, index) => (
-            <CardDescripcion
-                key={index}
-                title={servicio.nombre}
-                descripcion={servicio.descripcion}
-            />
-        ));
-    };
+    console.log('Servicios:', servicios); // Verifica los datos aquí
+    return servicios.map((item, index) => (
+        <CardDescripcion
+            key={index}
+            title={item.nombre}
+            descripcion={item.descripcion}
+        />
+    ));
+};
 
     return (
         <View style={styles.container}>
@@ -72,9 +78,13 @@ export default function App() {
                     />
                 </TouchableOpacity>
             </View>
-            <ScrollView>
-                {renderCarrosEnServicio(readCarrosenProceso)}
-            </ScrollView>
+            {loading ? (
+                <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+                <ScrollView>
+                    {renderCarrosEnServicio(readCarrosenProceso)}
+                </ScrollView>
+            )}
             <View style={styles.line} />
             <Text texto='Autos en proceso' font='PoppinsMedium' fontSize={17} />
             <View

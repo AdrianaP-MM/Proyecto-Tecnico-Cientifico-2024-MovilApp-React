@@ -34,6 +34,7 @@ export default function App() {
         const data = DATA.dataset.map(item => ({
           nombre: item.nombre_servicio,
           descripcion: item.descripcion_servicio,
+          id: item.id_servicio
         }));
         setreadOne(data);
       } else {
@@ -58,6 +59,7 @@ export default function App() {
       <VerticalCard 
         title={item.nombre} 
         tipo={item.descripcion}
+        idServiciosDisponibles={item.id}
       />
     ));
   };
