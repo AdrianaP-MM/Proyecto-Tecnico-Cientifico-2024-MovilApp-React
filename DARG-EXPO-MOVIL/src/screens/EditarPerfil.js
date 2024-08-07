@@ -4,6 +4,7 @@ import { Avatar, TouchableRipple } from 'react-native-paper'; // Importa compone
 import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
 import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
+import fetchData from '../utils/FetchData';
 
 // Componente principal que exporta la pantalla de edición jurídica
 export default function EditarJuridico({ navigation }) {
@@ -16,12 +17,14 @@ export default function EditarJuridico({ navigation }) {
     const [nit, setNit] = React.useState('');
     const [nrc, setNrc] = React.useState('');
     const [nrf, setNrf] = React.useState('');
+    const API = 'usuarios_clientes.php';
 
     const handleCerrarSesion = async () => {
         try {
             const DATA = await fetchData(API, 'logOut');
             if (!DATA.error) {
                 Alert.alert('Éxito', 'Sesesion cerrada.');
+                navigation.navigate('Login');
             } else {
                 Alert.alert('Error', DATA.error);
             }

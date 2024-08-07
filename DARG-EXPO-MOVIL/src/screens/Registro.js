@@ -6,6 +6,7 @@ import Button from '../components/buttons/ButtonRojo'; // Import the custom butt
 import Input from '../components/inputs/AllBorder'; // Import the custom input
 import CustomPicker from '../components/inputs/ComboBox'; // Import the custom input
 import { StatusBar } from 'expo-status-bar'; // Import the status bar
+import fetchData from '../utils/FetchData';
 
 export default function Registrate({ navigation }) {
     // Define states for form fields
@@ -16,12 +17,12 @@ export default function Registrate({ navigation }) {
     const [contraseña, setContraseña] = React.useState('');
     const [confirmarContraseña, setconfirmarContraseña] = React.useState('');
     const [departemento, setdepartemento] = React.useState('');
-    const [tipoUsuario, setTipoUsuario] = React.useState('');
     const [dui, setDui] = React.useState('');
     const [nit, setNit] = React.useState('');
     const [nrc, setNrc] = React.useState('');
     const [nrf, setNrf] = React.useState('');
     const [rubro, setRubro] = React.useState('');
+    const API = 'usuarios_clientes.php';
 
     // Define los states para los dialogos
     const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true);
@@ -57,23 +58,17 @@ export default function Registrate({ navigation }) {
         formData.append('confirmarClave', confirmarContraseña);
         formData.append('user_nombres', nombres);
         formData.append('user_apellidos', apellidos);
-        formData.append('user_tipo', tipoUsuario);
+        formData.append('user_tipo', checked);
         formData.append('user_departamento', departemento);
         formData.append('user_nit', nit);
 
-
         try {
-            const response = await fillData({
-                php: 'usuarios_clientes',
-                accion: 'signUpPersonaNatural',
-                method: 'POST',
-                formData: formData
-            });
-            if (!response.error) {
+            const DATA = await fetchData(API, 'signUpPersonaNatural', formData);
+            if (!DATA.error) {
                 Alert.alert('Éxito', 'Registro como persona natural exitoso.');
-                navigation.navigate('login'); // Navegamos a la pantalla 'Panel Principal'
+                navigation.navigate('Login'); // Navegamos a la pantalla 'Panel Principal'
             } else {
-                Alert.alert('Error', response.error);
+                Alert.alert('Error', DATA.error);
             }
         } catch (error) {
             console.error(error);
@@ -92,7 +87,7 @@ export default function Registrate({ navigation }) {
         formData.append('confirmarClave', confirmarContraseña);
         formData.append('user_nombres', nombres);
         formData.append('user_apellidos', apellidos);
-        formData.append('user_tipo', tipoUsuario);
+        formData.append('user_tipo', checked);
         formData.append('user_departamento', departemento);
         formData.append('user_nit', nit);
         formData.append('user_nrc', nrc);
@@ -100,17 +95,12 @@ export default function Registrate({ navigation }) {
         formData.append('user_rubro', rubro);
 
         try {
-            const response = await fillData({
-                php: 'usuarios_clientes',
-                accion: 'signUpPersonaJuridica',
-                method: 'POST',
-                formData: formData
-            });
-            if (!response.error) {
+            const DATA = await fetchData(API, 'signUpPersonaJuridica', formData);
+            if (!DATA.error) {
                 Alert.alert('Éxito', 'Registro como persona juridica exitoso.');
                 navigation.navigate('login'); // Navegamos a la pantalla 'Panel Principal'
             } else {
-                Alert.alert('Error', response.error);
+                Alert.alert('Error', DATA.error);
             }
         } catch (error) {
             console.error(error);
@@ -122,7 +112,7 @@ export default function Registrate({ navigation }) {
     // Handle the next button of the first dialog
     const handleNext = () => {
         setVisiblePersonaDialog(false);
-        if (checked === 'juridica') {
+        if (checked === 'Persona juridica') {
             setVisibleCamposDialog(true);
         }
     };
@@ -167,7 +157,7 @@ export default function Registrate({ navigation }) {
 
     // Format the NIT
     const formatNit = (value) => {
-        return value.replace(/\D/g, '').slice(0, 14);
+        return value.replace(/\D/g, '').slice(0, 17);
     };
 
     return (
@@ -336,10 +326,10 @@ export default function Registrate({ navigation }) {
                     width='95%'
                     iconImage={require('../images/icons/iconNit.png')}
                     keyboardType='numeric'
-                    maxLength={14}
+                    maxLength={17}
                     style={styles.input}
                 />
-                <Button textoBoton='Registrate' accionBoton={() => navigation.navigate('TabNavigator')} fontSize={17} width='55%' />
+                <Button textoBoton='Registrate' accionBoton={handleRegistroJuridico} fontSize={17} width='55%' />
                 <View style={styles.loginContainer}>
                     <Text texto='¿Ya tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
                     <TouchableRipple
