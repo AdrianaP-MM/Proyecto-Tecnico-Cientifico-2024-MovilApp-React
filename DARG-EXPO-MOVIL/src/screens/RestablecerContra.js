@@ -5,19 +5,10 @@ import Text from '../components/utilidades/Text'; // Importación del componente
 import Button from '../components/buttons/ButtonRojo'; // Importación del componente de botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importación del componente de entrada de texto personalizado
 
-//import fetchData from '../utils/FetchData';
-//import { func } from 'prop-types';
+import fetchData from '../utils/FetchData';
 
 export default function AppRestablecerContra() {
 
-    return (
-        <View>
-            <Text texto='Estoy arreglando esta mierda porque alguien quiso usar otro metodo pipipipip'
-                font='PoppinsMedium' fontSize={13} textAlign='center' />
-        </View>
-    );
-
-    /*
     const navigation = useNavigation();
     const [step, setStep] = useState(1); // Estado para controlar el paso del proceso de restablecimiento
 
@@ -37,28 +28,15 @@ export default function AppRestablecerContra() {
     const handleSendCode = async () => {
         const formData = new FormData();
         formData.append('user_correo', correo);
-
         try {
-            const confirmCorreo = await fetchData({
-                php: 'usuarios_clientes',
-                accion: 'checkCorreo',
-                method: 'POST',
-                formData: formData
-            });
-
+            const confirmCorreo = await fetchData('usuarios_clientes.php', 'checkCorreo', formData);
             // Validar y usar la respuesta de tallas
-            if (!confirmCorreo.error) {
-                //console.log('El usuario con correo existe', confirmCorreo);
-                //formData.append('nombre_destinatario', 'ASASA');
+            if (confirmCorreo.status) {
+                console.log('El usuario con correo existe', confirmCorreo);
 
-                const sendCorreo = await fillData({
-                    php: 'usuarios_clientes',
-                    accion: 'enviarCodigoRecuperacion',
-                    method: 'POST',
-                    formData: formData
-                });
+                const sendCorreo = await fetchData('usuarios_clientes.php', 'enviarCodigoRecuperacion', formData);
                 //console.log(formData)
-                if (!sendCorreo.error) {
+                if (sendCorreo.status) {
                     Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
                     setCodeSend(sendCorreo.codigo);
                     console.log('Código: ', sendCorreo.codigo)
@@ -159,13 +137,9 @@ export default function AppRestablecerContra() {
         formData.append('user_correo', correo);
 
         try {
-            const response = await fillData({
-                php: 'usuarios_clientes',
-                accion: 'updatePassword',
-                method: 'POST',
-                formData: formData
-            });
-            if (!response.error) {
+            const response = await fetchData('usuarios_clientes.php', 'updatePassword', formData);
+
+            if (response.status) {
                 Alert.alert('Éxito', 'Contraseña restablecida correctamente');
                 navigation.navigate('Login'); // Navegamos a la pantalla 'Login'
             } else {
@@ -295,7 +269,6 @@ export default function AppRestablecerContra() {
             )}
         </View>
     );
-    */
 }
 
 // Estilos para los componentes de la pantalla de restablecimiento de contraseña

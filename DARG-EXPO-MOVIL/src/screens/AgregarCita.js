@@ -88,7 +88,7 @@ export default function AppAddCita({ navigation, route }) {
                 })));
                 console.log(responseAutomoviles.dataset);
             } else {
-                Alert.alert('Error', `${responseAutomoviles.error}`);
+                Alert.alert('Error', `${responseAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
             }
         } catch (error) {
             console.error('Error en leer los elementos:', error);
