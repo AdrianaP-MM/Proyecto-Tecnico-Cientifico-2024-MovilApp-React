@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { Avatar, Dialog, Portal, Provider, RadioButton, TouchableRipple } from 'react-native-paper';
+import { Avatar, Dialog, Portal, Provider, RadioButton, TouchableRipple, IconButton } from 'react-native-paper';
 import Text from '../components/utilidades/Text'; // Import the custom Text component
 import Button from '../components/buttons/ButtonRojo'; // Import the custom button
 import Input from '../components/inputs/AllBorder'; // Import the custom input
@@ -98,7 +98,7 @@ export default function Registrate({ navigation }) {
             const DATA = await fetchData(API, 'signUpPersonaJuridica', formData);
             if (!DATA.error) {
                 Alert.alert('Éxito', 'Registro como persona juridica exitoso.');
-                navigation.navigate('login'); // Navegamos a la pantalla 'Panel Principal'
+                navigation.navigate('Login'); // Navegamos a la pantalla 'Panel Principal'
             } else {
                 Alert.alert('Error', DATA.error);
             }
@@ -171,6 +171,9 @@ export default function Registrate({ navigation }) {
                     <Dialog.Title style={styles.dialogTitle}>
                         <Text texto='Elige tu persona' font='PoppinsSemiBold' fontSize={20} textAlign='center' color='#3B3939' />
                     </Dialog.Title>
+
+
+
                     <Dialog.Content>
                         <RadioButton.Group
                             onValueChange={value => {
@@ -221,6 +224,7 @@ export default function Registrate({ navigation }) {
                             onChangeText={setNrc}
                             width='95%'
                             iconImage={require('../images/icons/iconNrf.png')}
+                            maxLength={11}
                         />
                         <Input
                             placeholder='NRF'
@@ -228,6 +232,7 @@ export default function Registrate({ navigation }) {
                             onChangeText={setNrf}
                             width='95%'
                             iconImage={require('../images/icons/iconNrf.png')}
+                            maxLength={11}
                         />
                         <Input
                             placeholder='Rubro comercial'
@@ -243,18 +248,52 @@ export default function Registrate({ navigation }) {
                 </Dialog>
             </Portal>
 
+
+
+
+
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.avatarContainer}>
                     <Avatar.Icon size={75} icon="alpha-d" style={styles.avatarIcon} />
                     <Text texto='Registrate' font='PoppinsBold' fontSize={20} textAlign='center' />
                     <Text texto='¡Arregla tu carro con nosotros!' font='PoppinsRegular' fontSize={14} textAlign='center' />
+
                 </View>
+
+                {checked === 'Persona juridica' && (
+                    <View style={styles.circularButtonContainer}>
+                        <TouchableRipple
+                            onPress={() => setVisibleCamposDialog(true)} // Asegúrate de que esta acción sea la deseada
+                            style={styles.circularButton}
+                        >
+                            <View style={styles.circularButtonContent}>
+                                <IconButton
+                                    icon="information-variant"
+                                    color="white"
+                                    size={30}
+                                    style={styles.circularIcon}
+                                />
+                            </View>
+                        </TouchableRipple>
+                        <Text
+                            texto="Revisar datos jurídicos"
+                            font="PoppinsRegular"
+                            fontSize={14}
+                            textAlign="center"
+                            color="#BA181B"
+                            style={styles.buttonText}
+                        />
+                    </View>
+                )}
+
+
                 <Input
                     placeholder='Nombres'
                     value={nombres}
                     onChangeText={setNombres}
                     width='95%'
                     iconImage={require('../images/icons/iconUser.png')}
+                    maxLength={50}
                     style={styles.input}
                 />
                 <Input
@@ -263,6 +302,7 @@ export default function Registrate({ navigation }) {
                     onChangeText={setApellidos}
                     width='95%'
                     iconImage={require('../images/icons/iconUser.png')}
+                    maxLength={50}
                     style={styles.input}
                 />
                 <Input
@@ -271,6 +311,7 @@ export default function Registrate({ navigation }) {
                     onChangeText={setCorreo}
                     width='95%'
                     iconImage={require('../images/icons/iconCorreo.png')}
+                    maxLength={50}
                     style={styles.input}
                 />
                 <Input
@@ -329,7 +370,11 @@ export default function Registrate({ navigation }) {
                     maxLength={17}
                     style={styles.input}
                 />
-                <Button textoBoton='Registrate' accionBoton={handleRegistroJuridico} fontSize={17} width='55%' />
+
+                <View style={styles.loginContainer}>
+                    <Button textoBoton='Registrate' accionBoton={checked === 'Persona juridica' ? handleRegistroJuridico : handleRegistroNatural} fontSize={17} width='55%' />
+                </View>
+
                 <View style={styles.loginContainer}>
                     <Text texto='¿Ya tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
                     <TouchableRipple
@@ -354,42 +399,56 @@ const styles = StyleSheet.create({
     },
     avatarContainer: {
         alignItems: 'center',
-        marginVertical: 15,
+        marginBottom: 20,
     },
     avatarIcon: {
-        marginBottom: 10,
         backgroundColor: '#BA181B',
     },
-    input: {
-        marginBottom: 20,
-        backgroundColor: 'white',
-        borderColor: 'black',
-        borderWidth: 0.2,
-        borderRadius: 3,
-        width: '95%',
-        paddingHorizontal: 10,
+    dialog: {
+        borderRadius: 10,
+        backgroundColor: 'white'
+    },
+    dialogTitle: {
+        textAlign: 'center',
+        color: '#3B3939',
     },
     radioContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         marginVertical: 5,
     },
-    dialog: {
-        backgroundColor: 'white',
+    center: {
+        justifyContent: 'center',
     },
-    dialogTitle: {
-        textAlign: 'center',
-        marginBottom: 25,
+    input: {
+        marginBottom: 10,
     },
     loginContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 10,
     },
-    center: {
-        width: '100%',
+    circularButtonContainer: {
+        width: '95%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 5,
+        marginTop: 5,
+    },
+    circularButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#BA181B',
         justifyContent: 'center',
         alignItems: 'center',
+        marginRight: 10,
+    },
+    circularIcon: {
+        margin: 0,
+    },
+    buttonText: {
+        color: '#BA181B',
     },
 });
+
