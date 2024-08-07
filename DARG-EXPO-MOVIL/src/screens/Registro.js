@@ -49,6 +49,13 @@ export default function Registrate({ navigation }) {
     ]
 
     const handleRegistroNatural = async () => {
+
+        // Validar que los campos no estén vacíos
+        if (!dui.trim() || !telefono.trim() || !correo.trim() || !contraseña.trim() || !confirmarContraseña.trim() || !nombres.trim() || !apellidos.trim() || !checked.trim() || !departemento.trim() || !nit.trim()) {
+            Alert.alert('Error', 'Por favor, completa todos los campos.');
+            return; // Salir de la función si alguno de los campos está vacío
+        }
+
         // Creamos un objeto FormData para enviar los datos al servidor
         const formData = new FormData();
         formData.append('user_dui', dui);
@@ -78,6 +85,13 @@ export default function Registrate({ navigation }) {
 
     // Función para manejar la entrada el registro al sistema
     const handleRegistroJuridico = async () => {
+
+        // Validar que los campos no estén vacíos
+        if (!dui.trim() || !telefono.trim() || !correo.trim() || !contraseña.trim() || !confirmarContraseña.trim() || !nombres.trim() || !apellidos.trim() || !checked.trim() || !departemento.trim() || !nit.trim() || !nrc.trim() || !nrf.trim() || !rubro.trim()) {
+            Alert.alert('Error', 'Por favor, completa todos los campos.');
+            return; // Salir de la función si alguno de los campos está vacío
+        }
+
         // Creamos un objeto FormData para enviar los datos al servidor
         const formData = new FormData();
         formData.append('user_dui', dui);
@@ -129,8 +143,24 @@ export default function Registrate({ navigation }) {
 
     // Handle the next button of the second dialog
     const handleNextCampos = () => {
+        if (!nrc || !nrf || !rubro) {
+            Alert.alert('Error', 'Por favor, completa todos los campos.');
+            return; // Evita que se siga al siguiente paso si algún campo está vacío
+        }
+    
+        // Si todos los campos están llenos, cerrar el diálogo y proceder
         setVisibleCamposDialog(false);
-        setShowAdditionalFields(true);
+        setShowAdditionalFields(true); // Muestra los campos adicionales o navega a la siguiente pantalla
+    };
+
+    const handleJuridico = () => {
+        if (!checked) {
+            Alert.alert('Error', 'Por favor, selecciona una opción.');
+            return; // Evita que se abra el siguiente modal si no se ha hecho una selección
+        }
+    
+        // Aquí abre el siguiente modal
+        handleNext(); // Cambia el estado para mostrar el siguiente modal
     };
 
     // Format the phone number
@@ -157,7 +187,16 @@ export default function Registrate({ navigation }) {
 
     // Format the NIT
     const formatNit = (value) => {
-        return value.replace(/\D/g, '').slice(0, 17);
+        const numericValue = value.replace(/\D/g, ''); 
+        if (numericValue.length <= 4) {
+            return numericValue;
+        } else if (numericValue.length <= 10) {
+            return numericValue.slice(0, 4) + '-' + numericValue.slice(4);
+        } else if (numericValue.length <= 13) {
+            return numericValue.slice(0, 4) + '-' + numericValue.slice(4, 10) + '-' + numericValue.slice(10);
+        } else {
+            return numericValue.slice(0, 4) + '-' + numericValue.slice(4, 10) + '-' + numericValue.slice(10, 13) + '-' + numericValue.slice(13, 14);
+        }
     };
 
     return (
@@ -205,7 +244,7 @@ export default function Registrate({ navigation }) {
                         </RadioButton.Group>
                     </Dialog.Content>
                     <Dialog.Actions style={styles.center}>
-                        <Button textoBoton='Siguiente' accionBoton={handleNext} fontSize={15} width='55%' />
+                        <Button textoBoton='Siguiente' accionBoton={handleJuridico} fontSize={15} width='55%' />
                     </Dialog.Actions>
                 </Dialog>
 
@@ -224,6 +263,7 @@ export default function Registrate({ navigation }) {
                             onChangeText={setNrc}
                             width='95%'
                             iconImage={require('../images/icons/iconNrf.png')}
+                            keyboardType='numeric'
                             maxLength={11}
                         />
                         <Input
@@ -232,6 +272,7 @@ export default function Registrate({ navigation }) {
                             onChangeText={setNrf}
                             width='95%'
                             iconImage={require('../images/icons/iconNrf.png')}
+                            keyboardType='numeric'
                             maxLength={11}
                         />
                         <Input

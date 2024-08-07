@@ -14,6 +14,13 @@ export default function Login({ navigation }) {
   const API = 'usuarios_clientes.php';
 
   const handleLogin = async () => {
+
+    // Validar que los campos no estén vacíos
+    if (!email.trim() || !password.trim()) {
+      Alert.alert('Error', 'Por favor, completa todos los campos.');
+      return; // Salir de la función si alguno de los campos está vacío
+    }
+
     // Creamos un objeto FormData para enviar los datos al servidor
     const formData = new FormData();
     formData.append('user_correo', email);
