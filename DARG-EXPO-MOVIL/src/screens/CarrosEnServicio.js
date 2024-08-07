@@ -1,95 +1,118 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-// Importa la card de descripcion del servicio
+import { useNavigation, useRoute } from '@react-navigation/native';
 import CardDescripcion from '../components/servicios/CardDescripcionServicios';
-// Importa la scrollbar perzonalizada
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
-// Importa la card de auto en proceso
 import AutoEnProceso from '../components/servicios/CardAutoEnProceso';
-import Text from '../components/utilidades//Text';
+import Text from '../components/utilidades/Text';
+import fetchData from '../utils/FetchData';
 
 export default function App() {
-    // Constantes para ver las dimensiones para la barra de scroll
     const scrollY = useRef(new Animated.Value(0)).current;
     const [contentHeight, setContentHeight] = useState(0);
     const [containerHeight, setContainerHeight] = useState(0);
+    const [readCarrosenProceso, setreadOne] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
-    //Constante de navegacion
     const navigation = useNavigation();
+    const route = useRoute();
+    const { idServiciosDisponibles } = route.params;
 
-    // Función para manejar la acción de regresar
     const handleGoBack = () => {
-        navigation.goBack(); // Navega a la pantalla anterior
+        navigation.goBack();
+    };
+
+    const selectCarrosEnServicio = async () => {
+        const formData = new FormData();
+        formData.append('id_servicio', idServiciosDisponibles);
+        try {
+            const DATA = await fetchData('servicios_en_proceso.php', 'readCarrosenProceso', formData);
+            if (DATA.status) {
+                const data = DATA.dataset.map(item => ({
+                    nombre: item.nombre_servicio,
+                    descripcion: item.descripcion_servicio,
+                }));
+                setreadOne(data);
+            } else {
+                console.log(DATA.error);
+                setreadOne([]);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setreadOne([]);
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
+        }
+    };
+
+    useEffect(() => {
+        selectCarrosEnServicio();
+    }, []);
+
+    const renderCarrosEnServicio = (servicios) => {
+        return servicios.map((servicio, index) => (
+            <CardDescripcion
+                key={index}
+                title={servicio.nombre}
+                descripcion={servicio.descripcion}
+            />
+        ));
     };
 
     return (
-        //Contenedor de la pantalla en general
         <View style={styles.container}>
-            <View style={styles.titulo} /*Contenedor del titulo y del boton de regresar*/>
+            <View style={styles.titulo}>
                 <Text texto='Autos en servicio "x"' font='PoppinsMedium' fontSize={25} />
-
-                <TouchableOpacity onPress={handleGoBack} style={styles.backButton} /*Boton de regresar*/>
+                <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
                     <Image
-                        source={require('../images/icons/btnBack.png')} // Ruta a tu imagen personalizada
-                        style={{ width: 35, height: 27 }} // Ajusta el tamaño según tus necesidades
+                        source={require('../images/icons/btnBack.png')}
+                        style={{ width: 35, height: 27 }}
                     />
                 </TouchableOpacity>
             </View>
-
-            <CardDescripcion //Card de descripcion del servicio
-                titulo="Cambio de aceite"
-                descripcion="El cambio de aceite es para pues cambiarselo ya esta viejo después termina como gelatina el aceite del carter."
-            />
-
-            <View style={styles.line} /*Linea para dividir la descripcion de las cards*/ />
-
+            <ScrollView>
+                {renderCarrosEnServicio(readCarrosenProceso)}
+            </ScrollView>
+            <View style={styles.line} />
             <Text texto='Autos en proceso' font='PoppinsMedium' fontSize={17} />
-
-            <View /*Contenedor que guarda el scroll de las cards de servicios*/
+            <View
                 style={styles.scrollViewContainer}
                 onLayout={(e) => setContainerHeight(e.nativeEvent.layout.height)}
             >
-                <ScrollView /*Scroll view donde se encuentran las cards*/
+                <ScrollView
                     style={styles.scrollView}
                     contentContainerStyle={styles.containerCards}
-                    /*De aqui se saca el alto del content y se use el parametro para el scroll personalizado*/
                     onContentSizeChange={(height) => setContentHeight(height)}
-                    /*Se agrega el event al contenedor Animated*/
                     onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
                         useNativeDriver: false,
                     })}
-                    /*Se oculta la scroll bar predeterminada*/
                     showsVerticalScrollIndicator={false}
                 >
-
-                    <AutoEnProceso //Card de ejemplo de auto en proceso
+                    <AutoEnProceso
                         marca="Mazda"
                         modelo="RX8"
                         tipoVehiculo="Deportivo Coupe"
                         placa="P246-456"
                         fechaDeRegistro="17/06/2024"
                     />
-
-                    <AutoEnProceso //Card de ejemplo de auto en proceso
+                    <AutoEnProceso
                         marca="Mazda"
                         modelo="RX8"
                         tipoVehiculo="Deportivo Coupe"
                         placa="P246-456"
                         fechaDeRegistro="17/06/2024"
                     />
-
-                    <AutoEnProceso //Card de ejemplo de auto en proceso
+                    <AutoEnProceso
                         marca="Mazda"
                         modelo="RX8"
                         tipoVehiculo="Deportivo Coupe"
                         placa="P246-456"
                         fechaDeRegistro="17/06/2024"
                     />
-
                 </ScrollView>
-
-                <CustomScrollBar /*Se agregan los parametros que espera recibir la custom bar*/
+                <CustomScrollBar
                     scrollY={scrollY}
                     contentHeight={contentHeight}
                     containerHeight={containerHeight}
@@ -99,51 +122,50 @@ export default function App() {
     );
 }
 
-//Hoja de estilos la vista general de la pantalla
 const styles = StyleSheet.create({
     container: {
-        flex: 1, /*Propiedad flex*/
-        backgroundColor: '#F9FAFB', /*Fondo de color*/
-        alignItems: 'center', /*Alinear verticalmente*/
-        justifyContent: 'center', /*Alinear al centro*/
+        flex: 1,
+        backgroundColor: '#F9FAFB',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     titulo: {
-        flexDirection: 'row', /*Ordenar horizontalmente*/
-        alignItems: 'center', /*Alinear verticalmente*/
-        width: '100%', /*Ancho del titulo*/
-        paddingHorizontal: 20, /*Separacion interna a los lados verticamente*/
-        marginVertical: 20, /*Separacion vertical del titulo*/
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        paddingHorizontal: 20,
+        marginVertical: 20,
     },
     backButton: {
-        flexDirection: 'row', /*Ordenar horizontalmente*/
-        alignItems: 'center', /*Alinear verticalmente*/
-        marginLeft: 'auto', /*Ancho del titulo*/
-        marginBottom: 20, /*Separacion inferior*/
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 'auto',
+        marginBottom: 20,
     },
     backButtonText: {
-        fontSize: 16, /*Tamaño de fuente*/
-        marginLeft: 5, /*Separacion a la izquierada*/
+        fontSize: 16,
+        marginLeft: 5,
     },
     scrollViewContainer: {
-        width: '94%', /*Ancho del contenedor scroll*/
-        maxHeight: '37%', /*Altura maxima*/
-        minHeight: '37%', /*Altura minima*/
-        position: 'relative', /*Posicion del contenedor*/
-        marginBottom: 35, /*Separacion inferior*/
+        width: '94%',
+        maxHeight: '37%',
+        minHeight: '37%',
+        position: 'relative',
+        marginBottom: 35,
     },
     scrollView: {
-        width: '100%', /*Ancho del scroll view*/
+        width: '100%',
     },
     containerCards: {
-        flexDirection: 'row', /*Ordenar horizontalmente*/
-        flexWrap: 'wrap', /*Propiedad wrap*/
-        justifyContent: 'space-around', /*Alinear a los extremos*/
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
     },
     line: {
-        borderBottomColor: 'black', /*Color de la linea*/
-        borderBottomWidth: 1, /*Ancho inferior del borde*/
-        width: '92%', /*Ancho de la linea*/
-        marginTop: 20, /*Separacion superior de la linea*/
-        marginBottom: 16, /*Separacion inferior*/
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        width: '92%',
+        marginTop: 20,
+        marginBottom: 16,
     },
 });

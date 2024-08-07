@@ -5,7 +5,7 @@ import fixedImage from '../../images/servicios/imagenServicio.png';
 import Text from '../utilidades/Text';
 
 //Constante de la card de descipcion con los parametros requeridoss
-const CardDescripcion = ({ titulo, descripcion }) => {
+const CardDescripcion = ({ title, descripcion }) => {
 
     return (
         //Contenedor general de la card
@@ -15,7 +15,7 @@ const CardDescripcion = ({ titulo, descripcion }) => {
             </View>
             <View style={styles.cardContent} /*Contenedor del contenido de la card*/>
                 <Text texto='Nombre de servicio: ' font='PoppinsSemiBold' fontSize={15} />
-                <Text texto={`${titulo}`} font='PoppinsMedium'/>
+                <Text texto={`${title}`} font='PoppinsMedium'/>
                 <Text texto='¿En que consiste?: ' font='PoppinsSemiBold' fontSize={15} />
                 <Text texto={`${descripcion}`}/>
             </View>

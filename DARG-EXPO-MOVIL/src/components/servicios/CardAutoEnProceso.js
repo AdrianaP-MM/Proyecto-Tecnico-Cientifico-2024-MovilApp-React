@@ -6,6 +6,7 @@ import Text from '../utilidades/Text';
 //Constante de la card de autos en proceso con sus parametros requeridos
 const AutoEnProceso = ({ marca, modelo, tipoVehiculo, placa, fechaDeRegistro }) => {
     return (
+        
         /*Contenedor principal de card*/
         <View style={styles.horizontalCard}>
             
