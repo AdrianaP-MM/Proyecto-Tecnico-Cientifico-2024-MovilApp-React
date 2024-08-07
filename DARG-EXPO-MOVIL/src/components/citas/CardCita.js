@@ -2,27 +2,31 @@ import React from 'react';
 import Text from '../utilidades/Text'; // Importa el componente de texto personalizado
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'; // Importa los estilos y componentes necesarios de React Native
 
-export default function CardCita({ accionCard }) {
+import Config from '../../utils/Constantes'; // Importa el objeto de configuración desde 'Constantes'
+
+export default function CardCita({ accionCard, citaData={}, onLongPress}) {
     // Componente de tarjeta de cita que muestra información del automóvil y detalles de la cita
     return (
-        <TouchableOpacity onPress={accionCard}>
+        <TouchableOpacity onPress={accionCard} onLongPress={onLongPress}>
             <View style={styles.contenedorTotalCard}>
                 <View style={styles.cardHeader}>
                     <Image
-                        source={require('../../images/carros/carExample.png')} // Fuente de la imagen del automóvil
+                        source={citaData.fotoCarro ?
+                            { uri: `${Config.IMAGE_URL}automoviles/${citaData.fotoCarro}` }
+                            : require('../../images/carros/carExample2.png')}
                         style={styles.image} // Estilos de la imagen del automóvil
                     />
                     <View style={styles.cardHeaderTextContainer}>
                         <View style={styles.rowUpper}>
-                            <Text texto='Fecha y hora de llegada:' font='PoppinsLightItalic' fontSize={12} color='white' /> 
+                            <Text texto={`Fecha y hora de llegada: (${citaData.anio_cita})`} font='PoppinsLightItalic' fontSize={12} color='white' /> 
                         </View>
                         <View style={styles.row}>
                             <Text texto='Fecha: ' font='PoppinsSemiBold' fontSize={11} color='white' /> 
-                            <Text texto=' Lunes 22 de Marzo' fontSize={12} color='white' />
+                            <Text texto={`${citaData.fecha_cita}`} fontSize={12} color='white' />
                         </View>
                         <View style={styles.row}>
                             <Text texto='hora: ' font='PoppinsSemiBold' fontSize={11} color='white' />
-                            <Text texto='3:30pm' fontSize={12} color='white' />  
+                            <Text texto={`${citaData.hora_cita}`} fontSize={12} color='white' />  
                         </View>
                     </View>
                 </View>
@@ -33,11 +37,11 @@ export default function CardCita({ accionCard }) {
                         </View>
                         <View style={styles.row}>
                             <Text texto='Marca: ' font='PoppinsSemiBold' fontSize={11} /> 
-                            <Text texto='Ferrari Electra' fontSize={12} />
+                            <Text texto={`${citaData.marca_automovil}`} fontSize={12} />
                         </View>
                         <View style={styles.row}>
                             <Text texto='Placa: ' font='PoppinsSemiBold' fontSize={11} /> 
-                            <Text texto='123456789' fontSize={12} /> 
+                            <Text texto={`${citaData.placa_automovil}`} fontSize={12} /> 
                         </View>
                     </View>
                     <View style={styles.col}>
@@ -46,7 +50,7 @@ export default function CardCita({ accionCard }) {
                         </View>
                         <View>
                             <Text texto='Movilización' font='PoppinsSemiBold' fontSize={11} /> 
-                            <Text texto='Dejaré el automovil' fontSize={12} />
+                            <Text texto={`${citaData.movilizacion_vehiculo}`} fontSize={12} />
                         </View>
                     </View>
                 </View>

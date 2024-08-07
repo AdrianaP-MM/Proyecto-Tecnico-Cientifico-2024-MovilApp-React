@@ -13,15 +13,17 @@ const CitasStack = () => {
             <Stack.Screen name="AgregarCita" component={AgregarCita} options={{
                 headerShown: true, headerBackImage: () => <CustomBackButton />,  // Componente personalizado para el botón de retroceso
                 headerStyle: {
-                    backgroundColor: '#F9FAFB', // Color de fondo del header
+                    backgroundColor: '#E5383B', // Color de fondo del header
                 },
+                headerTintColor: 'white',
                 title: 'Agregar cita'
             }} />
             <Stack.Screen name="Detalles de la cita" component={AgregarCita} options={{
                 headerShown: true, headerBackImage: () => <CustomBackButton />,  // Componente personalizado para el botón de retroceso
                 headerStyle: {
-                    backgroundColor: '#F9FAFB', // Color de fondo del header
+                    backgroundColor: '#E5383B', // Color de fondo del header
                 },
+                headerTintColor: 'white',
             }} />
         </Stack.Navigator>
     );
