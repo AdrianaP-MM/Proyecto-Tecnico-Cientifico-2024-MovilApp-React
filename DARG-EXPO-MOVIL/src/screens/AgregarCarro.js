@@ -1,4 +1,4 @@
-// AgregarVehiculo.js
+// Importa las dependencias necesarias
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente de botón personalizado
@@ -8,7 +8,6 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 const defaultImageUrl = 'https://th.bing.com/th/id/OIP.xxMt6xG7kaLu7P6llDKWyAHaEK?w=318&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7';
 
 const AgregarVehiculo = ({ navigation, route }) => {
-  const { agregarCarro } = route.params; // Obtiene la función agregarCarro desde los parámetros de la ruta
   const [modelo, setModelo] = useState(''); // Estado para el modelo del carro
   const [color, setColor] = useState(''); // Estado para el color del carro
   const [tipo, setTipo] = useState(''); // Estado para el tipo del carro
@@ -19,7 +18,7 @@ const AgregarVehiculo = ({ navigation, route }) => {
   // Función para manejar la acción de guardar el carro
   const handleGuardarCarro = () => {
     const nuevoCarro = { modelo, color, tipo, fecha, placa, imagen }; // Crea un nuevo objeto carro con los estados actuales
-    agregarCarro(nuevoCarro); // Llama a la función para agregar el carro
+    // Aquí podrías enviar `nuevoCarro` a tu servidor o a otro componente para agregar el carro
     navigation.goBack(); // Navega hacia atrás
   };
 
@@ -75,12 +74,7 @@ const styles = StyleSheet.create({
     padding: 20, // Añade espacio interno alrededor del contenido
     backgroundColor: 'white', // Color de fondo blanco
     alignItems: 'center', // Centra el contenido horizontalmente
-  },
-  title: { // Estilos para el título (no utilizado en el código actual)
-    fontSize: 24, // Tamaño de la fuente del título
-    fontWeight: 'bold', // Hace que el texto sea negrita
-    marginBottom: 20, // Espacio debajo del título
-    textAlign: 'center', // Centra el texto horizontalmente
+    paddingBottom: 180, // Padding adicional en la parte inferior
   },
   imageButton: { // Estilos para el botón de agregar imagen
     flexDirection: 'row', // Dispone los hijos en una fila
@@ -104,11 +98,12 @@ const styles = StyleSheet.create({
   imageContainer: { // Estilos para el contenedor de la imagen
     flexDirection: 'row', // Dispone los hijos en una fila
     alignItems: 'center', // Alinea los elementos hijos verticalmente al centro
-    marginBottom: 12, // Espacio debajo del contenedor de la imagen
+    marginBottom: 20, // Espacio debajo del contenedor de la imagen
+    
   },
-  image: { // Estilos para la imagen
-    width: 60, // Ancho de la imagen
-    height: 60, // Altura de la imagen
+  image: { // Estilo para la imagen del carro
+    width: 100, // Ancho de la imagen
+    height: 100, // Altura de la imagen
     borderRadius: 8, // Bordes redondeados
     marginRight: 10, // Espacio a la derecha de la imagen
   },

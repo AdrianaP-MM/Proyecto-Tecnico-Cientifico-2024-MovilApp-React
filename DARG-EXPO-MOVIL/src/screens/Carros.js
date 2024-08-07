@@ -1,23 +1,46 @@
 // Importa las dependencias necesarias
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import TarjetaCarro from '../components/carros/CardCarro'; // Importa el componente TarjetaCarro
 import Text from '../components/utilidades/Text'; // Importa el componente Text
+import fetchData from '../utils/FetchData';
+import * as contants from '../utils/Constantes';
 
 // Componente principal de la vista de carros
 const CarrosVista = ({ navigation }) => {
   const [carros, setCarros] = useState([]); // Estado para almacenar la lista de carros
+  const API = 'automoviles.php';
 
-  // Función para agregar un nuevo carro a la lista
-  const agregarCarro = (carro) => {
-    setCarros([...carros, carro]);
+  // Función para llenar los datos de los carros desde la base de datos
+  const fillCardsCarsAll = async () => {
+    try {
+      const DATA = await fetchData(API, 'readAllMyCars');
+      if (DATA.status) {
+        const data = DATA.dataset.map(item => ({
+          imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          modelo: item.nombre_modelo,
+          placa: item.placa_automovil
+        }));
+        setCarros(data);
+      } else {
+        console.log(DATA.error);
+        setCarros([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setCarros([]);
+    }
   };
+
+  useEffect(() => {
+    fillCardsCarsAll();
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.contenedorTitulo}>
-        <Text texto='Carros' font='PoppinsMedium' fontSize={25} /> 
-        <TouchableOpacity onPress={() => navigation.navigate('AgregarVehiculo', { agregarCarro })}>
+        <Text texto='Carros' font='PoppinsMedium' fontSize={25} />
+        <TouchableOpacity onPress={() => navigation.navigate('AgregarVehiculo')}>
           <Image
             source={require('../images/icons/iconAdd.png')} // Ruta de la imagen del icono para agregar un carro
             style={styles.image}
@@ -48,6 +71,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0, // Elimina el espacio horizontal interno
     marginTop: 20, // Añade un margen superior
     backgroundColor: '#F9FAFB', // Color de fondo
+    paddingBottom: 80, // Padding adicional en la parte inferior
   },
   row: {
     justifyContent: 'space-between', // Distribuye los elementos uniformemente en la fila
