@@ -21,14 +21,14 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Centra el contenido horizontalmente
         justifyContent: 'center', // Centra el contenido verticalmente
         height: 'auto', // Altura automática basada en el contenido
-        width: '26%', // Ancho del botón fijo al 30% del contenedor
+        width: '28%', // Ancho del botón fijo al 30% del contenedor
         backgroundColor: '#F9FAFB', // Color de fondo del botón por defecto
         padding: 5, // Relleno interno del botón
         paddingVertical: 7, // Relleno vertical adicional
         //borderRadius: 15,
         //borderBottomWidth: 2,  
         //borderBottomColor: '#E5383B',
-        marginHorizontal: 7,
+        marginHorizontal: 8,
 
         borderColor: '#E4E5EB', // Color del borde por defecto
         borderWidth: 1, // Ancho del borde general

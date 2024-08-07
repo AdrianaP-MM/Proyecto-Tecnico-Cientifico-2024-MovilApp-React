@@ -26,7 +26,8 @@ Taller Revolution Garage, especializado en el mantenimiento y reparación de aut
 * npm install react-native-image-picker
 * npm install react-native-gesture-handler
 * npm install @react-navigation/stack
-npm install @react-native-picker/picker
+* npm install @react-native-picker/picker
+* npm install react-native-modal-datetime-picker
 
 ## Para tener en cuenta
 

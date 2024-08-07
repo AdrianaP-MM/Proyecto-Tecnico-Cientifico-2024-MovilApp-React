@@ -11,6 +11,7 @@ export default function CustomBackButton() {
         <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
                 source={require('../images/icons/btnBack.png')} // Ruta a la imagen del boton
+                tintColor='white'
                 style={{ width: 35, height: 27 }} // Estilo para el tamaño de la imagen
             />
         </TouchableOpacity>

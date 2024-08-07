@@ -1,12 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Image, ScrollView, TouchableOpacity, SafeAreaView, Animated, Easing } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, TouchableOpacity, SafeAreaView, Animated, Easing, Alert } from 'react-native';
 import Text from '../components/utilidades/Text'; // Importación del componente de texto personalizado
 import ButtonPastilla from '../components/citas/ButtonPastilla'; // Importación del componente de botón personalizado
 import CardCita from '../components/citas/CardCita'; // Importación del componente de tarjeta de cita personalizado
 import Input from '../components/inputs/AllBorder';
+import { useFocusEffect } from '@react-navigation/native';
+import fetchData from '../utils/FetchData';
 
 export default function AppCitas({ navigation }) {
+    //TODO Aqui empiezan las funciones y variables que tienen que ver con la dinamica visual de la pantalla
     const [selectedButton, setSelectedButton] = useState('En espera'); // Estado para el botón seleccionado
 
     // Función para cambiar el estado del botón seleccionado
@@ -29,13 +32,11 @@ export default function AppCitas({ navigation }) {
 
     const [showFilters, setShowFilters] = useState(false); // Estado para mostrar/ocultar el menú de filtros
     const animation = useRef(new Animated.Value(0)).current; // Valor de animación
-    const [heightContainers, setHeight] = useState(0); // Valor de animación
     const [opacity, setOpacity] = useState(0);
 
     // Función para manejar el toggle del menú de filtros
     const toggleFilters = () => {
         const toValue = showFilters ? 0 : 120; // Altura del menú de filtros cuando está visible
-        setHeight(showFilters ? 0 : 55); // Altura del menú de filtros cuando está visible
         setOpacity(showFilters ? 0 : 1);
         setShowFilters(!showFilters);
 
@@ -45,6 +46,75 @@ export default function AppCitas({ navigation }) {
             easing: Easing.out(Easing.ease),
             useNativeDriver: false,
         }).start();
+    };
+
+    // TODO Aqui empiezan las funciones y variables que tienen que ver con base de datos
+
+    // Efecto para cargar los datos
+    useFocusEffect(
+        React.useCallback(() => {
+            readElements(); // Leer elementos de la API
+        }, [])
+    );
+
+    const [citas, setCitas] = useState([]);
+
+    // Función para leer datos de la API
+    const readElements = async () => {
+        try {
+            const responseCitas = await fetchData('citas.php', 'readAllEspecific')
+            if (responseCitas.status) {
+                setCitas(responseCitas.dataset);
+                console.log(responseCitas.dataset)
+            } else {
+                setCitas([]);
+                //Alert.alert('Error', `${responseCitas.error}`);
+            }
+        } catch (error) {
+            console.error('Error en leer los elementos:', error);
+            Alert.alert('Error', 'Hubo un error.');
+        }
+    };
+
+    const deleteRow = async (id_cita) => {
+        try {
+            const formData = new FormData();
+            formData.append('id_cita', id_cita);
+
+            const responseCitas = await fetchData('citas.php', 'deleteRow', formData);
+            if (responseCitas.status) {
+                Alert.alert('Éxito', `${responseCitas.message}`);
+                readElements(); // Re-cargar los elementos después de la eliminación
+            } else {
+                Alert.alert('Error', `${responseCitas.error}`);
+            }
+        } catch (error) {
+            console.error('Error en eliminar la cita:', error);
+            Alert.alert('Error', 'Hubo un error.');
+        }
+    };
+
+    const deleteCita = (idCita) => {
+        Alert.alert(
+            'Eliminar cita',
+            `¿Seguro que deseas eliminar la cita con ID: ${idCita}?`,
+            [
+                {
+                    text: 'Cancelar',
+                    onPress: () => console.log('Eliminación cancelada'), // Acción en caso de cancelar
+                    style: 'cancel',
+                },
+                {
+                    text: 'Eliminar',
+                    onPress: async () => {
+                        // Acción en caso de confirmar la eliminación
+                        console.log(`Cita con ID ${idCita} será eliminada`);
+                        await deleteRow(idCita); // Llamada a la función para eliminar la cita
+                    },
+                },
+            ],
+            { cancelable: false } // No permite cancelar el alert tocando fuera de él
+        );
     };
 
     return (
@@ -68,25 +138,32 @@ export default function AppCitas({ navigation }) {
                             style={styles.iconImage}
                         />
                     </TouchableOpacity>
-                    <Animated.View style={[styles.contenedorFiltros, { height: animation }]}>
-                        <View style={[styles.contenedorFecha, { height: heightContainers }]}>
+                    <Animated.View style={[styles.contenedorFiltros, { height: animation, opacity: opacity }]}>
+                        <View style={styles.contenedorFecha}>
                             <Image
                                 source={require('../images/icons/iconCalendar.png')}
                                 style={styles.iconCalendar}
                             /// Ruta de la imagen de botón de agregar
                             />
                             <Text texto='Buscar por fecha de llegada' fontSize={12}
-                                paddingHorizontal={10} font='PoppinsMedium'/>
+                                paddingHorizontal={10} font='PoppinsMedium' />
                             <Input
                                 placeholder='27/06/24'
                                 width={90}
                                 textAlign='center'
-                                opacity={opacity}
                                 padding={0}
+                                fontSize={12}
                             />
                         </View>
-                        <View style={[styles.contenedorNumero, { height: heightContainers }]}>
-
+                        <View style={styles.contenedorNumero}>
+                            <Input
+                                placeholder='Buscar por número de cita'
+                                width='100%'
+                                iconImage={(require('../images/icons/iconLupa.png'))}
+                                padding={5}
+                                tintColor='#000000'
+                                fontSize={12}
+                            />
                         </View>
                     </Animated.View>
                     <View style={styles.contenedorMenu}>
@@ -108,10 +185,43 @@ export default function AppCitas({ navigation }) {
                     </View>
                 </View>
                 <ScrollView style={styles.scrollCitas}>
-                    <CardCita accionCard={verDetalles} />
-                    <CardCita accionCard={verDetalles} />
-                    <CardCita accionCard={verDetalles} />
-                    <CardCita accionCard={verDetalles} />
+                    {citas.length === 0 ? (
+                        <Text texto='Sin citas para mostrar' fontSize={22}
+                            paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
+                        />
+                    ) : citas.length === 1 ? (
+                        <CardCita
+                            accionCard={verDetalles}
+                            cita={citas[0]}
+                            citaData={{
+                                fotoCarro: citas[0].imagen_automovil,
+                                fecha_cita: citas[0].fecha_cita,
+                                anio_cita: citas[0].anio_cita,
+                                hora_cita: citas[0].hora_cita,
+                                marca_automovil: citas[0].marca_automovil,
+                                placa_automovil: citas[0].placa_automovil,
+                                movilizacion_vehiculo: citas[0].movilizacion_vehiculo
+                            }}
+                            onLongPress={() => deleteCita(citas[0].id_cita)} // Pasa una función anónima
+                        />
+                    ) : (
+                        citas.map(cita => (
+                            <CardCita
+                                key={cita.id_cita}
+                                accionCard={verDetalles}
+                                citaData={{
+                                    fotoCarro: cita.imagen_automovil,
+                                    fecha_cita: cita.fecha_cita,
+                                    anio_cita: cita.anio_cita,
+                                    hora_cita: cita.hora_cita,
+                                    marca_automovil: cita.marca_automovil,
+                                    placa_automovil: cita.placa_automovil,
+                                    movilizacion_vehiculo: cita.movilizacion_vehiculo
+                                }}
+                                onLongPress={() => deleteCita(cita.id_cita)}
+                            />
+                        ))
+                    )}
                 </ScrollView>
             </View>
         </SafeAreaView >
@@ -132,13 +242,13 @@ const styles = StyleSheet.create({
     },
     contenedorTitulo: {
         width: '100%', // Ancho completo
-        backgroundColor: '#E5383B', // Fondo gris claro
+        backgroundColor: '#E5383B', // Fondo rojo
         flexDirection: 'row', // Disposición en fila para los elementos hijos
         alignItems: 'center', // Alinea elementos al centro verticalmente
         justifyContent: 'flex-start', // Alinea elementos al inicio horizontalmente
         marginBottom: 10, // Margen vertical de 20 unidades
         marginTop: 15,
-        paddingHorizontal: 20, // Relleno horizontal de 15 unidades
+        paddingHorizontal: 25,
     },
     image: {
         marginLeft: 10, // Margen izquierdo de 10 unidades para la imagen
@@ -165,7 +275,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 50,
         paddingBottom: 50,
         paddingTop: 10,
-        paddingHorizontal: 0,
+        paddingHorizontal: 25,
     },
     contenedorOpciones: {
         width: '100%', // Ancho completo
@@ -200,28 +310,24 @@ const styles = StyleSheet.create({
         top: 0, // Desde la parte superior
         zIndex: 1, // Orden en la pila
         borderRadius: 15,
+        paddingHorizontal: 5,
     },
     contenedorFecha: {
         width: '100%',
         borderRadius: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 15,
     },
     contenedorNumero: {
         width: '100%',
-        height: 0,
         borderRadius: 15,
         backgroundColor: 'white',
         flexDirection: 'row',
-        paddingHorizontal: 15,
-
     },
     scrollCitas: {
         flex: 1, // Ocupa todo el espacio disponible
         width: '100%', // Ancho completo
-        backgroundColor: 'white', // Fondo blanco para el área de desplazamiento
-        paddingHorizontal: 15,
+        backgroundColor: 'white',
     },
     iconCalendar: {
         width: 28,
