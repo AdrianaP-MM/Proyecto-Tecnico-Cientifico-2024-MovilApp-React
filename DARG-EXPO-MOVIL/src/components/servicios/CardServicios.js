@@ -8,7 +8,7 @@ import Text from '../utilidades/Text';
 import Button from '../buttons/ButtonRojo';
 
 //Constante de la card de servicios 
-const VerticalCard = ({ titulo, tipo }) => {
+const VerticalCard = ({ title, tipo }) => {
     //Constante para la navegacion para cambiar de pantalla
     const navigation = useNavigation();
 
@@ -24,7 +24,7 @@ const VerticalCard = ({ titulo, tipo }) => {
 
             <View style={styles.cardContent} /*Contenedor de la informacion de la card*/ >
                 <Text texto='Nombre de servicio:' font='PoppinsSemiBold' fontSize={13} />
-                <Text texto={`${titulo}`} />
+                <Text texto={`${title}`} />
                 <Text texto='Tipo de servicio:' font='PoppinsSemiBold' fontSize={13} />
                 <Text texto={`${tipo}`} />
                 <Button textoBoton='Ver vehículos' fontSize={14} width='95%' accionBoton={() => navigation.navigate('AutosEnProceso')}

@@ -1,66 +1,70 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-//Import de la navegacion para poder cambiar la pantalla
 import { useNavigation } from '@react-navigation/native';
 import Text from '../utilidades/Text';
 import Button from '../buttons/ButtonRojo';
 
-//Constante de la card de grupos de servicios
-const HorizontalCard = ({ title, imageUrl }) => {
-  //Constante para la navegacion para cambiar de pantalla
+const HorizontalCard = ({ title, imageUrl, idServiciosDisponibles }) => {
   const navigation = useNavigation();
+  
+ // Imprime el idServiciosDisponibles en la consola
+ console.log('ID Servicios Disponibles:', idServiciosDisponibles);
 
   return (
-    //Contenedor general de la card
     <View style={styles.horizontalCard}>
-      <Image source={{ uri: imageUrl }} style={styles.cardImage} /*Imagen para la card de grupo de servicios*/ />
-      <View style={styles.cardContent} /*Contenedor para el contenido de la card*/>
+      <Image source={{ uri: imageUrl }} style={styles.cardImage} />
+      <View style={styles.cardContent}>
         <View style={styles.grup}>
           <Text texto='Nombre del grupo: ' fontSize={15} />
           <Text texto={`${title}`} font='PoppinsMedium' fontSize={15} />
         </View>
         <View style={styles.row}>
-          <Button textoBoton='Ver servicio' fontSize={16} width='55%' accionBoton={() => navigation.navigate('Servicios', { title })}
-            marginTop={10} marginBottom={10} />
+          <Button
+            textoBoton='Ver servicio'
+            fontSize={16}
+            width='55%'
+            accionBoton={() => navigation.navigate('Servicios', { title, idServiciosDisponibles })}
+            marginTop={10}
+            marginBottom={10}
+          />
         </View>
       </View>
     </View>
   );
 };
 
-//Hoja de estilos especificos para la card
 const styles = StyleSheet.create({
   horizontalCard: {
-    width: '100%', /*Ancho de la card*/
-    borderRadius: 10, /*Borde redondeado de la card*/
-    marginBottom: 16, /*Separacion inferior entre cards*/
-    backgroundColor: '#fff', /*Fondo de color de la card*/
-    shadowColor: '#000', /*Color de la sombra*/
-    shadowOffset: { width: 0, height: 2 }, /*Orientacion de la sombra*/
-    shadowOpacity: 0.8, /*Opacidad de la sombra*/
-    shadowRadius: 4, /*Borde redondeado de la sombra*/
-    elevation: 5, /*Dispersion de la sombra*/
+    width: '100%',
+    borderRadius: 10,
+    marginBottom: 16,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
   },
   cardImage: {
-    width: '100%', /*Ancho de la imagen de la card*/
-    height: 200, /*Alto de la imagen de la card*/
-    borderTopLeftRadius: 10, /*Borde superior izquierdo redondeado*/
-    borderTopRightRadius: 10, /*Borde superior derecho redondeado*/
-    resizeMode: 'cover', /*Forma de contener la imagen*/
-  }, 
+    width: '100%',
+    height: 200,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    resizeMode: 'cover',
+  },
   cardContent: {
-    padding: 16, /*Separacion interior del contenido*/
-    flex: 1, /*Propiedad flex*/
-    justifyContent: 'space-between', /*Contenido alienado a los extremos*/
+    padding: 16,
+    flex: 1,
+    justifyContent: 'space-between',
   },
   row: {
-    width: '100%', /*Ancho del contenedor del boton*/
-    alignItems: 'center', /*Alinear el contenido verticalmente*/
+    width: '100%',
+    alignItems: 'center',
   },
   grup: {
-    flexDirection: 'row', /*Contenido alineado horizontalmente*/
-    flexWrap: 'wrap', /*Propiedad wrap*/
-    width: '100%', /*Ancho del contenedor del nombre del grupo*/
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
   },
 });
 

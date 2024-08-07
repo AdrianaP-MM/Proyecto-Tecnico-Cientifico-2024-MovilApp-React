@@ -20,6 +20,7 @@ export default function App() {
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
           nombre: item.nombre_tipo_servicio,
+          id: item.id_tipo_servicio,
         }));
         setreadAll(data);
       } else {
@@ -41,10 +42,10 @@ export default function App() {
 
   const renderServicios = (servicios) => {
     return servicios.map((servicio, index) => (
-      <HorizontalCard 
-        key={index} 
-        title={servicio.nombre} 
-        imageUrl={servicio.imageUrl} // Ajusta esto si tienes una URL de imagen en tus datos
+      <HorizontalCard
+        key={index}
+        title={servicio.nombre}
+        idServiciosDisponibles={servicio.id}
       />
     ));
   };
@@ -86,6 +87,7 @@ export default function App() {
     </View>
   );
 }
+
 
 // Hoja de estilos para el contenedor
 const styles = StyleSheet.create({
