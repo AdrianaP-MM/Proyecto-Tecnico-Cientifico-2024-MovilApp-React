@@ -1,10 +1,11 @@
 // Importa las dependencias necesarias
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect} from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import TarjetaCarro from '../components/carros/CardCarro'; // Importa el componente TarjetaCarro
 import Text from '../components/utilidades/Text'; // Importa el componente Text
 import fetchData from '../utils/FetchData';
 import * as contants from '../utils/Constantes';
+import { useFocusEffect } from '@react-navigation/native'; // Importa useFocusEffect
 
 // Componente principal de la vista de carros
 const CarrosVista = ({ navigation }) => {
@@ -32,9 +33,11 @@ const CarrosVista = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    fillCardsCarsAll();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fillCardsCarsAll();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>

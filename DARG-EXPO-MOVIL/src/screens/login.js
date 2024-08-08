@@ -7,24 +7,10 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
 import fetchData from '../utils/FetchData';
 
-/*
-<Button textoBoton='cerrar wea' accionBoton={handleCerrarSesion} fontSize={17} width='90%' marginTop={50} />
-          <Button textoBoton='Abrir dialogo' accionBoton={handleAbrirDialogo} fontSize={17} width='90%' marginTop={50} />
 
-          const handleCerrarSesion = async () => {
-    try {
-      const DATA = await fetchData(API, 'logOut');
-      if (!DATA.error) {
-        Alert.alert('Éxito', 'Sesesion cerrada.');
-      } else {
-        Alert.alert('Error', DATA.error);
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Hubo un problema al cerrar sesion.');
-    }
-  };
-*/
+
+
+
 
 export default function Login({ navigation }) {
   // Define los estados para el correo electrónico y la contraseña
@@ -79,7 +65,21 @@ export default function Login({ navigation }) {
     }
   };
 
-  
+  const handleCerrarSesion = async () => {
+    try {
+      const DATA = await fetchData(API, 'logOut');
+      if (!DATA.error) {
+        Alert.alert('Éxito', 'Se cerró la sesión correctamente');
+      } else {
+        Alert.alert('Error', DATA.error);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Hubo un problema al cerrar sesión.');
+    }
+  };
+
+
 
   // Función para enviar el código de verificación al correo ingresado
   const handleSendCode = async () => {
@@ -337,14 +337,17 @@ export default function Login({ navigation }) {
             </TouchableRipple>
           </View>
           <Button textoBoton='Iniciar sesión' accionBoton={handleLogin} fontSize={17} width='90%' marginTop={50} />
+          <Button textoBoton='cerrar sesión' accionBoton={handleCerrarSesion} fontSize={17} width='90%' marginTop={10} />
           <View style={styles.registerContainer}>
             <Text texto='¿No tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
             <TouchableRipple
               onPress={() => navigation.navigate('Registrate')}
               rippleColor="rgba(0, 0, 0, .32)"
             >
+
               <Text texto='Registrate' font='PoppinsSemiBold' fontSize={15} textAlign='center' color='red' />
             </TouchableRipple>
+
           </View>
         </View>
       </View>

@@ -28,7 +28,7 @@ export default async function fetchData(filename, action, form = null) {
 
         // Parseo del JSON de la respuesta
         const DATA = await RESPONSE.json();
-        console.log('RESPONSE:', action, DATA); // Imprime los datos recibidos para depuración
+        //console.log('RESPONSE:', action, DATA); // Imprime los datos recibidos para depuración
         return DATA; // Devuelve los datos obtenidos
 
     } catch (error) {

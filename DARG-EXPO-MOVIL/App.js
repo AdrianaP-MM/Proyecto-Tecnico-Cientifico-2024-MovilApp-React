@@ -77,8 +77,9 @@ export default function App() {
             title: 'Registrarse',
             headerShown: true, headerBackImage: () => <CustomBackButton />,
             headerStyle: {
-              backgroundColor: '#F9FAFB', // Color de fondo del header
+              backgroundColor: '#E5383B', // Color de fondo del header
             },
+            headerTintColor: 'white',
           }} />
           <Stack.Screen name="RestablecerContra" component={RestablecerContra} options={{ headerShown: false }} />
           <Stack.Screen name="EditaPerfil" component={EditaPerfil} options={{ title: 'Editar persona juridica' }} />

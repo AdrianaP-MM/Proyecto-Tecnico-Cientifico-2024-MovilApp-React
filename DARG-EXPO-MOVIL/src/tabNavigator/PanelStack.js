@@ -13,7 +13,7 @@ const PanelStack = () => {
             <Stack.Screen name="Notificaciones" component={NotificacionesSub} options={{
                 headerShown: true, headerBackImage: () => <CustomBackButton />, // Componente personalizado para el botón de retroceso
                 headerStyle: {
-                    backgroundColor: '#F9FAFB', // Color de fondo del header
+                    backgroundColor: '#E5383B', // Color de fondo del header
                 },
                 title: 'Regresar' // Título en el header
             }} />

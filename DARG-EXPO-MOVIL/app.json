@@ -4,7 +4,7 @@
     "slug": "DARG-EXPO-MOVIL",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/imgdarg.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/imgdarg.png",

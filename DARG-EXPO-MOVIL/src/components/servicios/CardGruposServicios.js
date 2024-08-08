@@ -9,7 +9,7 @@ const HorizontalCard = ({ title, imageUrl, idServiciosDisponibles }) => {
   const navigation = useNavigation(); // Obtiene el objeto de navegación
 
   // Imprime el idServiciosDisponibles en la consola para depuración
-  console.log('ID Servicios Disponibles:', idServiciosDisponibles);
+  //console.log('ID Servicios Disponibles:', idServiciosDisponibles);
 
   return (
     <View style={styles.horizontalCard}>

@@ -23,15 +23,17 @@ export default function DashboardScreen({ navigation }) {
       const formData = new FormData();
       formData.append('search_value', searchValue);
       const DATA = await fetchData(API, 'readAllMyCars', formData); // Llama a la API para obtener todos los autos
+      //console.log('DATA DE CARROsss',DATA);
       if (DATA.status) {
          // Mapea los datos obtenidos para crear un array con los autos
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
-          imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          imagen: `${item.imagen_automovil}`,
           modelo: item.modelo_automovil,
           placa: item.placa_automovil
         }));
         setAllCars(data);  // Actualiza el estado con los autos obtenidos
+        console.log('DATA DE CARRO',data);
       } else {
         console.log(DATA.error);
         setAllCars([]); // Si hay error, limpia el estado de los autos
