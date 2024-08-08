@@ -11,9 +11,11 @@ export default function App() {
     const scrollY = useRef(new Animated.Value(0)).current;
     const [contentHeight, setContentHeight] = useState(0);
     const [containerHeight, setContainerHeight] = useState(0);
-    const [readCarrosenProceso, setreadOne] = useState([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [readCarrosenProceso, setreadOne] = useState([]);
+    const [mostrarCarrosenProceso, setmostrarCarrosenProceso] = useState([]);
+
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -28,6 +30,7 @@ export default function App() {
         formData.append('id_servicio', idServiciosDisponibles);
         try {
             const DATA = await fetchData('servicios_en_proceso.php', 'readCarrosenProceso', formData);
+            console.log('Datos obtenidos Carros En Servicio:', DATA); // Registra los datos obtenidos
             if (DATA.status) {
                 const data = DATA.dataset.map(item => ({
                     nombre: item.nombre_servicio,
@@ -39,8 +42,31 @@ export default function App() {
                 setreadOne([]);
             }
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error("Error al obtener los datos:", error);
             setreadOne([]);
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
+        }
+    };
+    
+    const selectCarrosenProceso = async () => {
+        const formData = new FormData();
+        formData.append('id_servicio', idServiciosDisponibles);
+        try {
+            // Datos locales para pruebas
+            const localData = [
+                { modelo_automovil: "Toyota Corolla", nombre_tipo_automovil: "Sedán", placa_automovil: "ABC123", fecha_registro: "2024-08-07" }
+            ];
+            setmostrarCarrosenProceso(localData.map(item => ({
+                modelo: item.modelo_automovil,
+                tipoVehiculo: item.nombre_tipo_automovil,
+                placa: item.placa_automovil,
+                fechaDeRegistro: item.fecha_registro,
+            })));
+        } catch (error) {
+            console.error("Error al obtener los datos:", error);
+            setmostrarCarrosenProceso([]);
         } finally {
             setLoading(false);
             setRefreshing(false);
@@ -49,23 +75,45 @@ export default function App() {
 
     useEffect(() => {
         selectCarrosEnServicio();
+        selectCarrosenProceso();
     }, []);
-    
+
     useEffect(() => {
         console.log('Data fetched:', readCarrosenProceso);
     }, [readCarrosenProceso]);
-    
+
 
     const renderCarrosEnServicio = (servicios) => {
-    console.log('Servicios:', servicios); // Verifica los datos aquí
-    return servicios.map((item, index) => (
-        <CardDescripcion
-            key={index}
-            title={item.nombre}
-            descripcion={item.descripcion}
-        />
-    ));
-};
+        if (!Array.isArray(servicios)) {
+            console.error('Error: servicios no es un arreglo');
+            return null;
+        }
+        console.log('Servicios:', servicios); // Verifica los datos aquí
+        return servicios.map((item, index) => (
+            <CardDescripcion
+                key={index}
+                title={item.nombre}
+                descripcion={item.descripcion}
+            />
+        ));
+    };
+
+    const rendermostrarCarrosenProceso = (servicios) => {
+        if (!Array.isArray(servicios)) {
+            console.error('Error: servicios no es un arreglo');
+            return null;
+        }
+        console.log('Servicios:', servicios); // Verifica los datos aquí
+        return servicios.map((item, index) => (
+            <CardDescripcion
+                key={index}
+                modelo={item.modelo}
+                tipoVehiculo={item.tipoVehiculo}
+                placa={item.placa}
+                fechaDeRegistro={item.fechaDeRegistro}
+            />
+        ));
+    };
 
     return (
         <View style={styles.container}>
@@ -100,28 +148,14 @@ export default function App() {
                     })}
                     showsVerticalScrollIndicator={false}
                 >
-                    <AutoEnProceso
-                        marca="Mazda"
-                        modelo="RX8"
-                        tipoVehiculo="Deportivo Coupe"
-                        placa="P246-456"
-                        fechaDeRegistro="17/06/2024"
-                    />
-                    <AutoEnProceso
-                        marca="Mazda"
-                        modelo="RX8"
-                        tipoVehiculo="Deportivo Coupe"
-                        placa="P246-456"
-                        fechaDeRegistro="17/06/2024"
-                    />
-                    <AutoEnProceso
-                        marca="Mazda"
-                        modelo="RX8"
-                        tipoVehiculo="Deportivo Coupe"
-                        placa="P246-456"
-                        fechaDeRegistro="17/06/2024"
-                    />
+
+                    <ScrollView>
+                        {rendermostrarCarrosenProceso(mostrarCarrosenProceso)}
+                    </ScrollView>
+
+
                 </ScrollView>
+
                 <CustomScrollBar
                     scrollY={scrollY}
                     contentHeight={contentHeight}

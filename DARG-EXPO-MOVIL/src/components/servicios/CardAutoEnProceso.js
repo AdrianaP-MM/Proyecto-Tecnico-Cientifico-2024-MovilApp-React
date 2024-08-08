@@ -4,7 +4,7 @@ import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import fixedImage from '../../images/carros/imagenAuto.png';
 import Text from '../utilidades/Text';
 //Constante de la card de autos en proceso con sus parametros requeridos
-const AutoEnProceso = ({ marca, modelo, tipoVehiculo, placa, fechaDeRegistro }) => {
+const AutoEnProceso = ({ modelo, tipoVehiculo, placa, fechaDeRegistro }) => {
     return (
         
         /*Contenedor principal de card*/
@@ -18,8 +18,6 @@ const AutoEnProceso = ({ marca, modelo, tipoVehiculo, placa, fechaDeRegistro }) 
 
             <View style={styles.cardContentContainer} /*Contenedor de la info de la card*/>
                 <ScrollView /*Contenedor con scroll para la informacion*/>
-                <Text texto='Marca:' font='PoppinsSemiBold' fontSize={13} />
-                <Text texto={`${marca}`} />
                 <Text texto='Modelo:' font='PoppinsSemiBold' fontSize={13} />
                 <Text texto={`${modelo}`} />
                 <Text texto='Tipo de vehiculo:' font='PoppinsSemiBold' fontSize={13} />

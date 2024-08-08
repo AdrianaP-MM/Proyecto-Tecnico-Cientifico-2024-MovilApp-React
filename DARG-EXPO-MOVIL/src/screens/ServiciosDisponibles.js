@@ -115,13 +115,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 20,
-    marginVertical: 20,
+    marginTop: -160,  // Añade margen superior
+    marginBottom: 20,
   },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 'auto',
     marginBottom: 20,
+    marginTop: -55,  // Ajusta margen superior del botón
   },
   backButtonText: {
     fontSize: 16,
