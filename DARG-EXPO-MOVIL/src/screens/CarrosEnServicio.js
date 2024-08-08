@@ -1,118 +1,82 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import CardDescripcion from '../components/servicios/CardDescripcionServicios';
-import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
-import AutoEnProceso from '../components/servicios/CardAutoEnProceso';
-import Text from '../components/utilidades/Text';
-import fetchData from '../utils/FetchData';
+import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native'; // Importa los componentes necesarios de React Native
+import { useNavigation, useRoute } from '@react-navigation/native'; // Importa hooks para la navegación
+import CardDescripcion from '../components/servicios/CardDescripcionServicios'; // Importa el componente para mostrar la descripción del servicio
+import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada'; // Importa el componente personalizado de la barra de desplazamiento
+import AutoEnProceso from '../components/servicios/CardAutoEnProceso'; // Importa el componente para mostrar los autos en proceso
+import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
+import fetchData from '../utils/FetchData'; // Importa la función para obtener datos
 
+// Componente principal de la pantalla
 export default function App() {
-    const scrollY = useRef(new Animated.Value(0)).current;
-    const [contentHeight, setContentHeight] = useState(0);
-    const [containerHeight, setContainerHeight] = useState(0);
-    const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(false);
-    const [readCarrosenProceso, setreadOne] = useState([]);
-    const [mostrarCarrosenProceso, setmostrarCarrosenProceso] = useState([]);
+    const scrollY = useRef(new Animated.Value(0)).current; // Ref para la animación del scroll
+    const [contentHeight, setContentHeight] = useState(0); // Altura del contenido para la barra de desplazamiento
+    const [containerHeight, setContainerHeight] = useState(0); // Altura del contenedor para la barra de desplazamiento
+    const [loading, setLoading] = useState(true); // Estado para cargar datos
+    const [refreshing, setRefreshing] = useState(false); // Estado para refrescar los datos
+    const [readCarrosenProceso, setreadOne] = useState([]); // Estado para almacenar los datos de los carros en proceso
+    const [mostrarCarrosenProceso, setmostrarCarrosenProceso] = useState([]); // Estado para almacenar los datos de los carros a mostrar
 
-    const navigation = useNavigation();
-    const route = useRoute();
-    const { idServiciosDisponibles } = route.params;
+    const navigation = useNavigation(); // Hook para la navegación
+    const route = useRoute(); // Hook para obtener los parámetros de la ruta
+    const { idServiciosDisponibles } = route.params; // Parámetro de la ruta
 
+    // Función para volver a la pantalla anterior
     const handleGoBack = () => {
         navigation.goBack();
     };
 
+    // Función para obtener los datos de los carros en servicio
     const selectCarrosEnServicio = async () => {
         const formData = new FormData();
-        formData.append('id_servicio', idServiciosDisponibles);
+        formData.append('id_servicio', idServiciosDisponibles); // Añade el id del servicio a los datos del formulario
         try {
-            const DATA = await fetchData('servicios_en_proceso.php', 'readCarrosenProceso', formData);
+            const DATA = await fetchData('servicios_en_proceso.php', 'readCarrosenProceso', formData); // Obtiene los datos del servicio
             console.log('Datos obtenidos Carros En Servicio:', DATA); // Registra los datos obtenidos
             if (DATA.status) {
                 const data = DATA.dataset.map(item => ({
                     nombre: item.nombre_servicio,
                     descripcion: item.descripcion_servicio,
                 }));
-                setreadOne(data);
+                setreadOne(data); // Actualiza el estado con los datos obtenidos
             } else {
-                console.log(DATA.error);
+                console.log(DATA.error); // Registra el error si no se obtiene la información
                 setreadOne([]);
             }
         } catch (error) {
-            console.error("Error al obtener los datos:", error);
+            console.error("Error al obtener los datos:", error); // Registra el error en caso de excepción
             setreadOne([]);
         } finally {
-            setLoading(false);
-            setRefreshing(false);
+            setLoading(false); // Finaliza el estado de carga
+            setRefreshing(false); // Finaliza el estado de refresco
         }
     };
 
-    const selectCarrosenProceso = async () => {
-        const formData = new FormData();
-        formData.append('id_servicio', idServiciosDisponibles);
-        try {
-            const DATA = await fetchData('carros_en_proceso.php', 'mostrarCarrosenProceso', formData);
-            console.log('Datos obtenidos Carros En Proceso:', DATA); // Registra los datos obtenidos
-            if (DATA.status) {
-                const data = DATA.dataset.map(item => ({
-                    modelo: item.modelo_automovil,
-                    tipoVehiculo: item.nombre_tipo_automovil,
-                    placa: item.placa_automovil,
-                    fechaDeRegistro: item.fecha_registro,
-                }));
-                setmostrarCarrosenProceso(data);
-            } else {
-                console.log(DATA.error);
-                setmostrarCarrosenProceso([]);
-            }
-        } catch (error) {
-            console.error("Error al obtener los datos:", error);
-            setmostrarCarrosenProceso([]);
-        } finally {
-            setLoading(false);
-            setRefreshing(false);
-        }
-    };
-
+    // Llama a las funciones para obtener los datos al montar el componente
     useEffect(() => {
         selectCarrosEnServicio();
         readElements();
     }, []);
 
+    // Registra los datos obtenidos cada vez que cambian
     useEffect(() => {
         console.log('Data fetched:', readCarrosenProceso);
     }, [readCarrosenProceso]);
 
-    const renderCarrosEnServicio = (servicios) => {
-        if (!Array.isArray(servicios)) {
-            console.error('Error: servicios no es un arreglo');
-            return null;
-        }
-        console.log('Servicios:', servicios); // Verifica los datos aquí
-        return servicios.map((item, index) => (
-            <CardDescripcion
-                key={index}
-                title={item.nombre}
-                descripcion={item.descripcion}
-            />
-        ));
-    };
-
-    // Función para leer datos de la API
+    // Función para leer los elementos de la API
     const readElements = async () => {
         try {
             console.log('asasasa', idServiciosDisponibles);
             const formData = new FormData();
             formData.append('id_servicio', idServiciosDisponibles);
 
+            // Obtiene datos de carros y servicios en proceso
             const responseCarros = await fetchData('carros_en_proceso.php', 'mostrarCarrosenProceso', formData);
             const responseServicio = await fetchData('servicios_en_proceso.php', 'readCarrosenProceso', formData);
 
             if (responseCarros.status) {
                 setmostrarCarrosenProceso(responseCarros.dataset);
-                console.log('Carros leyidos', responseCarros.dataset)
+                console.log('Carros leyidos', responseCarros.dataset);
             } else {
                 setmostrarCarrosenProceso([]);
                 //Alert.alert('Error', ${responseCitas.error});
@@ -120,14 +84,14 @@ export default function App() {
 
             if (responseServicio.status) {
                 setreadOne(responseServicio.dataset);
-                console.log('Servicio leyido', responseServicio.dataset)
+                console.log('Servicio leyido', responseServicio.dataset);
             } else {
                 setmostrarCarrosenProceso([]);
                 //Alert.alert('Error', ${responseCitas.error});
             }
         } catch (error) {
-            console.error('Error en leer los elementos:', error);
-            Alert.alert('Error', 'Hubo un error.');
+            console.error('Error en leer los elementos:', error); // Registra el error en caso de excepción
+            Alert.alert('Error', 'Hubo un error.'); // Muestra una alerta en caso de error
         }
     };
 
