@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native'; // Importa componentes necesarios de react-native
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert, Image } from 'react-native'; // Importa componentes necesarios de react-native
 import { Avatar, TouchableRipple } from 'react-native-paper'; // Importa componentes necesarios de react-native-paper
 import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
 import Button from '../components/buttons/ButtonRojo'; // Importa el botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 import fetchData from '../utils/FetchData';
+import * as ImagePicker from 'expo-image-picker';
 
 // Componente principal que exporta la pantalla de edición jurídica
 export default function EditarPerfil({ navigation }) {
@@ -23,6 +24,9 @@ export default function EditarPerfil({ navigation }) {
     const [depaSeleccionado, setDepaSeleccionado] = useState('');
 
     const API = 'usuarios_clientes.php';
+    const [see, setSee] = useState('0%');
+    const [seeH, setSeeH] = useState('0%');
+    const [opacity, setOpacity] = useState(0);
 
     const readElements = async () => {
         try {
@@ -58,6 +62,26 @@ export default function EditarPerfil({ navigation }) {
                 { id: 'Sonsonate', nombre: 'Sonsonate' },
                 { id: 'Usulután', nombre: 'Usulután' },
             ]);
+
+            const readUser = await fetchData(API, 'readProfile');
+            if (readUser.status) {
+                const ROW = readUser.dataset;
+                setNombre(ROW.nombres_cliente);
+                setApellido(ROW.apellidos_cliente);
+                setTelefono(ROW.telefono_cliente);
+                setDepaSeleccionado(ROW.departamento_cliente);
+                setCorreo(ROW.correo_cliente);
+                setRubroSeleccionado(ROW.rubro_comercial);
+                setDui(ROW.dui_cliente);
+                setNit(ROW.NIT_cliente);
+                setNrc(ROW.NRC_cliente);
+                setNrf(ROW.NRF_cliente);
+
+                if (ROW.tipo_cliente == 'Persona juridica') {
+                    setOpacity(1); setSee('100%'); setSeeH('auto');
+                    console.log(ROW.tipo_cliente);
+                }
+            }
         } catch (error) {
             console.log('ERROR');
         }
@@ -109,9 +133,69 @@ export default function EditarPerfil({ navigation }) {
         return value.replace(/\D/g, '').slice(0, 14); // Elimina caracteres no numéricos y limita a 14 dígitos
     };
 
+    const validateFields = () => {
+        if (!fechaLlegada || !horaLlegada || !autoSeleccionado || !movilizacionSeleccionada || !zonaHabilitada || !direccionIda || !direccionRegreso
+            || autoSeleccionado == 0 || movilizacionSeleccionada == 0 || zonaHabilitada == 0) {
+            Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
+            return false;
+        }
+        return true;
+    };
+
     // Función para navegar a otra pantalla
-    const handleNavigate = () => {
-        navigation.navigate('TabNavigator');
+    const editProfile = async () => {
+        const formData = new FormData();
+        try {
+            formData.append('user_dui', dui);
+            formData.append('user_telefono', telefono);
+            formData.append('user_correo', correo);
+            formData.append('user_nombres', nombre);
+            formData.append('user_apellidos', apellido);
+            formData.append('user_departamento', depaSeleccionado);
+            formData.append('user_nit', nit);
+            if (opacity == 1) {
+                formData.append('user_rubro', rubroSeleccionado);
+                formData.append('user_nrc', nrc);
+                formData.append('user_nrf', nrf);
+            }
+            const responseProfile = await fetchData(API, 'editProfile', formData);
+            if (responseProfile.status) {
+                Alert.alert('Éxito', `${responseProfile.message}`);
+                readElements();
+            } else {
+                Alert.alert('Error', `${responseProfile.error}`);
+            }
+        } catch (error) {
+            console.error('Error en actualizar el perfil:', error);
+            Alert.alert('Error', 'Hubo un error.');
+            console.log(formData)
+        }
+    };
+
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+        // Pide permiso para acceder a la galería
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert('Error', 'Lo siento, necesitamos permisos para acceder a tu galería.');
+            return;
+        }
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+    const changeImage = async () => {
+        pickImage();
     };
 
     return (
@@ -122,15 +206,16 @@ export default function EditarPerfil({ navigation }) {
         >
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.avatarContainer}>
-                    <Avatar.Icon size={75} icon="account" style={styles.avatarIcon} />
-                    <Text texto='Empresa' font='PoppinsBold' fontSize={20} textAlign='center' />
+                    <Avatar.Icon size={75} icon="alpha-c" style={styles.avatarIcon} />
+                    <Text texto='Cuenta' font='PoppinsBold' fontSize={20} textAlign='center' />
                     <TouchableRipple
-                        onPress={() => console.log('Pressed')} // Acción al presionar el botón
+                        onPress={changeImage} // Acción al presionar el botón
                         rippleColor="rgba(0, 0, 0, .32)" // Color del efecto ripple
                         style={styles.changePhotoButton} // Estilos del botón
                     >
                         <Text texto='Cambiar foto de perfil' font='PoppinsRegular' fontSize={14} textAlign='center' color='#BA181B' />
                     </TouchableRipple>
+                    <Button textoBoton='Cerrar sesion' accionBoton={handleCerrarSesion} fontSize={15} width={130} />
                 </View>
 
                 <View style={styles.ContainerInputs}>
@@ -178,14 +263,17 @@ export default function EditarPerfil({ navigation }) {
                         maxLength={50}
                         style={styles.input}
                     />
-                     <Input
+                    <Input
                         placeholder='Rubro comercial'
                         value={rubroSeleccionado}
                         onChangeText={setRubroSeleccionado} // Actualiza el estado
                         keyboardType='picker'
                         pickerValues={pickerValuesRubro}
+                        width={see}
+                        opacity={opacity}
+                        height={seeH}
                     />
-                    
+
                     <View style={styles.dui_nit}>
                         <View style={styles.inputContainer}>
                             <Input
@@ -201,7 +289,6 @@ export default function EditarPerfil({ navigation }) {
                         </View>
 
                         <View style={styles.inputContainer}>
-
                             <Input
                                 placeholder='NIT'
                                 value={nit}
@@ -213,20 +300,20 @@ export default function EditarPerfil({ navigation }) {
                                 style={styles.input}
                             />
                         </View>
-
-
                     </View>
 
-                    <View style={styles.dui_nit}>
+                    <View style={[styles.dui_nit, { height: seeH }]}>
                         <View style={styles.inputContainer}>
                             <Input
                                 placeholder='NRC'
                                 value={nrc}
                                 onChangeText={setNrc}
-                                width='100%'
                                 iconImage={require('../images/icons/iconNrf.png')}
                                 keyboardType='numeric'
                                 maxLength={11}
+                                width={see}
+                                opacity={opacity}
+                                height={seeH}
                             />
                         </View>
 
@@ -235,21 +322,19 @@ export default function EditarPerfil({ navigation }) {
                                 placeholder='NRF'
                                 value={nrf}
                                 onChangeText={setNrf}
-                                width='95%'
                                 iconImage={require('../images/icons/iconNrf.png')}
                                 keyboardType='numeric'
                                 maxLength={11}
+                                width={see}
+                                opacity={opacity}
+                                height={seeH}
                             />
                         </View>
-
-
-
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <Button textoBoton='Actualizar' accionBoton={handleNavigate} fontSize={17} width='47%' />
-
-                        <Button textoBoton='Cerrar sesion' accionBoton={handleCerrarSesion} fontSize={17} width='47%' />
+                        <Button textoBoton='Actualizar' accionBoton={editProfile} fontSize={15} width='38%' />
+                        <Button textoBoton='Cambiar contraseña' accionBoton={handleCerrarSesion} fontSize={15} width='52%' />
                     </View>
                 </View>
             </ScrollView>
@@ -266,9 +351,15 @@ const styles = StyleSheet.create({
         padding: 20, // Padding alrededor del contenedor
         paddingBottom: 80, // Padding adicional en la parte inferior
     },
+    image: {
+        width: 75,
+        height: 75,
+        borderRadius: '100%',
+    },
     avatarContainer: {
         alignItems: 'center', // Centra el contenido horizontalmente
-        paddingBottom: 10, // Reducido el padding vertical para acercar los inputs al botón
+        paddingBottom: 35, // Reducido el padding vertical para acercar los inputs al botón
+        paddingTop: 35,
     },
     avatarIcon: {
         marginBottom: 10, // Espacio debajo del icono del avatar
