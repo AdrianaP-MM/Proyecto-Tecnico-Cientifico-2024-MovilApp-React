@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-//Imagen de ejemplo en archivos del proyecto
 import fixedImage from '../../images/servicios/imagenServicio.png';
 import Text from '../utilidades/Text';
 
-const CardDescripcion = ({ title, descripcion }) => {
-    console.log('CardDescripcion props:', { title, descripcion });
+const CardDescripcion = ({ servicioData = {} }) => {
+    // Verifica que los datos están llegando correctamente
+    console.log('CardDescripcion props:', servicioData.nombre_servicio, servicioData.descripcion_servicio);
 
     return (
         <View style={styles.horizontalCard}>
@@ -14,9 +14,9 @@ const CardDescripcion = ({ title, descripcion }) => {
             </View>
             <View style={styles.cardContent}>
                 <Text texto='Nombre de servicio: ' font='PoppinsSemiBold' fontSize={15} />
-                <Text texto={title} font='PoppinsMedium'/>
+                <Text texto={`${servicioData.nombre_servicio}`} font='PoppinsMedium'/>
                 <Text texto='¿En qué consiste?: ' font='PoppinsSemiBold' fontSize={15} />
-                <Text texto={descripcion}/>
+                <Text texto={`${servicioData.descripcion_servicio}`}/>
             </View>
         </View>
     );

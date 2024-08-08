@@ -4,28 +4,23 @@ import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import fixedImage from '../../images/carros/imagenAuto.png';
 import Text from '../utilidades/Text';
 //Constante de la card de autos en proceso con sus parametros requeridos
-const AutoEnProceso = ({ modelo, tipoVehiculo, placa, fechaDeRegistro }) => {
+const AutoEnProceso = ({ autoProcesoData = {} }) => {
     return (
-        
-        /*Contenedor principal de card*/
         <View style={styles.horizontalCard}>
-            
-            <View style={styles.imageContainer} /*Contenedor de la imagen*/>
+            <View style={styles.imageContainer}>
                 <Image source={fixedImage} style={styles.cardImage} />
             </View>
-
-            <View style={styles.verticalLine} /*Linea vertical para dividir la imagen de la informacion*/ />
-
-            <View style={styles.cardContentContainer} /*Contenedor de la info de la card*/>
-                <ScrollView /*Contenedor con scroll para la informacion*/>
-                <Text texto='Modelo:' font='PoppinsSemiBold' fontSize={13} />
-                <Text texto={`${modelo}`} />
-                <Text texto='Tipo de vehiculo:' font='PoppinsSemiBold' fontSize={13} />
-                <Text texto={`${tipoVehiculo}`} />
-                <Text texto='Placa:' font='PoppinsSemiBold' fontSize={13} />
-                <Text texto={`${placa}`} />
-                <Text texto='Fecha de registro:' font='PoppinsSemiBold' fontSize={13} />
-                <Text texto={`${fechaDeRegistro}`} />
+            <View style={styles.verticalLine} />
+            <View style={styles.cardContentContainer}>
+                <ScrollView>
+                    <Text texto='Modelo:' font='PoppinsSemiBold' fontSize={13} />
+                    <Text texto={`${autoProcesoData.modelo_automovil}`} />
+                    <Text texto='Tipo de vehiculo:' font='PoppinsSemiBold' fontSize={13} />
+                    <Text texto={`${autoProcesoData.nombre_tipo_automovil}`} />
+                    <Text texto='Placa:' font='PoppinsSemiBold' fontSize={13} />
+                    <Text texto={`${autoProcesoData.placa_automovil}`} />
+                    <Text texto='Fecha de registro:' font='PoppinsSemiBold' fontSize={13} />
+                    <Text texto={`${autoProcesoData.fecha_registro}`} />
                 </ScrollView>
             </View>
         </View>

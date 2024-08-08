@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ScrollView, Animated, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import CardDescripcion from '../components/servicios/CardDescripcionServicios';
 import CustomScrollBar from '../components/servicios/ScrollBarPerzonalizada';
@@ -15,7 +15,6 @@ export default function App() {
     const [refreshing, setRefreshing] = useState(false);
     const [readCarrosenProceso, setreadOne] = useState([]);
     const [mostrarCarrosenProceso, setmostrarCarrosenProceso] = useState([]);
-
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -49,21 +48,25 @@ export default function App() {
             setRefreshing(false);
         }
     };
-    
+
     const selectCarrosenProceso = async () => {
         const formData = new FormData();
         formData.append('id_servicio', idServiciosDisponibles);
         try {
-            // Datos locales para pruebas
-            const localData = [
-                { modelo_automovil: "Toyota Corolla", nombre_tipo_automovil: "Sedán", placa_automovil: "ABC123", fecha_registro: "2024-08-07" }
-            ];
-            setmostrarCarrosenProceso(localData.map(item => ({
-                modelo: item.modelo_automovil,
-                tipoVehiculo: item.nombre_tipo_automovil,
-                placa: item.placa_automovil,
-                fechaDeRegistro: item.fecha_registro,
-            })));
+            const DATA = await fetchData('carros_en_proceso.php', 'mostrarCarrosenProceso', formData);
+            console.log('Datos obtenidos Carros En Proceso:', DATA); // Registra los datos obtenidos
+            if (DATA.status) {
+                const data = DATA.dataset.map(item => ({
+                    modelo: item.modelo_automovil,
+                    tipoVehiculo: item.nombre_tipo_automovil,
+                    placa: item.placa_automovil,
+                    fechaDeRegistro: item.fecha_registro,
+                }));
+                setmostrarCarrosenProceso(data);
+            } else {
+                console.log(DATA.error);
+                setmostrarCarrosenProceso([]);
+            }
         } catch (error) {
             console.error("Error al obtener los datos:", error);
             setmostrarCarrosenProceso([]);
@@ -75,13 +78,12 @@ export default function App() {
 
     useEffect(() => {
         selectCarrosEnServicio();
-        selectCarrosenProceso();
+        readElements();
     }, []);
 
     useEffect(() => {
         console.log('Data fetched:', readCarrosenProceso);
     }, [readCarrosenProceso]);
-
 
     const renderCarrosEnServicio = (servicios) => {
         if (!Array.isArray(servicios)) {
@@ -98,21 +100,35 @@ export default function App() {
         ));
     };
 
-    const rendermostrarCarrosenProceso = (servicios) => {
-        if (!Array.isArray(servicios)) {
-            console.error('Error: servicios no es un arreglo');
-            return null;
+    // Función para leer datos de la API
+    const readElements = async () => {
+        try {
+            console.log('asasasa', idServiciosDisponibles);
+            const formData = new FormData();
+            formData.append('id_servicio', idServiciosDisponibles);
+
+            const responseCarros = await fetchData('carros_en_proceso.php', 'mostrarCarrosenProceso', formData);
+            const responseServicio = await fetchData('servicios_en_proceso.php', 'readCarrosenProceso', formData);
+
+            if (responseCarros.status) {
+                setmostrarCarrosenProceso(responseCarros.dataset);
+                console.log('Carros leyidos', responseCarros.dataset)
+            } else {
+                setmostrarCarrosenProceso([]);
+                //Alert.alert('Error', ${responseCitas.error});
+            }
+
+            if (responseServicio.status) {
+                setreadOne(responseServicio.dataset);
+                console.log('Servicio leyido', responseServicio.dataset)
+            } else {
+                setmostrarCarrosenProceso([]);
+                //Alert.alert('Error', ${responseCitas.error});
+            }
+        } catch (error) {
+            console.error('Error en leer los elementos:', error);
+            Alert.alert('Error', 'Hubo un error.');
         }
-        console.log('Servicios:', servicios); // Verifica los datos aquí
-        return servicios.map((item, index) => (
-            <CardDescripcion
-                key={index}
-                modelo={item.modelo}
-                tipoVehiculo={item.tipoVehiculo}
-                placa={item.placa}
-                fechaDeRegistro={item.fechaDeRegistro}
-            />
-        ));
     };
 
     return (
@@ -126,13 +142,37 @@ export default function App() {
                     />
                 </TouchableOpacity>
             </View>
-            {loading ? (
-                <ActivityIndicator size="large" color="#0000ff" />
-            ) : (
-                <ScrollView>
-                    {renderCarrosEnServicio(readCarrosenProceso)}
+
+                <ScrollView style={styles.scrollView}>
+                    {readCarrosenProceso.length === 0 ? (
+                            <Text
+                                texto='No hay servicios para mostrar'
+                                fontSize={12}
+                                paddingHorizontal={10}
+                                font='PoppinsMedium'
+                                textAlign='center'
+                            />
+                        ) : readCarrosenProceso.length === 1 ? (
+                            <CardDescripcion
+                                key={0} // Para un solo elemento, el índice puede ser 0
+                                servicioData={{
+                                    nombre_servicio: readCarrosenProceso[0].nombre_servicio,
+                                    descripcion_servicio: readCarrosenProceso[0].descripcion_servicio,
+                                }}
+                            />
+                        ) : (
+                            readCarrosenProceso.map((servicio, index) => (
+                                <CardDescripcion
+                                    key={index} // Usa el índice aquí para asegurar que cada elemento tenga una clave única
+                                    servicioData={{
+                                        nombre_servicio: servicio.nombre_servicio,
+                                        descripcion_servicio: servicio.descripcion_servicio,
+                                    }}
+                                />
+                            ))
+                        )
+                    }
                 </ScrollView>
-            )}
             <View style={styles.line} />
             <Text texto='Autos en proceso' font='PoppinsMedium' fontSize={17} />
             <View
@@ -148,14 +188,38 @@ export default function App() {
                     })}
                     showsVerticalScrollIndicator={false}
                 >
-
-                    <ScrollView>
-                        {rendermostrarCarrosenProceso(mostrarCarrosenProceso)}
-                    </ScrollView>
-
-
+                    {mostrarCarrosenProceso.length === 0 ? (
+                        <Text
+                            texto='Sin autos en servicios para mostrar'
+                            fontSize={12}
+                            paddingHorizontal={10}
+                            font='PoppinsMedium'
+                            textAlign='center'
+                        />
+                    ) : mostrarCarrosenProceso.length === 1 ? (
+                        <AutoEnProceso
+                            key={0} // Puedes usar un índice fijo aquí porque solo hay un elemento
+                            autoProcesoData={{
+                                modelo_automovil: mostrarCarrosenProceso[0].modelo_automovil,
+                                nombre_tipo_automovil: mostrarCarrosenProceso[0].nombre_tipo_automovil,
+                                placa_automovil: mostrarCarrosenProceso[0].placa_automovil,
+                                fecha_registro: mostrarCarrosenProceso[0].fecha_registro
+                            }}
+                        />
+                    ) : (
+                        mostrarCarrosenProceso.map((carroProceso, index) => (
+                            <AutoEnProceso
+                                key={index}
+                                autoProcesoData={{
+                                    modelo_automovil: carroProceso.modelo_automovil,
+                                    nombre_tipo_automovil: carroProceso.nombre_tipo_automovil,
+                                    placa_automovil: carroProceso.placa_automovil,
+                                    fecha_registro: carroProceso.fecha_registro
+                                }}
+                            />
+                        ))
+                    )}
                 </ScrollView>
-
                 <CustomScrollBar
                     scrollY={scrollY}
                     contentHeight={contentHeight}
@@ -172,13 +236,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#F9FAFB',
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: 40,
     },
     titulo: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
         paddingHorizontal: 20,
-        marginVertical: 20,
+        marginVertical: 40,
     },
     backButton: {
         flexDirection: 'row',
@@ -208,8 +273,7 @@ const styles = StyleSheet.create({
     line: {
         borderBottomColor: 'black',
         borderBottomWidth: 1,
-        width: '92%',
-        marginTop: 20,
-        marginBottom: 16,
+        marginVertical: 20,
+        width: '100%',
     },
-});
+})
