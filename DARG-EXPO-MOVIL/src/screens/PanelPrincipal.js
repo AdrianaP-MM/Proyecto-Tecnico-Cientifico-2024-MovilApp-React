@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import TarjetaCarro from '../components/carros/CardCarro';
 import Text from '../components/utilidades/Text';
@@ -21,6 +21,7 @@ export default function DashboardScreen({ navigation }) {
       const DATA = await fetchData(API, 'readAllMyCars');
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
+          id: item.id_automovil,
           imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.nombre_modelo,
           placa: item.placa_automovil
@@ -44,6 +45,7 @@ export default function DashboardScreen({ navigation }) {
       const DATA = await fetchData(API, 'readAllDelete');
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
+          id: item.id_automovil,
           imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.nombre_modelo,
           placa: item.placa_automovil
@@ -67,6 +69,7 @@ export default function DashboardScreen({ navigation }) {
       const DATA = await fetchData(API, 'readAll');
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
+          id: item.id_automovil,
           imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.nombre_modelo,
           placa: item.placa_automovil
@@ -105,6 +108,48 @@ export default function DashboardScreen({ navigation }) {
     ));
   };
 
+  const handleCarPress = (carro) => {
+    console.log(carro.id);
+    try {
+      // Mostrar un mensaje de confirmación antes de eliminar
+      Alert.alert(
+        'Confirmación',
+        '¿Está seguro de eliminar el automóvil?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel'
+          },
+          {
+            text: 'Aceptar',
+            onPress: async () => {
+              const formData = new FormData();
+              formData.append('idAuto', carro.id);
+              // Realización de la petición de finalizar pedido
+              const data = await fetchData(API, 'deleteRow', formData);
+              if (data.status) {
+                Alert.alert("Carrito elmiminado correctamente")
+                fillCardsCarsAll();
+                fillCardsCarsDelete();
+                fillCardsCarAppointments();
+              } else {
+                Alert.alert('Error', data.error);
+              }
+            }
+          }
+        ]
+      );
+    } catch (error) {
+      Alert.alert("Error al eliminar el carrito")
+    }
+
+  };
+  
+  const renderCarrosAll = (carros) => {
+    return carros.map((carro, index) => (
+      <TarjetaCarro key={index} carro={carro} onPress={() => handleCarPress(carro)}/>
+    ));
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -128,7 +173,7 @@ export default function DashboardScreen({ navigation }) {
           <View style={styles.section}>
             <Text texto='Vista previa de tus autos' font='PoppinsSemiBold' fontSize={18} color='white' />
             <ScrollView horizontal>
-              {renderCarros(allCars)}
+              {renderCarrosAll(allCars)}
             </ScrollView>
           </View>
         )}
