@@ -90,7 +90,7 @@ export default function AppRestablecerContra() {
         // Verificar si todos los inputs están completos
         for (let i = 0; i < codeInputs.length; i++) {
             if (codeInputs[i].trim() === '') {
-                Alert.alert('Alerta', 'Por favor complete todos los campos.');
+                Alert.alert('Error', 'Por favor complete todos los campos.');
                 return;
             }
         }
@@ -125,11 +125,22 @@ export default function AppRestablecerContra() {
     const [confirmContra, setConfirmContra] = useState('');
 
     // Función para manejar el restablecimiento de la contraseña
+
+    const validateFields = () => {
+        if (!contra || !correo) {
+            Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
+            return false;
+        }
+        return true;
+    };
+
+
     const handleResetPassword = async () => {
         if (contra !== confirmContra) {
             Alert.alert('Error', 'Las contraseñas no coinciden');
             return;
         }
+        if (!validateFields()) return;
 
         // Creamos un objeto FormData para enviar los datos al servidor
         const formData = new FormData();

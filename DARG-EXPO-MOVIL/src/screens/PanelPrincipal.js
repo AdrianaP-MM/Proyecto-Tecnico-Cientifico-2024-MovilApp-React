@@ -26,7 +26,7 @@ export default function DashboardScreen({ navigation }) {
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
           imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
-          modelo: item.nombre_modelo,
+          modelo: item.modelo_automovil,
           placa: item.placa_automovil
         }));
         setAllCars(data);
@@ -50,7 +50,7 @@ export default function DashboardScreen({ navigation }) {
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
           imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
-          modelo: item.nombre_modelo,
+          modelo: item.modelo_automovil,
           placa: item.placa_automovil
         }));
         setDeletedCars(data);
@@ -112,7 +112,7 @@ export default function DashboardScreen({ navigation }) {
   };
 
   const handleCarPress = (carro) => {
-    console.log(carro.id);
+    console.log('Id de carro',carro.id);
     try {
       // Mostrar un mensaje de confirmación antes de eliminar
       Alert.alert(
@@ -131,7 +131,7 @@ export default function DashboardScreen({ navigation }) {
               // Realización de la petición de finalizar pedido
               const data = await fetchData(API, 'deleteRow', formData);
               if (data.status) {
-                Alert.alert("Carrito elmiminado correctamente")
+                Alert.alert("Exito", "Carrito eliminado correctamente")
                 fillCardsCarsAll(search);
                 fillCardsCarsDelete();
                 fillCardsCarAppointments();
