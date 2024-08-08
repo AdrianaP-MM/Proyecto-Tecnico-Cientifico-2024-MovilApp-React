@@ -23,36 +23,34 @@ const colores = [
 const AgregarVehiculo = ({ navigation }) => {
   const [modelo, setModelo] = useState(''); // Estado para el modelo del carro
   const [color, setColor] = useState(''); // Estado para el color del carro
-  const [fecha, setFecha] = useState(''); // Estado para la fecha del carro
+  const [fecha, setFechaFabricacion] = useState(''); // Estado para la fecha del carro
   const [placa, setPlaca] = useState(''); // Estado para la placa del carro
   const [imagen, setImagen] = useState(null); // Estado para la imagen del carro
-  const [tipoAutomovil, setTiposAutomovil] = useState(''); // Estado para el tipo de automóvil
+  const [tipoAutomovil, setTipoAutomovil] = useState(''); // Estado para el tipo de automóvil
+  const [pickerValuesTipos, setPickerValuesTipos] = useState([]); // Estado para los valores del picker
 
   const API = 'automoviles.php'; // URL del servidor
 
   const fetchTiposAutomovil = async () => {
     try {
-      const responseTiposAutomoviles = await fetchData('automoviles.php', 'readTipos');
-            if (responseTiposAutomoviles.status) {
-              setPickerValuesTipos(responseTiposAutomoviles.dataset.map(item => ({
-                    id: item.id_tipo_automovil, // Asegúrate de que el campo id sea correcto
-                    nombre: item.nombre_automovil // Asegúrate de que el campo nombre sea correcto
-                })));
-                //console.log(responseAutomoviles.dataset);
-            } else {
-                Alert.alert('Error', `${responseTiposAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
-            }
-        } catch (error) {
-            console.error('Error en leer los elementos:', error);
-            Alert.alert('Error', 'Hubo un error.');
-        }
+      const responseTiposAutomoviles = await fetchData(API, 'readTipos');
+      if (responseTiposAutomoviles.status) {
+        setPickerValuesTipos(responseTiposAutomoviles.dataset.map(item => ({
+          label: item.nombre_tipo_automovil, // Asegúrate de que el campo nombre sea correcto
+          value: item.id_tipo_automovil, // Asegúrate de que el campo id sea correcto
+        })));
+      } else {
+        Alert.alert('Error', `${responseTiposAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
+      }
+    } catch (error) {
+      console.error('Error en leer los elementos:', error);
+      Alert.alert('Error', 'Hubo un error.');
+    }
   };
 
   useEffect(() => {
     fetchTiposAutomovil();
   }, []);
-
-  const [pickerValuesTipos, setPickerValuesTipos] = useState([]);
 
   // Solicita permisos y abre la galería de imágenes
   const handleAgregarImagen = async () => {
@@ -70,43 +68,44 @@ const AgregarVehiculo = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setImagen(result.uri); // Actualiza el estado con la imagen seleccionada
+      setImagen(result.assets[0].uri); // Actualiza el estado con la imagen seleccionada
     }
   };
 
   // Función para manejar la acción de guardar el carro
   const handleGuardarCarro = async () => {
-    if (!modelo || !color || !tipoAutomovil || !fecha || !placa) {
+    if (!modelo || !color || !tipoAutomovil || !fecha || !placa || !imagen) {
       Alert.alert('Error', 'Todos los campos son requeridos.');
       return;
     }
 
+    // Creamos un objeto FormData para enviar los datos al servidor
     const formData = new FormData();
-    formData.append('modelo_automovil', modelo); // Cambia 'modelo' a 'modelo_automovil'
-    formData.append('color', color);
-    formData.append('id_tipo_automovil', tipoAutomovil); // Usa tipoAutomovil para el valor seleccionado
-    formData.append('fecha_fabricacion', fecha); // Cambia 'fecha' a 'fecha_fabricacion'
-    formData.append('placa', placa);
+    formData.append('modelo_automovil', modelo);
+    formData.append('color_automovil', color);
+    formData.append('id_tipo_automovil', tipoAutomovil);
+    formData.append('fecha_fabricacion_automovil', fecha);
+    formData.append('placa_automovil', placa);
 
     if (imagen) {
       formData.append('imagen_automovil', {
         uri: imagen,
-        type: 'image/jpeg', // Cambia según el tipo de la imagen
-        name: imagen.split('/').pop(), // Nombre de la imagen
+        type: 'image/jpeg',
+        name: imagen.split('/').pop(),
       });
     }
 
     try {
       const response = await fetchData(API, 'createRow', formData);
-      const result = await response.json();
-      if (response.ok) {
+      if (!response.error) {
         Alert.alert('Éxito', 'El vehículo ha sido agregado correctamente.');
-        navigation.goBack(); // Navegar hacia atrás
+        navigation.goBack();
       } else {
-        Alert.alert('Error', result.message || 'Ocurrió un error al agregar el vehículo.');
+        Alert.alert('Error', response.error);
       }
     } catch (error) {
-      Alert.alert('Error', 'Ocurrió un error en la conexión.');
+      console.error(error);
+      Alert.alert('Error', 'Hubo un problema al guardar el carro.');
     }
   };
 
@@ -123,17 +122,16 @@ const AgregarVehiculo = ({ navigation }) => {
         iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
         items={colores}
       />
-     <Input
-                    placeholder='tipos Carros'
-                    value={tipoAutomovil}
-                    onChangeText={setTiposAutomovil} // Actualiza el estado
-                    keyboardType='picker'
-                    pickerValues={pickerValuesTipos}
-                />
+      <CustomPicker
+        selectedValue={tipoAutomovil}
+        onValueChange={(itemValue) => setTipoAutomovil(itemValue)}
+        iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
+        items={pickerValuesTipos}
+      />
       <Input
         placeholder="Fecha fabricación"
         value={fecha}
-        onChangeText={setFecha} // Actualiza el estado de la fecha
+        onChangeText={setFechaFabricacion} // Actualiza el estado de la fecha
       />
       <Input
         placeholder="Placa automóvil"

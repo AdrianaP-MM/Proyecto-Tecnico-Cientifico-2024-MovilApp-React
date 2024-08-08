@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Config from '../../utils/Constantes'
 
+const IMAGE_URL = Config.IMAGE_URL;
 const TarjetaCarro = ({ carro, onPress }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.8}>
-      <Image source={{ uri: carro.imagen }} style={styles.image} />
+      <Image source={{ uri: IMAGE_URL + '/automoviles/' + carro.imagen }} style={styles.image} />
       <View style={styles.textContainer}>
         <View style={styles.modelContainer}>
           <Text style={styles.modelText}>{carro.modelo}</Text>
