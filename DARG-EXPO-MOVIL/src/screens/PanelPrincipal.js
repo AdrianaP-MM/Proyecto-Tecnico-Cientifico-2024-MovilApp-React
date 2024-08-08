@@ -17,100 +17,110 @@ export default function DashboardScreen({ navigation }) {
   const [search, setSearch] = useState('');
   const API = 'automoviles.php';
 
+  // Función que se encarga de llenar los autos disponibles
   const fillCardsCarsAll = async (searchValue = '') => {
     try {
       const formData = new FormData();
       formData.append('search_value', searchValue);
-      const DATA = await fetchData(API, 'readAllMyCars', formData);
+      const DATA = await fetchData(API, 'readAllMyCars', formData); // Llama a la API para obtener todos los autos
       if (DATA.status) {
+         // Mapea los datos obtenidos para crear un array con los autos
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
           imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.modelo_automovil,
           placa: item.placa_automovil
         }));
-        setAllCars(data);
+        setAllCars(data);  // Actualiza el estado con los autos obtenidos
       } else {
         console.log(DATA.error);
-        setAllCars([]);
+        setAllCars([]); // Si hay error, limpia el estado de los autos
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setAllCars([]);
+      setAllCars([]); // Maneja errores en la llamada a la API
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      setLoading(false); // Finaliza la carga
+      setRefreshing(false); // Finaliza la actualización
     }
   };
 
+  // Función que se encarga de llenar los autos eliminados
   const fillCardsCarsDelete = async () => {
     try {
-      const DATA = await fetchData(API, 'readAllDelete');
+      const DATA = await fetchData(API, 'readAllDelete'); // Llama a la API para obtener los autos eliminados
       if (DATA.status) {
+        // Mapea los datos obtenidos para crear un array con los autos eliminados
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
           imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.modelo_automovil,
           placa: item.placa_automovil
         }));
-        setDeletedCars(data);
+        setDeletedCars(data); // Actualiza el estado con los autos eliminados
       } else {
         console.log(DATA.error);
-        setDeletedCars([]);
+        setDeletedCars([]); // Si hay error, limpia el estado de los autos eliminados
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setDeletedCars([]);
+      setDeletedCars([]); // Maneja errores en la llamada a la API
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      setLoading(false); // Finaliza la carga
+      setRefreshing(false); // Finaliza la actualización
     }
   };
 
+  // Función que se encarga de llenar las citas de los autos
   const fillCardsCarAppointments = async () => {
     try {
-      const DATA = await fetchData(API, 'readAllAppointments');
+      const DATA = await fetchData(API, 'readAllAppointments'); // Llama a la API para obtener las citas de los autos
       if (DATA.status) {
+        // Mapea los datos obtenidos para crear un array con las citas de los autos
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
           imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.nombre_modelo,
           placa: item.placa_automovil
         }));
-        setAppointments(data);
-      } else {
-        console.log(DATA.error);
-        setAppointments([]);
+        setAppointments(data); // Actualiza el estado con las citas obtenidas
+      } else { 
+        console.log(DATA.error); 
+        setAppointments([]); // Si hay error, limpia el estado de las citas
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setAppointments([]);
+      setAppointments([]); // Maneja errores en la llamada a la API
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      setLoading(false); // Finaliza la carga
+      setRefreshing(false); // Finaliza la actualización
     }
   };
 
-  useEffect(() => {
-    fillCardsCarsAll();
-    fillCardsCarsDelete();
-    fillCardsCarAppointments();
-  }, []);
+// useEffect que ejecuta las funciones al montar el componente
+useEffect(() => {
+  fillCardsCarsAll(); // Llena todos los autos
+  fillCardsCarsDelete(); // Llena los autos eliminados
+  fillCardsCarAppointments(); // Llena las citas de los autos
+}, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      fillCardsCarsAll(search);
-      fillCardsCarsDelete();
-      fillCardsCarAppointments();
-    }, [search])
-  );
+// useFocusEffect que actualiza las listas de autos al enfocar la pantalla
+useFocusEffect(
+  useCallback(() => {
+    fillCardsCarsAll(search); // Llena todos los autos filtrados por búsqueda
+    fillCardsCarsDelete(); // Llena los autos eliminados
+    fillCardsCarAppointments(); // Llena las citas de los autos
+  }, [search])
+);
 
+// Función para renderizar la lista de autos
   const renderCarros = (carros) => {
     return carros.map((carro, index) => (
       <TarjetaCarro key={index} carro={carro} />
     ));
   };
 
+  // Función para manejar la acción al presionar un auto
   const handleCarPress = (carro) => {
     console.log('Id de carro',carro.id);
     try {
@@ -132,9 +142,9 @@ export default function DashboardScreen({ navigation }) {
               const data = await fetchData(API, 'deleteRow', formData);
               if (data.status) {
                 Alert.alert("Exito", "Carrito eliminado correctamente")
-                fillCardsCarsAll(search);
-                fillCardsCarsDelete();
-                fillCardsCarAppointments();
+                fillCardsCarsAll(search); // Actualiza la lista de autos disponibles
+                fillCardsCarsDelete(); // Actualiza la lista de autos eliminados
+                fillCardsCarAppointments(); // Actualiza la lista de citas
               } else {
                 Alert.alert('Error', data.error);
               }
@@ -148,11 +158,14 @@ export default function DashboardScreen({ navigation }) {
 
   };
   
+  // Función para renderizar todos los autos disponibles con la opción de presionarlos
   const renderCarrosAll = (carros) => {
     return carros.map((carro, index) => (
       <TarjetaCarro key={index} carro={carro} onPress={() => handleCarPress(carro)}/>
     ));
   };
+
+  // Render principal del componente DashboardScreen
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
