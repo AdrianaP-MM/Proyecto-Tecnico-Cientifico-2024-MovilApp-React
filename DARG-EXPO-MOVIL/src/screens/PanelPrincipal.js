@@ -14,15 +14,18 @@ export default function DashboardScreen({ navigation }) {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [search, setSearch] = useState('');
   const API = 'automoviles.php';
 
-  const fillCardsCarsAll = async () => {
+  const fillCardsCarsAll = async (searchValue = '') => {
     try {
-      const DATA = await fetchData(API, 'readAllMyCars');
+      const formData = new FormData();
+      formData.append('search_value', searchValue);
+      const DATA = await fetchData(API, 'readAllMyCars', formData);
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
-          imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.nombre_modelo,
           placa: item.placa_automovil
         }));
@@ -46,7 +49,7 @@ export default function DashboardScreen({ navigation }) {
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
-          imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.nombre_modelo,
           placa: item.placa_automovil
         }));
@@ -66,11 +69,11 @@ export default function DashboardScreen({ navigation }) {
 
   const fillCardsCarAppointments = async () => {
     try {
-      const DATA = await fetchData(API, 'readAll');
+      const DATA = await fetchData(API, 'readAllAppointments');
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
-          imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          imagen: `${contants.default.IMAGE_URL}automoviles/${item.imagen_automovil}`,
           modelo: item.nombre_modelo,
           placa: item.placa_automovil
         }));
@@ -96,10 +99,10 @@ export default function DashboardScreen({ navigation }) {
 
   useFocusEffect(
     useCallback(() => {
-      fillCardsCarsAll();
+      fillCardsCarsAll(search);
       fillCardsCarsDelete();
       fillCardsCarAppointments();
-    }, [])
+    }, [search])
   );
 
   const renderCarros = (carros) => {
@@ -129,7 +132,7 @@ export default function DashboardScreen({ navigation }) {
               const data = await fetchData(API, 'deleteRow', formData);
               if (data.status) {
                 Alert.alert("Carrito elmiminado correctamente")
-                fillCardsCarsAll();
+                fillCardsCarsAll(search);
                 fillCardsCarsDelete();
                 fillCardsCarAppointments();
               } else {
@@ -158,10 +161,12 @@ export default function DashboardScreen({ navigation }) {
           <MaterialIcons name="notifications" size={30} color="black" />
         </TouchableOpacity>
       </View>
-      <View style={styles.searchContainer}>
-        <MaterialIcons name="search" size={24} color="black" />
-        <TextInput style={styles.searchInput} placeholder="Buscar..." />
-      </View>
+      <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar..."
+          value={search}
+          onChangeText={searchAllMyCars}
+        />
       <View style={styles.appointmentstwo}>
         <Text texto='Agrega un auto nuevo' font='PoppinsRegular' fontSize={15} />
         <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('CarrosVista')}>
