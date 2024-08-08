@@ -4,7 +4,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Picker } from '@react-native-picker/picker';
 
 
-const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, pickerValues = [], iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key, opacity = 1, padding = 15, tintColor = '#A8AFB9', fontSize = 14}) => {
+const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, pickerValues = [], iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key, opacity = 1, padding = 15, tintColor = '#A8AFB9', fontSize = 14 }) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState(value);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
@@ -32,6 +32,7 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
         // Comparar la hora seleccionada con el rango permitido
         if (date < minTime || date > maxTime) {
             Alert.alert('Advertencia', 'La hora seleccionada debe estar entre las 9 AM y las 4 PM.');
+            console.log(date);
         } else {
             formattedTime = formatTime(date);
             setSelectedTime(formattedTime);
@@ -51,17 +52,12 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
     const today = new Date();
     // Fecha máxima: último día del año en curso
     const endOfYear = new Date(today.getFullYear(), 11, 31);
-    const minTime = new Date();
-    minTime.setHours(9, 0);
-    // Hora máxima: 4 PM
-    const maxTime = new Date();
-    maxTime.setHours(16, 0);
 
-    const [selectedValue, setSelectedValue] = useState('0');
+    const [selectedValue, setSelectedValue] = useState(value);
 
     useEffect(() => {
         if (pickerValues.length > 0) {
-            setSelectedValue(placeholder);
+            setSelectedValue(value);
         }
     }, [pickerValues]);
 
@@ -83,7 +79,7 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
             {keyboardType === 'fecha' ? (
                 <>
                     <TextInput
-                        style={[styles.input, { textAlign, padding, fontSize}]}
+                        style={[styles.input, { textAlign, padding, fontSize }]}
                         placeholder={placeholder}
                         value={selectedDate}
                         onPress={showDatePicker}
@@ -101,7 +97,7 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
             ) : keyboardType === 'hora' ? (
                 <>
                     <TextInput
-                        style={[styles.input, { textAlign, padding, fontSize}]}
+                        style={[styles.input, { textAlign, padding, fontSize }]}
                         placeholder={placeholder}
                         value={selectedTime}
                         onPress={showTimePicker}
@@ -119,10 +115,10 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
                     <Picker
                         selectedValue={selectedValue}
                         style={styles.picker}
-                        itemStyle={[styles.input, {fontSize}]}
+                        itemStyle={[styles.input, { fontSize }]}
                         onValueChange={handleValueChange}
                     >
-                        <Picker.Item label={`${placeholder}`} value="0"  />
+                        <Picker.Item label={`${placeholder}`} value={0} />
                         {pickerValues.map((value) => (
                             <Picker.Item key={value.id} label={value.nombre} value={value.id} />
                         ))}
@@ -130,7 +126,7 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
                 </>
             ) : (
                 <TextInput
-                    style={[styles.input, { textAlign, padding, fontSize}]}
+                    style={[styles.input, { textAlign, padding, fontSize }]}
                     placeholder={placeholder}
                     keyboardType={keyboardType}
                     value={value}

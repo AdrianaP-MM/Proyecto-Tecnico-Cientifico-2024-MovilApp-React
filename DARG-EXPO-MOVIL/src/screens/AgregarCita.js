@@ -7,8 +7,10 @@ import fetchData from '../utils/FetchData';
 
 // Componente funcional para agregar una cita
 export default function AppAddCita({ navigation, route }) {
-    const { fecha, hora, auto, movilizacion, zona, ida, regreso } = route.params || {}; // Extrae los parámetros de la ruta si existen
-    const [fechaLlegada, setFechaLlegada] = useState(fecha);
+    const { id_cita, fecha, hora, auto, movilizacion, zona, ida, regreso, estado } = route.params || {}; // Extrae los parámetros de la ruta si existen
+    let transFormFecha = '';
+    if (fecha) {transFormFecha = convertFecha(fecha);}
+    const [fechaLlegada, setFechaLlegada] = useState(transFormFecha);
     const [horaLlegada, setHoraLlegada] = useState(hora);
     const [autoSeleccionado, setAutoSeleccionado] = useState(auto);
     const [movilizacionSeleccionada, setMovilizacionSeleccionada] = useState(movilizacion);
@@ -17,7 +19,7 @@ export default function AppAddCita({ navigation, route }) {
     const [direccionRegreso, setDireccionRegreso] = useState(regreso);
 
     const validateFields = () => {
-        if (!fechaLlegada || !horaLlegada || !autoSeleccionado || !movilizacionSeleccionada || !zonaHabilitada || !direccionIda || !direccionRegreso 
+        if (!fechaLlegada || !horaLlegada || !autoSeleccionado || !movilizacionSeleccionada || !zonaHabilitada || !direccionIda || !direccionRegreso
             || autoSeleccionado == 0 || movilizacionSeleccionada == 0 || zonaHabilitada == 0) {
             Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
             return false;
@@ -28,35 +30,70 @@ export default function AppAddCita({ navigation, route }) {
     const createCita = async () => {
         if (!validateFields()) return;
         try {
-            const formData = new FormData();
-            formData.append('id_automovil', autoSeleccionado);
-            const responseValidationCita = await fetchData('citas.php', 'searchCitaAuto', formData);
-
-            if (!responseValidationCita.status) {
-                console.log('Se puede agregar la cita');
+            if (id_cita) {
+                updateRow(id_cita);
+            }
+            else {
                 const formData = new FormData();
-                const fecha_hora_cita = formatSQLDateTime(fechaLlegada, horaLlegada);
-                const fecha_registro = getCurrentSQLDateTime();
-                formData.append('fecha_hora_cita', fecha_hora_cita);
-                formData.append('input_automovil', autoSeleccionado);
-                formData.append('input_movilizacion', movilizacionSeleccionada);
-                formData.append('input_zona', zonaHabilitada);
-                formData.append('input_ida', direccionIda);
-                formData.append('input_regreso', direccionRegreso);
-                formData.append('fecha_registro', fecha_registro);
-                const responseCreateRow = await fetchData('citas.php', 'createRow', formData);
-                if (responseCreateRow.status) {
-                    Alert.alert('Exito', `${responseCreateRow.message}`);
-                    navigation.navigate('Citas');
+                formData.append('id_automovil', autoSeleccionado);
+                const responseValidationCita = await fetchData('citas.php', 'searchCitaAuto', formData);
+
+                if (!responseValidationCita.status) {
+                    const formData = new FormData();
+                    const fecha_hora_cita = formatSQLDateTime(fechaLlegada, horaLlegada);
+                    const fecha_registro = getCurrentSQLDateTime();
+                    formData.append('fecha_hora_cita', fecha_hora_cita);
+                    formData.append('input_automovil', autoSeleccionado);
+                    formData.append('input_movilizacion', movilizacionSeleccionada);
+                    formData.append('input_zona', zonaHabilitada);
+                    formData.append('input_ida', direccionIda);
+                    formData.append('input_regreso', direccionRegreso);
+                    formData.append('fecha_registro', fecha_registro);
+                    const responseCreateRow = await fetchData('citas.php', 'createRow', formData);
+                    if (responseCreateRow.status) {
+                        Alert.alert('Exito', `${responseCreateRow.message}`);
+                        navigation.navigate('Citas');
+                    }
+                    else {
+                        Alert.alert('Error', `${responseCreateRow.error}`);
+                    }
+
+                } else {
+                    Alert.alert('Error', `${responseValidationCita.error}`);
                 }
-                else {
-                    Alert.alert('Error', `${responseCreateRow.error}`);
-                }
-            } else {
-                Alert.alert('Error', `${responseValidationCita.error}`);
             }
             // Aquí puedes agregar el código para enviar los datos a la API o hacer cualquier otro procesamiento necesario
         } catch (error) {
+            Alert.alert('Error', 'Hubo un error.');
+        }
+    };
+
+    const updateRow = async (id_cita) => {
+        try {
+            if (estado == 'En espera' && id_cita) {
+                const formData = new FormData();
+                formData.append('id_cita', id_cita);
+                const fecha_hora_cita = formatSQLDateTime(fechaLlegada, horaLlegada);
+                console.log('UPDATE DE FECHA HORA', fecha_hora_cita);
+                formData.append('fecha_hora_cita', fecha_hora_cita);
+                formData.append('input_automovil_UPDATE', autoSeleccionado);
+                formData.append('input_movilizacion_UPDATE', movilizacionSeleccionada);
+                formData.append('input_zona_UPDATE', zonaHabilitada);
+                formData.append('input_ida_UPDATE', direccionIda);
+                formData.append('input_regreso_UPDATE', direccionRegreso);
+                const responseCitas = await fetchData('citas.php', 'updateRow', formData);
+                if (responseCitas.status) {
+                    Alert.alert('Éxito', `${responseCitas.message}`);
+                    navigation.navigate('Citas');
+                } else {
+                    Alert.alert('Error', `${responseCitas.error}`);
+                }
+            }
+            else {
+                Alert.alert('Error', `Para actualizar una cita que ha sido aceptada, por favor, comuníquese directamente con el taller.`);
+            }
+        } catch (error) {
+            console.error('Error en actualizar la cita:', error);
             Alert.alert('Error', 'Hubo un error.');
         }
     };
@@ -86,7 +123,7 @@ export default function AppAddCita({ navigation, route }) {
                     id: item.id_automovil, // Asegúrate de que el campo id sea correcto
                     nombre: item.placa_automovil // Asegúrate de que el campo nombre sea correcto
                 })));
-                console.log(responseAutomoviles.dataset);
+                //console.log(responseAutomoviles.dataset);
             } else {
                 Alert.alert('Error', `${responseAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
             }
@@ -145,7 +182,7 @@ export default function AppAddCita({ navigation, route }) {
                 />
             </View>
             <View style={styles.contenedorBtn} >
-                <Button textoBoton='Aceptar' accionBoton={createCita} />
+                <Button textoBoton='Aceptar' accionBoton={createCita} fontSize={17} />
             </View>
         </ScrollView >
     );
@@ -194,6 +231,38 @@ const formatSQLDateTime = (fecha, hora) => {
 
     // Combinar fecha y hora en el formato SQL
     return `${formattedDate} ${formattedTime}`;
+};
+
+// Función para convertir la fecha del formato "Sábado 10 de agosto" a "dd/mm/yyyy"
+const convertFecha = (fecha) => {
+    if (!fecha) return ''; // Validar si la fecha está presente
+    // Ejemplo: "Sábado 10 de agosto"
+    const months = [
+        'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+        'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    ];
+
+    const parts = fecha.toLowerCase().split(' ');
+    const day = parts[1];
+    const monthName = parts[3];
+    const month = months.indexOf(monthName) + 1; // Meses en JavaScript van de 0 a 11
+    const year = new Date().getFullYear(); // O usa el año que necesites
+
+    return `${day.padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+};
+
+// Función para convertir la hora del formato 24 horas a 12 horas
+const convertHora = (hora) => {
+    if (!hora) return ''; // Validar si la hora está presente
+    // Ejemplo: "14:30"
+    let [hours, minutes] = hora.split(':');
+    hours = parseInt(hours, 10);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // La hora 0 debe ser 12
+    minutes = minutes.padStart(2, '0');
+
+    return `${hours}:${minutes} ${ampm}`;
 };
 
 const getCurrentSQLDateTime = () => {
