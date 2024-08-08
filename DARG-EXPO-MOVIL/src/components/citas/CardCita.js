@@ -36,8 +36,8 @@ export default function CardCita({ accionCard, citaData={}, onLongPress}) {
                             <Text texto='Información del carro:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' /> 
                         </View>
                         <View style={styles.row}>
-                            <Text texto='Marca: ' font='PoppinsSemiBold' fontSize={11} /> 
-                            <Text texto={`${citaData.marca_automovil}`} fontSize={12} />
+                            <Text texto='Modelo: ' font='PoppinsSemiBold' fontSize={11} /> 
+                            <Text texto={`${citaData.modelo_automovil}`} fontSize={12} />
                         </View>
                         <View style={styles.row}>
                             <Text texto='Placa: ' font='PoppinsSemiBold' fontSize={11} /> 

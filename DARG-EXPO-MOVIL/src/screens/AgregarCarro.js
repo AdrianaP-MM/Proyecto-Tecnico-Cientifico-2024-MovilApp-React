@@ -1,30 +1,113 @@
-// Importa las dependencias necesarias
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente de botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
+import CustomPicker from '../components/inputs/ComboBox'; // Importa el componente de selección personalizada
+import fetchData from '../utils/FetchData'; // Asegúrate de que esta función esté bien definida
 
-// URL de la imagen predeterminada
-const defaultImageUrl = 'https://th.bing.com/th/id/OIP.xxMt6xG7kaLu7P6llDKWyAHaEK?w=318&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7';
+const colores = [
+  { label: 'Colores', value: '' },
+  { label: 'Rojo', value: 'Rojo' },
+  { label: 'Azul', value: 'Azul' },
+  { label: 'Gris', value: 'Gris' },
+  { label: 'Blanco', value: 'Blanco' },
+  { label: 'Negro', value: 'Negro' },
+  { label: 'Amarillo', value: 'Amarillo' },
+  { label: 'Verde', value: 'Verde' },
+  { label: 'Anaranjado', value: 'Anaranjado' },
+  { label: 'Tornasol', value: 'Tornasol' },
+  { label: 'Plata', value: 'Plata' },
+];
 
-const AgregarVehiculo = ({ navigation, route }) => {
+const AgregarVehiculo = ({ navigation }) => {
   const [modelo, setModelo] = useState(''); // Estado para el modelo del carro
   const [color, setColor] = useState(''); // Estado para el color del carro
-  const [tipo, setTipo] = useState(''); // Estado para el tipo del carro
   const [fecha, setFecha] = useState(''); // Estado para la fecha del carro
   const [placa, setPlaca] = useState(''); // Estado para la placa del carro
-  const [imagen, setImagen] = useState(defaultImageUrl); // Estado para la imagen del carro, con una imagen predeterminada
+  const [imagen, setImagen] = useState(null); // Estado para la imagen del carro
+  const [tipoAutomovil, setTiposAutomovil] = useState(''); // Estado para el tipo de automóvil
 
-  // Función para manejar la acción de guardar el carro
-  const handleGuardarCarro = () => {
-    const nuevoCarro = { modelo, color, tipo, fecha, placa, imagen }; // Crea un nuevo objeto carro con los estados actuales
-    // Aquí podrías enviar `nuevoCarro` a tu servidor o a otro componente para agregar el carro
-    navigation.goBack(); // Navega hacia atrás
+  const API = 'automoviles.php'; // URL del servidor
+
+  const fetchTiposAutomovil = async () => {
+    try {
+      const responseTiposAutomoviles = await fetchData('automoviles.php', 'readTipos');
+            if (responseTiposAutomoviles.status) {
+              setPickerValuesTipos(responseTiposAutomoviles.dataset.map(item => ({
+                    id: item.id_tipo_automovil, // Asegúrate de que el campo id sea correcto
+                    nombre: item.nombre_automovil // Asegúrate de que el campo nombre sea correcto
+                })));
+                //console.log(responseAutomoviles.dataset);
+            } else {
+                Alert.alert('Error', `${responseTiposAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
+            }
+        } catch (error) {
+            console.error('Error en leer los elementos:', error);
+            Alert.alert('Error', 'Hubo un error.');
+        }
   };
 
-  // Función para manejar la acción de agregar una imagen (lógica no implementada)
-  const handleAgregarImagen = () => {
-    // Lógica para agregar imagen
+  useEffect(() => {
+    fetchTiposAutomovil();
+  }, []);
+
+  const [pickerValuesTipos, setPickerValuesTipos] = useState([]);
+
+  // Solicita permisos y abre la galería de imágenes
+  const handleAgregarImagen = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permiso de cámara', 'Se necesita permiso para acceder a la galería.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImagen(result.uri); // Actualiza el estado con la imagen seleccionada
+    }
+  };
+
+  // Función para manejar la acción de guardar el carro
+  const handleGuardarCarro = async () => {
+    if (!modelo || !color || !tipoAutomovil || !fecha || !placa) {
+      Alert.alert('Error', 'Todos los campos son requeridos.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('modelo_automovil', modelo); // Cambia 'modelo' a 'modelo_automovil'
+    formData.append('color', color);
+    formData.append('id_tipo_automovil', tipoAutomovil); // Usa tipoAutomovil para el valor seleccionado
+    formData.append('fecha_fabricacion', fecha); // Cambia 'fecha' a 'fecha_fabricacion'
+    formData.append('placa', placa);
+
+    if (imagen) {
+      formData.append('imagen_automovil', {
+        uri: imagen,
+        type: 'image/jpeg', // Cambia según el tipo de la imagen
+        name: imagen.split('/').pop(), // Nombre de la imagen
+      });
+    }
+
+    try {
+      const response = await fetchData(API, 'createRow', formData);
+      const result = await response.json();
+      if (response.ok) {
+        Alert.alert('Éxito', 'El vehículo ha sido agregado correctamente.');
+        navigation.goBack(); // Navegar hacia atrás
+      } else {
+        Alert.alert('Error', result.message || 'Ocurrió un error al agregar el vehículo.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error en la conexión.');
+    }
   };
 
   return (
@@ -34,18 +117,21 @@ const AgregarVehiculo = ({ navigation, route }) => {
         value={modelo}
         onChangeText={setModelo} // Actualiza el estado del modelo
       />
-      <Input
-        placeholder="Color"
-        value={color}
-        onChangeText={setColor} // Actualiza el estado del color
+      <CustomPicker
+        selectedValue={color}
+        onValueChange={(itemValue) => setColor(itemValue)}
+        iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
+        items={colores}
       />
+     <Input
+                    placeholder='tipos Carros'
+                    value={tipoAutomovil}
+                    onChangeText={setTiposAutomovil} // Actualiza el estado
+                    keyboardType='picker'
+                    pickerValues={pickerValuesTipos}
+                />
       <Input
-        placeholder="Tipo automóvil"
-        value={tipo}
-        onChangeText={setTipo} // Actualiza el estado del tipo
-      />
-      <Input
-        placeholder="Fecha vehículo"
+        placeholder="Fecha fabricación"
         value={fecha}
         onChangeText={setFecha} // Actualiza el estado de la fecha
       />
@@ -59,54 +145,55 @@ const AgregarVehiculo = ({ navigation, route }) => {
         <Text style={styles.imageButtonPlus}>+</Text>
       </TouchableOpacity>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: imagen }} style={styles.image} /> 
-        <Text>{imagen.split('/').pop()}</Text> 
+        {imagen ? (
+          <Image source={{ uri: imagen }} style={styles.image} />
+        ) : (
+          <Text>No se ha seleccionado imagen</Text>
+        )}
       </View>
-      <Button textoBoton='Guardar' accionBoton={handleGuardarCarro}/> 
+      <Button textoBoton='Guardar' accionBoton={handleGuardarCarro} />
     </View>
   );
 };
 
-// Estilos para el componente
 const styles = StyleSheet.create({
-  container: { // Estilo para el contenedor principal
-    flex: 1, // Hace que el contenedor ocupe toda la pantalla
-    padding: 20, // Añade espacio interno alrededor del contenido
-    backgroundColor: 'white', // Color de fondo blanco
-    alignItems: 'center', // Centra el contenido horizontalmente
-    paddingBottom: 180, // Padding adicional en la parte inferior
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    paddingBottom: 180,
   },
-  imageButton: { // Estilos para el botón de agregar imagen
-    flexDirection: 'row', // Dispone los hijos en una fila
-    alignItems: 'center', // Alinea los elementos hijos verticalmente al centro
-    borderColor: 'lightgray', // Color del borde del botón
-    borderWidth: 1, // Ancho del borde del botón
-    borderRadius: 8, // Bordes redondeados
-    padding: 10, // Espacio interno del botón
-    marginBottom: 12, // Espacio debajo del botón
-    backgroundColor: 'white', // Color de fondo blanco
+  imageButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 12,
+    backgroundColor: 'white',
   },
-  imageButtonText: { // Estilos para el texto del botón de agregar imagen
-    flex: 1, // Hace que el texto ocupe todo el espacio disponible
-    fontSize: 16, // Tamaño de la fuente del texto
+  imageButtonText: {
+    flex: 1,
+    fontSize: 16,
   },
-  imageButtonPlus: { // Estilos para el símbolo más del botón de agregar imagen
-    fontSize: 24, // Tamaño de la fuente del símbolo más
-    fontWeight: 'bold', // Hace que el símbolo más sea negrita
-    color: 'gray', // Color del símbolo más
+  imageButtonPlus: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'gray',
   },
-  imageContainer: { // Estilos para el contenedor de la imagen
-    flexDirection: 'row', // Dispone los hijos en una fila
-    alignItems: 'center', // Alinea los elementos hijos verticalmente al centro
-    marginBottom: 20, // Espacio debajo del contenedor de la imagen
-    
+  imageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
-  image: { // Estilo para la imagen del carro
-    width: 100, // Ancho de la imagen
-    height: 100, // Altura de la imagen
-    borderRadius: 8, // Bordes redondeados
-    marginRight: 10, // Espacio a la derecha de la imagen
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    marginRight: 10,
   },
 });
 
-export default AgregarVehiculo; // Exporta el componente para su uso en otras partes de la aplicación
+export default AgregarVehiculo;

@@ -18,15 +18,17 @@ export default function AppCitas({ navigation }) {
     };
 
     // Función para navegar a la pantalla de detalles de la cita
-    const verDetalles = () => {
+    const verDetalles = async (id_cita, fecha, hora, auto, movilizacion, zona, ida, regreso, estado) => {
         navigation.navigate('Detalles de la cita', {
-            fecha: '22/03/2024',
-            hora: '3:30pm',
-            auto: 'Ferrari Electra',
-            movilizacion: 'Dejaré el automóvil',
-            zona: 'San Salvador',
-            ida: 'De mí casa al taller',
-            regreso: 'Del taller, A mi casa',
+            id_cita: id_cita,
+            fecha: fecha,
+            hora: hora,
+            auto: auto,
+            movilizacion: movilizacion,
+            zona: zona,
+            ida: ida,
+            regreso: regreso,
+            estado: estado
         });
     };
 
@@ -65,7 +67,7 @@ export default function AppCitas({ navigation }) {
             const responseCitas = await fetchData('citas.php', 'readAllEspecific')
             if (responseCitas.status) {
                 setCitas(responseCitas.dataset);
-                console.log(responseCitas.dataset)
+                //console.log(responseCitas.dataset)
             } else {
                 setCitas([]);
                 //Alert.alert('Error', `${responseCitas.error}`);
@@ -80,7 +82,6 @@ export default function AppCitas({ navigation }) {
         try {
             const formData = new FormData();
             formData.append('id_cita', id_cita);
-
             const responseCitas = await fetchData('citas.php', 'deleteRow', formData);
             if (responseCitas.status) {
                 Alert.alert('Éxito', `${responseCitas.message}`);
@@ -93,6 +94,7 @@ export default function AppCitas({ navigation }) {
             Alert.alert('Error', 'Hubo un error.');
         }
     };
+
 
     const deleteCita = (idCita) => {
         Alert.alert(
@@ -191,14 +193,14 @@ export default function AppCitas({ navigation }) {
                         />
                     ) : citas.length === 1 ? (
                         <CardCita
-                            accionCard={verDetalles}
+                            accionCard={() => verDetalles(citas[0].id_cita, citas[0].fecha_cita, citas[0].hora_cita, citas[0].id_automovil, citas[0].movilizacion_vehiculo, citas[0].zona_habilitada, citas[0].direccion_ida, citas[0].direccion_regreso, citas[0].estado_cita)}
                             cita={citas[0]}
                             citaData={{
                                 fotoCarro: citas[0].imagen_automovil,
                                 fecha_cita: citas[0].fecha_cita,
                                 anio_cita: citas[0].anio_cita,
                                 hora_cita: citas[0].hora_cita,
-                                marca_automovil: citas[0].marca_automovil,
+                                modelo_automovil: citas[0].modelo_automovil,
                                 placa_automovil: citas[0].placa_automovil,
                                 movilizacion_vehiculo: citas[0].movilizacion_vehiculo
                             }}
@@ -208,13 +210,13 @@ export default function AppCitas({ navigation }) {
                         citas.map(cita => (
                             <CardCita
                                 key={cita.id_cita}
-                                accionCard={verDetalles}
+                                accionCard={() => verDetalles(cita.id_cita, cita.fecha_cita, cita.hora_cita, cita.id_automovil, cita.movilizacion_vehiculo, cita.zona_habilitada, cita.direccion_ida, cita.direccion_regreso, cita.estado_cita)}
                                 citaData={{
                                     fotoCarro: cita.imagen_automovil,
                                     fecha_cita: cita.fecha_cita,
                                     anio_cita: cita.anio_cita,
                                     hora_cita: cita.hora_cita,
-                                    marca_automovil: cita.marca_automovil,
+                                    modelo_automovil: cita.modelo_automovil,
                                     placa_automovil: cita.placa_automovil,
                                     movilizacion_vehiculo: cita.movilizacion_vehiculo
                                 }}
