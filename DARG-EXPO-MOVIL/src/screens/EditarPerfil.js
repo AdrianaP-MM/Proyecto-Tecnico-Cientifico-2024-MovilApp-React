@@ -9,35 +9,43 @@ import * as ImagePicker from 'expo-image-picker';
 
 // Componente principal que exporta la pantalla de edición jurídica
 export default function EditarPerfil({ navigation }) {
-    // Declaración de estados para cada campo de entrada
-    const [nombre, setNombre] = useState('');
-    const [apellido, setApellido] = useState('');
-    const [telefono, setTelefono] = useState('');
-    const [correo, setCorreo] = useState('');
-    const [dui, setDui] = useState('');
-    const [nit, setNit] = useState('');
-    const [nrc, setNrc] = useState('');
-    const [nrf, setNrf] = useState('');
-    const [pickerValuesDepa, setPickerValuesDepa] = useState([]);
-    const [pickerValuesRubro, setPickerValuesRubro] = useState([]);
-    const [rubroSeleccionado, setRubroSeleccionado] = useState('');
-    const [depaSeleccionado, setDepaSeleccionado] = useState('');
+    // Estados para los campos de entrada del formulario
+    const [nombre, setNombre] = useState(''); // Nombre del usuario
+    const [apellido, setApellido] = useState(''); // Apellido del usuario
+    const [telefono, setTelefono] = useState(''); // Número de teléfono
+    const [correo, setCorreo] = useState(''); // Correo electrónico
+    const [dui, setDui] = useState(''); // Documento Único de Identidad
+    const [nit, setNit] = useState(''); // Número de Identificación Tributaria
+    const [nrc, setNrc] = useState(''); // Número de Registro de Contribuyente
+    const [nrf, setNrf] = useState(''); // Número de Registro Fiscal
 
-    const API = 'usuarios_clientes.php';
-    const [see, setSee] = useState('0%');
-    const [seeH, setSeeH] = useState('0%');
-    const [opacity, setOpacity] = useState(0);
+    // Estados para los valores de los selectores (pickers)
+    const [pickerValuesDepa, setPickerValuesDepa] = useState([]); // Valores para el selector de departamentos
+    const [pickerValuesRubro, setPickerValuesRubro] = useState([]); // Valores para el selector de rubros
 
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [codigo, setCodigo] = React.useState('');
-    const [passwordReset, setpasswordReset] = React.useState('');
+    // Estados para los valores seleccionados en los selectores
+    const [rubroSeleccionado, setRubroSeleccionado] = useState(''); // Rubro seleccionado
+    const [depaSeleccionado, setDepaSeleccionado] = useState(''); // Departamento seleccionado
 
-    const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true);
-    const [visibleCamposDialog, setVisibleCamposDialog] = React.useState(false);
-    const [visibleCamposCodigo, setvisibleCamposCodigo] = React.useState(false);
-    const [visibleCamposContraseña, setvisibleCamposContraseña] = React.useState(false);
+    // Configuración de la API para las peticiones
+    const API = 'usuarios_clientes.php'; // Endpoint para las peticiones a la API
 
+    // Estados para controlar la visibilidad y estilo de ciertos componentes
+    const [see, setSee] = useState('0%'); // Estilo para un componente (opacidad o posición)
+    const [seeH, setSeeH] = useState('0%'); // Estilo para otro componente (opacidad o posición)
+    const [opacity, setOpacity] = useState(0); // Opacidad de un componente
+
+    // Estados para el manejo de la autenticación y recuperación de contraseña
+    const [email, setEmail] = React.useState(''); // Correo electrónico del usuario
+    const [password, setPassword] = React.useState(''); // Contraseña del usuario
+    const [codigo, setCodigo] = React.useState(''); // Código de verificación para recuperación de contraseña
+    const [passwordReset, setpasswordReset] = React.useState(''); // Nueva contraseña para el usuario
+
+    // Estados para el control de la visibilidad de los diálogos
+    const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true); // Visibilidad del diálogo de datos personales
+    const [visibleCamposDialog, setVisibleCamposDialog] = React.useState(false); // Visibilidad del diálogo de campos adicionales
+    const [visibleCamposCodigo, setvisibleCamposCodigo] = React.useState(false); // Visibilidad del diálogo de código de verificación
+    const [visibleCamposContraseña, setvisibleCamposContraseña] = React.useState(false); // Visibilidad del diálogo de contraseña
 
     const handleAbrirDialogo = () => {
         // Si todos los campos están llenos, cerrar el diálogo y proceder
@@ -62,8 +70,10 @@ export default function EditarPerfil({ navigation }) {
         Alert.alert('Exito', 'Contraseña actualizada');
     };
 
+    // Función asíncrona para leer los elementos y obtener datos del perfil
     const readElements = async () => {
         try {
+            // Configuración de los valores para el selector de departamentos
             setPickerValuesDepa([
                 { id: 'Ahuachapán', nombre: 'Ahuachapán' },
                 { id: 'Cabañas', nombre: 'Cabañas' },
@@ -80,33 +90,40 @@ export default function EditarPerfil({ navigation }) {
                 { id: 'Sonsonate', nombre: 'Sonsonate' },
                 { id: 'Usulután', nombre: 'Usulután' },
             ]);
+
+            // Configuración de los valores para el selector de rubros
             setPickerValuesRubro([
                 { id: 'Alimenticio', nombre: 'Alimenticio' },
                 { id: 'Automotriz', nombre: 'Automotriz' },
                 { id: 'Belleza', nombre: 'Belleza' },
                 { id: 'Calzado', nombre: 'Calzado' },
             ]);
-
+            // Obtención de los datos del perfil del usuario desde la API
             const readUser = await fetchData(API, 'readProfile');
             if (readUser.status) {
                 const ROW = readUser.dataset;
-                setNombre(ROW.nombres_cliente);
-                setApellido(ROW.apellidos_cliente);
-                setTelefono(ROW.telefono_cliente);
-                setDepaSeleccionado(ROW.departamento_cliente);
-                setCorreo(ROW.correo_cliente);
-                setRubroSeleccionado(ROW.rubro_comercial);
-                setDui(ROW.dui_cliente);
-                setNit(ROW.NIT_cliente);
-                setNrc(ROW.NRC_cliente);
-                setNrf(ROW.NRF_cliente);
+                // Actualización de los estados con los datos obtenidos del perfil
+                setNombre(ROW.nombres_cliente); // Nombre del cliente
+                setApellido(ROW.apellidos_cliente); // Apellido del cliente
+                setTelefono(ROW.telefono_cliente); // Teléfono del cliente
+                setDepaSeleccionado(ROW.departamento_cliente); // Departamento del cliente
+                setCorreo(ROW.correo_cliente); // Correo electrónico del cliente
+                setRubroSeleccionado(ROW.rubro_comercial); // Rubro comercial del cliente
+                setDui(ROW.dui_cliente); // DUI del cliente
+                setNit(ROW.NIT_cliente); // NIT del cliente
+                setNrc(ROW.NRC_cliente); // NRC del cliente
+                setNrf(ROW.NRF_cliente); // NRF del cliente
 
+                // Condición para verificar el tipo de cliente y ajustar la visibilidad
                 if (ROW.tipo_cliente == 'Persona juridica') {
-                    setOpacity(1); setSee('100%'); setSeeH('auto');
-                    console.log(ROW.tipo_cliente);
+                    setOpacity(1); // Ajusta la opacidad
+                    setSee('100%'); // Ajusta la visibilidad en porcentaje
+                    setSeeH('auto'); // Ajusta la altura automáticamente
+                    console.log(ROW.tipo_cliente); // Muestra el tipo de cliente en la consola
                 }
             }
         } catch (error) {
+            // Manejo de errores y log del mensaje de error
             console.log('ERROR');
         }
     }
