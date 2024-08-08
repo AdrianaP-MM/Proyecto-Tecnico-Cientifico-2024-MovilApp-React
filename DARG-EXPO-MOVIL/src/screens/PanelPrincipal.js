@@ -165,7 +165,6 @@ export default function DashboardScreen({ navigation }) {
           style={styles.searchInput}
           placeholder="Buscar..."
           value={search}
-          onChangeText={searchAllMyCars}
         />
       <View style={styles.appointmentstwo}>
         <Text texto='Agrega un auto nuevo' font='PoppinsRegular' fontSize={15} />
