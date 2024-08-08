@@ -17,7 +17,7 @@ const CarrosVista = ({ navigation }) => {
       const DATA = await fetchData(API, 'readAllMyCars');
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
-          imagen: `${contants.IMAGE_URL}automoviles/${item.imagen_automovil}`,
+          imagen: item.imagen_automovil,
           modelo: item.modelo_automovil,
           placa: item.placa_automovil
         }));
