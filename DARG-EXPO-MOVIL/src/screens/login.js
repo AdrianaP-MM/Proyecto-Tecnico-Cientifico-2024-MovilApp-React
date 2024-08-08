@@ -7,6 +7,25 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
 import fetchData from '../utils/FetchData';
 
+/*
+<Button textoBoton='cerrar wea' accionBoton={handleCerrarSesion} fontSize={17} width='90%' marginTop={50} />
+          <Button textoBoton='Abrir dialogo' accionBoton={handleAbrirDialogo} fontSize={17} width='90%' marginTop={50} />
+
+          const handleCerrarSesion = async () => {
+    try {
+      const DATA = await fetchData(API, 'logOut');
+      if (!DATA.error) {
+        Alert.alert('Éxito', 'Sesesion cerrada.');
+      } else {
+        Alert.alert('Error', DATA.error);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Hubo un problema al cerrar sesion.');
+    }
+  };
+*/
+
 export default function Login({ navigation }) {
   // Define los estados para el correo electrónico y la contraseña
   const [email, setEmail] = React.useState('');
@@ -60,19 +79,7 @@ export default function Login({ navigation }) {
     }
   };
 
-  const handleCerrarSesion = async () => {
-    try {
-      const DATA = await fetchData(API, 'logOut');
-      if (!DATA.error) {
-        Alert.alert('Éxito', 'Sesesion cerrada.');
-      } else {
-        Alert.alert('Error', DATA.error);
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Hubo un problema al cerrar sesion.');
-    }
-  };
+  
 
   // Función para enviar el código de verificación al correo ingresado
   const handleSendCode = async () => {
@@ -330,8 +337,6 @@ export default function Login({ navigation }) {
             </TouchableRipple>
           </View>
           <Button textoBoton='Iniciar sesión' accionBoton={handleLogin} fontSize={17} width='90%' marginTop={50} />
-          <Button textoBoton='cerrar wea' accionBoton={handleCerrarSesion} fontSize={17} width='90%' marginTop={50} />
-          <Button textoBoton='Abrir dialogo' accionBoton={handleAbrirDialogo} fontSize={17} width='90%' marginTop={50} />
           <View style={styles.registerContainer}>
             <Text texto='¿No tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
             <TouchableRipple
