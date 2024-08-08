@@ -48,12 +48,26 @@ export default function Registrate({ navigation }) {
         { label: 'Usulután', value: 'Usulután' },
     ]
 
+    const rubros = [
+        { label: 'Rubro', value: '' },
+        { label: 'Alimenticio', value: 'Alimenticio' },
+        { label: 'Automotriz', value: 'Automotriz' },
+        { label: 'Belleza', value: 'Belleza' },
+        { label: 'Calzado', value: 'Calzado' },
+    ]
+
+
     const handleRegistroNatural = async () => {
 
         // Validar que los campos no estén vacíos
         if (!dui.trim() || !telefono.trim() || !correo.trim() || !contraseña.trim() || !confirmarContraseña.trim() || !nombres.trim() || !apellidos.trim() || !checked.trim() || !departemento.trim() || !nit.trim()) {
             Alert.alert('Error', 'Por favor, completa todos los campos.');
             return; // Salir de la función si alguno de los campos está vacío
+        }
+
+        if (contraseña === '00000000') {
+            Alert.alert('Error', 'No puedes usar esa contraseña intenta con otra');
+            return; // Salir de la función después de abrir el diálogo
         }
 
         // Creamos un objeto FormData para enviar los datos al servidor
@@ -90,6 +104,11 @@ export default function Registrate({ navigation }) {
         if (!dui.trim() || !telefono.trim() || !correo.trim() || !contraseña.trim() || !confirmarContraseña.trim() || !nombres.trim() || !apellidos.trim() || !checked.trim() || !departemento.trim() || !nit.trim() || !nrc.trim() || !nrf.trim() || !rubro.trim()) {
             Alert.alert('Error', 'Por favor, completa todos los campos.');
             return; // Salir de la función si alguno de los campos está vacío
+        }
+
+        if (contraseña === '00000000') {
+            Alert.alert('Error', 'No puedes usar esa contraseña intenta con otra');
+            return; // Salir de la función después de abrir el diálogo
         }
 
         // Creamos un objeto FormData para enviar los datos al servidor
@@ -147,7 +166,7 @@ export default function Registrate({ navigation }) {
             Alert.alert('Error', 'Por favor, completa todos los campos.');
             return; // Evita que se siga al siguiente paso si algún campo está vacío
         }
-    
+
         // Si todos los campos están llenos, cerrar el diálogo y proceder
         setVisibleCamposDialog(false);
         setShowAdditionalFields(true); // Muestra los campos adicionales o navega a la siguiente pantalla
@@ -158,7 +177,7 @@ export default function Registrate({ navigation }) {
             Alert.alert('Error', 'Por favor, selecciona una opción.');
             return; // Evita que se abra el siguiente modal si no se ha hecho una selección
         }
-    
+
         // Aquí abre el siguiente modal
         handleNext(); // Cambia el estado para mostrar el siguiente modal
     };
@@ -187,7 +206,7 @@ export default function Registrate({ navigation }) {
 
     // Format the NIT
     const formatNit = (value) => {
-        const numericValue = value.replace(/\D/g, ''); 
+        const numericValue = value.replace(/\D/g, '');
         if (numericValue.length <= 4) {
             return numericValue;
         } else if (numericValue.length <= 10) {
@@ -204,7 +223,6 @@ export default function Registrate({ navigation }) {
             <Portal>
                 <Dialog
                     visible={visiblePersonaDialog}
-                    onDismiss={() => setVisiblePersonaDialog(false)}
                     style={styles.dialog}
                 >
                     <Dialog.Title style={styles.dialogTitle}>
@@ -250,7 +268,6 @@ export default function Registrate({ navigation }) {
 
                 <Dialog
                     visible={visibleCamposDialog}
-                    onDismiss={() => setVisibleCamposDialog(false)}
                     style={styles.dialog}
                 >
                     <Dialog.Title style={styles.dialogTitle}>
@@ -275,13 +292,14 @@ export default function Registrate({ navigation }) {
                             keyboardType='numeric'
                             maxLength={11}
                         />
-                        <Input
-                            placeholder='Rubro comercial'
-                            value={rubro}
-                            onChangeText={setRubro}
-                            width='95%'
-                            iconImage={require('../images/icons/iconRubro.png')}
+
+                        <CustomPicker
+                            selectedValue={rubro}
+                            onValueChange={(itemValue) => setRubro(itemValue)}
+                            iconImage={require('../images/icons/iconRubro.png')}// Cambia la ruta a la imagen de tu ícono
+                            items={rubros}
                         />
+
                     </Dialog.Content>
                     <Dialog.Actions style={styles.center}>
                         <Button textoBoton='Siguiente' accionBoton={handleNextCampos} fontSize={15} width='55%' />
