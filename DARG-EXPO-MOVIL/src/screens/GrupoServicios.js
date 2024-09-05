@@ -25,6 +25,7 @@ export default function App() {
         const data = DATA.dataset.map(item => ({
           nombre: item.nombre_tipo_servicio,
           id: item.id_tipo_servicio,
+          img: item.imagen_servicio
         }));
         setreadAll(data); // Actualiza el estado con los datos obtenidos
       } else {
@@ -53,6 +54,7 @@ export default function App() {
         key={index} // Utiliza index como clave (puede ser mejor usar un identificador único si está disponible)
         title={servicio.nombre}
         idServiciosDisponibles={servicio.id}
+        imageUrl={servicio.img}
       />
     ));
   };

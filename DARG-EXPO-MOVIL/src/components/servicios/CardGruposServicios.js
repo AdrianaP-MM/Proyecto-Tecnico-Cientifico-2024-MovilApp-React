@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'; // Imp
 import { useNavigation } from '@react-navigation/native'; // Importa el hook de navegación
 import Text from '../utilidades/Text'; // Importa el componente de texto personalizado
 import Button from '../buttons/ButtonRojo'; // Importa el componente de botón personalizado
-
+import Config from '../../utils/Constantes'; 
 // Componente funcional HorizontalCard
 const HorizontalCard = ({ title, imageUrl, idServiciosDisponibles }) => {
   const navigation = useNavigation(); // Obtiene el objeto de navegación
@@ -13,20 +13,22 @@ const HorizontalCard = ({ title, imageUrl, idServiciosDisponibles }) => {
 
   return (
     <View style={styles.horizontalCard}>
-      <Image source={{ uri: imageUrl }} style={styles.cardImage} />
-      <View style={styles.cardContent}> 
+      <Image source={imageUrl ?
+        { uri: `${Config.IMAGE_URL}tipoServicio/${imageUrl}` }
+        : require('../../images/servicios/imagenServicio.png')} style={styles.cardImage} />
+      <View style={styles.cardContent}>
         <View style={styles.grup}>
-          <Text texto='Nombre del grupo: ' fontSize={15} /> 
+          <Text texto='Nombre del grupo: ' fontSize={15} />
           <Text texto={`${title}`} font='PoppinsMedium' fontSize={15} />
         </View>
-        <View style={styles.row}> 
+        <View style={styles.row}>
           <Button
             textoBoton='Ver servicio'
-            fontSize={16} 
-            width='55%' 
-            accionBoton={() => navigation.navigate('Servicios', { title, idServiciosDisponibles })} 
-            marginTop={10} 
-            marginBottom={10} 
+            fontSize={16}
+            width='55%'
+            accionBoton={() => navigation.navigate('Servicios', { title, idServiciosDisponibles })}
+            marginTop={10}
+            marginBottom={10}
           />
         </View>
       </View>

@@ -35,17 +35,17 @@ export default function EditarPerfil({ navigation }) {
     const [seeH, setSeeH] = useState('0%'); // Estilo para otro componente (opacidad o posición)
     const [opacity, setOpacity] = useState(0); // Opacidad de un componente
 
-    // Estados para el manejo de la autenticación y recuperación de contraseña
-    const [email, setEmail] = React.useState(''); // Correo electrónico del usuario
-    const [password, setPassword] = React.useState(''); // Contraseña del usuario
-    const [codigo, setCodigo] = React.useState(''); // Código de verificación para recuperación de contraseña
-    const [passwordReset, setpasswordReset] = React.useState(''); // Nueva contraseña para el usuario
-
     // Estados para el control de la visibilidad de los diálogos
     const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true); // Visibilidad del diálogo de datos personales
     const [visibleCamposDialog, setVisibleCamposDialog] = React.useState(false); // Visibilidad del diálogo de campos adicionales
     const [visibleCamposCodigo, setvisibleCamposCodigo] = React.useState(false); // Visibilidad del diálogo de código de verificación
     const [visibleCamposContraseña, setvisibleCamposContraseña] = React.useState(false); // Visibilidad del diálogo de contraseña
+
+    // Estados para el manejo de la autenticación y recuperación de contraseña
+    const [email, setEmail] = React.useState(''); // Correo electrónico del usuario
+    const [password, setPassword] = React.useState(''); // Contraseña del usuario
+    const [codigo, setCodigo] = React.useState(''); // Código de verificación para recuperación de contraseña
+    const [passwordReset, setpasswordReset] = React.useState(''); // Nueva contraseña para el usuario
 
     const handleAbrirDialogo = () => {
         // Si todos los campos están llenos, cerrar el diálogo y proceder

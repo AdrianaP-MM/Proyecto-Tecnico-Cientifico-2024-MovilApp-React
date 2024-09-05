@@ -19,7 +19,7 @@ export default function App() {
 
     const navigation = useNavigation(); // Hook para la navegación
     const route = useRoute(); // Hook para obtener los parámetros de la ruta
-    const { idServiciosDisponibles } = route.params; // Parámetro de la ruta
+    const { idServiciosDisponibles, title} = route.params; // Parámetro de la ruta
 
     // Función para volver a la pantalla anterior
     const handleGoBack = () => {
@@ -66,7 +66,7 @@ export default function App() {
     // Función para leer los elementos de la API
     const readElements = async () => {
         try {
-            console.log('asasasa', idServiciosDisponibles);
+            //console.log('asasasa', idServiciosDisponibles);
             const formData = new FormData();
             formData.append('id_servicio', idServiciosDisponibles);
 
@@ -76,7 +76,7 @@ export default function App() {
 
             if (responseCarros.status) {
                 setmostrarCarrosenProceso(responseCarros.dataset);
-                console.log('Carros leyidos', responseCarros.dataset);
+                //console.log('Carros leyidos', responseCarros.dataset);
             } else {
                 setmostrarCarrosenProceso([]);
                 //Alert.alert('Error', ${responseCitas.error});
@@ -84,13 +84,13 @@ export default function App() {
 
             if (responseServicio.status) {
                 setreadOne(responseServicio.dataset);
-                console.log('Servicio leyido', responseServicio.dataset);
+                //console.log('Servicio leyido', responseServicio.dataset);
             } else {
                 setmostrarCarrosenProceso([]);
                 //Alert.alert('Error', ${responseCitas.error});
             }
         } catch (error) {
-            console.error('Error en leer los elementos:', error); // Registra el error en caso de excepción
+            //console.error('Error en leer los elementos:', error); // Registra el error en caso de excepción
             Alert.alert('Error', 'Hubo un error.'); // Muestra una alerta en caso de error
         }
     };
@@ -98,11 +98,11 @@ export default function App() {
     return (
         <View style={styles.container}>
             <View style={styles.titulo}>
-                <Text texto='Autos en servicio "x"' font='PoppinsMedium' fontSize={25} />
+                <Text texto={`Autos en ${title}`} font='PoppinsMedium' fontSize={25} />
                 <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
                     <Image
                         source={require('../images/icons/btnBack.png')}
-                        style={{ width: 35, height: 27 }}
+                        style={{ width: 35, height: 27}}
                     />
                 </TouchableOpacity>
             </View>
@@ -213,7 +213,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginLeft: 'auto',
-        marginBottom: 20,
+        marginBottom: 0,
+        marginTop: 60,
     },
     backButtonText: {
         fontSize: 16,

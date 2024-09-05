@@ -6,7 +6,7 @@ import Text from '../utilidades/Text'; // Importa el componente de texto persona
 import Button from '../buttons/ButtonRojo'; // Importa el componente de botón personalizado
 
 // Componente para una tarjeta vertical de servicios
-const VerticalCard = ({ title, tipo, idServiciosDisponibles }) => {
+const VerticalCard = ({ title, tipo, idServiciosDisponibles}) => {
     const navigation = useNavigation(); // Hook para navegación
 
     return (
@@ -24,7 +24,7 @@ const VerticalCard = ({ title, tipo, idServiciosDisponibles }) => {
                     textoBoton='Ver vehículos' // Texto del botón
                     fontSize={14} // Tamaño de fuente del texto del botón
                     width='95%' // Ancho del botón
-                    accionBoton={() => navigation.navigate('AutosEnProceso', { idServiciosDisponibles })} // Acción al presionar el botón
+                    accionBoton={() => navigation.navigate('AutosEnProceso', { idServiciosDisponibles, title})} // Acción al presionar el botón
                     marginTop={15} // Margen superior del botón
                     marginBottom={15} // Margen inferior del botón
                 />
