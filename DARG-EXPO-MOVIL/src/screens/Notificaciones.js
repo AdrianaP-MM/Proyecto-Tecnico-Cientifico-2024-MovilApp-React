@@ -1,25 +1,81 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, Alert } from 'react-native';
 import Text from '../components/utilidades/Text'; // Importación del componente de texto personalizado
 import CardNoti from '../components/notificaciones/CardNotif'; // Importación del componente de tarjeta de notificación personalizado
+import fetchData from '../utils/FetchData';
 
 export default function AppNotificaciones() {
+
+    const [citas, setCitas] = useState([]);
+
+    const readCitasExistentes = async () => {
+        try {
+            const responseCitas = await fetchData('citas.php', 'readAllEspecific');
+            if (responseCitas.status) {
+                setCitas(responseCitas.dataset);
+            } else {
+                setCitas([]);
+                Alert.alert('Error', `${responseCitas.error}`);
+            }
+        } catch (error) {
+            console.error('Error en leer los elementos:', error);
+            Alert.alert('Error', 'Hubo un error.');
+        }
+    };
+
+    useEffect(() => {
+        readCitasExistentes();
+    }, []);
+
+    const processCitas = (citas) => {
+        const now = new Date();
+        return citas.map(cita => {
+            const citaDate = new Date(cita.date);
+            const diffTime = citaDate - now;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays <= 1 && diffDays >= 0) { // Notificar 1 día antes o el mismo día
+                return {
+                    title: 'Se acerca tu próximo cambio de aceite para tu vehículo:',
+                    vehicle: cita.vehicle, // Ajusta esto si 'vehicle' no es la propiedad correcta
+                    date: citaDate.toLocaleDateString(),
+                    time: citaDate.toLocaleTimeString(),
+                    key: cita.id // Ajusta esto si tienes una propiedad única para la cita
+                };
+            }
+            return null;
+        }).filter(cita => cita !== null); // Filtra citas nulas
+    };
+
+    const citasProcesadas = processCitas(citas);
+
     return (
         <View style={styles.contenedorTotal}>
-            <StatusBar style="dark" backgroundColor="#ffffff" /> 
+            <StatusBar style="dark" backgroundColor="#ffffff" />
             <View style={styles.col}>
                 <View style={styles.contenedorTitulo}>
-                    <Text texto='Notificaciones' font='PoppinsMedium' fontSize={25} /> 
+                    <Text texto='Notificaciones' font='PoppinsMedium' fontSize={25} />
                     <Image
                         source={require('../images/icons/iconCampana.png')}  // Ruta de la imagen de campana
                         style={styles.image}
                     />
                 </View>
-                <Text texto='Tienes n notificaciones nuevas' font='PoppinsRegular' fontSize={14} color='#6A6A6A' /> 
+                <Text texto={`Tienes ${citasProcesadas.length} notificaciones nuevas`} font='PoppinsRegular' fontSize={14} color='#6A6A6A' />
             </View>
             <ScrollView style={styles.scrollCards}>
-                {<CardNoti />} 
+                {citasProcesadas.map((cita) => (
+                    <CardNoti
+                        key={cita.key}
+                        title={cita.title}
+                        vehicle={cita.vehicle}
+                        date={cita.date}
+                        time={cita.time}
+                        onPress={() => {
+                            // Acción cuando se presiona la tarjeta
+                            Alert.alert('Cita', `Detalles de la cita para ${cita.vehicle}`);
+                        }}
+                    />
+                ))}
             </ScrollView>
         </View>
     );

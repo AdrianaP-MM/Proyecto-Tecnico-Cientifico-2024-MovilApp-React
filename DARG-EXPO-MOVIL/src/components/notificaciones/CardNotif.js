@@ -1,25 +1,24 @@
 import React from 'react';
 import Text from '../utilidades/Text'; // Importa el componente de texto personalizado
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'; // Importa los estilos y componentes necesarios de React Native
+import { StyleSheet, View, TouchableOpacity } from 'react-native'; // Importa los estilos y componentes necesarios de React Native
 
-export default function CardNoti({ accionCard }) {
+export default function CardNoti({ title, vehicle, date, time, onPress }) {
     // Componente de tarjeta de notificación
     return (
-        <TouchableOpacity onPress={accionCard}>
+        <TouchableOpacity onPress={onPress}>
             <View style={styles.contenedorTotalCard}>
                 <View style={styles.cardHeader}>
                     <Text texto='¡Revisa tu calendario!' font='PoppinsLightItalic' fontSize={15} color='white' />  
                 </View>
                 <View style={styles.cardBody}>
                     <View style={styles.row}>
-                        <Text texto='Se acerca tú próximo cambio de aceite para tú vehículo:' fontSize={11} font='PoppinsRegular' /> 
-                        <Text texto='Hyundai Bayon' font='PoppinsRegular' color='blue' /> 
+                        <Text texto={title} fontSize={11} font='PoppinsRegular' /> 
+                        <Text texto={vehicle} font='PoppinsRegular' color='blue' /> 
                     </View>
                     <View style={styles.cardFooter}>
-                        <Text texto='Recibido a las: 09:30 am.' font='PoppinsSemiBold' color='#E5383B' fontSize={10} />  
+                        <Text texto={`Cita el: ${date} a las ${time}.`} font='PoppinsSemiBold' color='#E5383B' fontSize={10} />  
                     </View>
                 </View>
-
             </View>
         </TouchableOpacity>
     );
