@@ -75,7 +75,7 @@ export default function App() {
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="Registrate" component={Registrate} options={{
             title: 'Registrarse',
-            headerShown: true, headerBackImage: () => <CustomBackButton />,
+            headerShown: false, headerBackImage: () => <CustomBackButton />,
             headerStyle: {
               backgroundColor: '#E5383B', // Color de fondo del header
             },

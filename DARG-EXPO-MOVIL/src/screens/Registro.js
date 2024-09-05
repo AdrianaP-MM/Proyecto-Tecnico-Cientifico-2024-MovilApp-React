@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert, Image } from 'react-native';
 import { Avatar, Dialog, Portal, Provider, RadioButton, TouchableRipple, IconButton } from 'react-native-paper';
 import Text from '../components/utilidades/Text'; // Import the custom Text component
 import Button from '../components/buttons/ButtonRojo'; // Import the custom button
@@ -228,9 +228,6 @@ export default function Registrate({ navigation }) {
                     <Dialog.Title style={styles.dialogTitle}>
                         <Text texto='Elige tu persona' font='PoppinsSemiBold' fontSize={20} textAlign='center' color='#3B3939' />
                     </Dialog.Title>
-
-
-
                     <Dialog.Content>
                         <RadioButton.Group
                             onValueChange={value => {
@@ -307,13 +304,12 @@ export default function Registrate({ navigation }) {
                 </Dialog>
             </Portal>
 
-
-
-
-
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.avatarContainer}>
-                    <Avatar.Icon size={75} icon="alpha-d" style={styles.avatarIcon} />
+                    <Image
+                        source={require('../images/icons/iconLogo.png')}
+                        style={styles.iconLogo}
+                    />
                     <Text texto='Registrate' font='PoppinsBold' fontSize={20} textAlign='center' />
                     <Text texto='¡Arregla tu carro con nosotros!' font='PoppinsRegular' fontSize={14} textAlign='center' />
 
@@ -344,8 +340,6 @@ export default function Registrate({ navigation }) {
                         />
                     </View>
                 )}
-
-
                 <Input
                     placeholder='Nombres'
                     value={nombres}
@@ -455,6 +449,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+        paddingTop: 60,
     },
     avatarContainer: {
         alignItems: 'center',
@@ -508,6 +503,11 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#BA181B',
+    },
+    iconLogo: {
+        width: 95,
+        height: 95,
+        marginBottom: 10,
     },
 });
 

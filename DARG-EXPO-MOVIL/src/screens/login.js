@@ -7,11 +7,6 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
 import fetchData from '../utils/FetchData';
 
-
-
-
-
-
 export default function Login({ navigation }) {
   // Define los estados para el correo electrónico y la contraseña
   const [email, setEmail] = React.useState('');
@@ -22,7 +17,6 @@ export default function Login({ navigation }) {
   const [passwordReset, setpasswordReset] = React.useState('');
   const [passwordResetConfirm, setpasswordResetConfirm] = React.useState('');
   const API = 'usuarios_clientes.php';
-
 
   const [visiblePersonaDialog, setVisiblePersonaDialog] = React.useState(true);
   const [visibleCamposDialog, setVisibleCamposDialog] = React.useState(false);
@@ -210,9 +204,7 @@ export default function Login({ navigation }) {
   };
 
   return (
-
     <Provider>
-
       <Portal>
         <Dialog //Dialogo para pedir el correo del cliente y asi enviar el codigo y luego cambiar la contraseña
           visible={visibleCamposDialog}
@@ -309,7 +301,10 @@ export default function Login({ navigation }) {
         <StatusBar style="dark" backgroundColor="#ffffff" />
         <View style={styles.containerTotal}>
           <View style={styles.avatarContainer}>
-            <Avatar.Icon size={75} icon="alpha-d" style={styles.avatarIcon} />
+            <Image
+              source={require('../images/icons/iconLogo.png')}
+              style={styles.iconLogo}
+            />
             <Text texto='Inicio de sesión' font='PoppinsBold' fontSize={20} />
             <Text texto='Bienvenido a DARG' font='PoppinsMedium' fontSize={14} />
           </View>
@@ -404,5 +399,10 @@ const styles = StyleSheet.create({
   infoIcon: {
     width: 25,
     height: 25,
+  },
+  iconLogo: {
+    width: 95,
+    height: 95,
+    marginBottom: 10,
   },
 });

@@ -7,6 +7,9 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 import fetchData from '../utils/FetchData';
 import * as ImagePicker from 'expo-image-picker';
 
+import Config from '../utils/Constantes'
+const IMAGE_URL = Config.IMAGE_URL;
+
 // Componente principal que exporta la pantalla de edición jurídica
 export default function EditarPerfil({ navigation }) {
     // Estados para los campos de entrada del formulario
@@ -47,27 +50,108 @@ export default function EditarPerfil({ navigation }) {
     const [codigo, setCodigo] = React.useState(''); // Código de verificación para recuperación de contraseña
     const [passwordReset, setpasswordReset] = React.useState(''); // Nueva contraseña para el usuario
 
+    const [codeSend, setCodeSend] = useState('');
+    const [isValidCorreo, setIsValidCorreo] = useState(false); // Estado para verificar si el correo es válido
+
+    const [imagen, setImagen] = useState(null); // Estado para la imagen del carro
+
     const handleAbrirDialogo = () => {
         // Si todos los campos están llenos, cerrar el diálogo y proceder
         setVisibleCamposDialog(true);
     };
 
-    const handleAbrirCodigo = () => {
-        // Si todos los campos están llenos, cerrar el diálogo y proceder
-        setVisibleCamposDialog(false);
-        setvisibleCamposCodigo(true);
+    const handleAbrirCodigo = async () => {
+        if (email) {
+            if (email == correo) {
+                const formData = new FormData();
+                formData.append('user_correo', email);
+                console.log(email);
+                try {
+                    const confirmCorreo = await fetchData('usuarios_clientes.php', 'checkCorreo', formData);
+                    // Validar y usar la respuesta de tallas
+                    if (confirmCorreo.status) {
+                        console.log('El usuario con correo existe', confirmCorreo);
+                        const sendCorreo = await fetchData('usuarios_clientes.php', 'enviarCodigoRecuperacion', formData);
+                        //console.log(formData)
+                        if (sendCorreo.status) {
+                            Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
+                            setCodeSend(sendCorreo.codigo);
+                            console.log('Código: ', sendCorreo.codigo)
+                            setVisibleCamposDialog(false);
+                            setvisibleCamposCodigo(true);
+                            return true;
+                        } else {
+                            Alert.alert('Error', sendCorreo.error);
+                            return false;
+                        }
+                    } else {
+                        Alert.alert('No se encontró el usuario', 'Necesita un usuario con ese correo electrónico para restablecer su contraseña');
+                        return false;
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    Alert.alert('Error', 'Hubo un problema al enviar el código.');
+                    return false;
+                }
+            }
+            else {
+                Alert.alert('Error', 'Por favor ingrese el correo electrónico de su cuenta.');
+            }
+        }
+        else {
+            Alert.alert('Error', 'Por favor complete todos los campos.');
+        }
     };
 
-    const handleAbrirCambiarContraseña = () => {
-        // Si todos los campos están llenos, cerrar el diálogo y proceder
-        setvisibleCamposCodigo(false);
-        setvisibleCamposContraseña(true);
+    const handleAbrirCambiarContraseña = async () => {
+        // Función para manejar la verificación del código
+        console.log('Código verify: ', codeSend)
+        if (codigo) {
+            if (codigo.trim() === codeSend) {
+                Alert.alert('Éxito', 'Código ingresado correctamente');
+                // Si todos los campos están llenos, cerrar el diálogo y proceder
+                setvisibleCamposCodigo(false);
+                setvisibleCamposContraseña(true);
+            } else {
+                Alert.alert('Error', 'El código no coincide con el que se le envió en el correo.');
+            }
+        } else {
+            Alert.alert('Error', 'Por favor complete todos los campos.');
+        }
+
     };
 
-    const handlePasswordRessetExitoso = () => {
-        // Si todos los campos están llenos, cerrar el diálogo y proceder
-        setvisibleCamposContraseña(false);
-        Alert.alert('Exito', 'Contraseña actualizada');
+    const handlePasswordRessetExitoso = async () => {
+        if (passwordReset && password) {
+            if (passwordReset !== password) {
+                Alert.alert('Error', 'Las contraseñas no coinciden');
+                console.log('con 1:', passwordReset, 'con 2:', password)
+            }
+            else {
+                // Creamos un objeto FormData para enviar los datos al servidor
+                const formData = new FormData();
+                formData.append('user_contra', password);
+                formData.append('user_correo', email);
+
+                try {
+                    const response = await fetchData('usuarios_clientes.php', 'updatePassword', formData);
+                    if (response.status) {
+                        // Si todos los campos están llenos, cerrar el diálogo y proceder
+                        setvisibleCamposContraseña(false);
+                        Alert.alert('Exito', 'Contraseña actualizada');
+                    } else {
+                        Alert.alert('Error', response.error);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    Alert.alert('Error', 'Hubo un problema al restablecer la contraseña.');
+                }
+            }
+        }
+        else {
+            Alert.alert('Error', 'Por favor complete todos los campos.');
+        }
     };
 
     // Función asíncrona para leer los elementos y obtener datos del perfil
@@ -113,6 +197,9 @@ export default function EditarPerfil({ navigation }) {
                 setNit(ROW.NIT_cliente); // NIT del cliente
                 setNrc(ROW.NRC_cliente); // NRC del cliente
                 setNrf(ROW.NRF_cliente); // NRF del cliente
+                if (ROW.fto_cliente) {
+                    setImagen(IMAGE_URL + '/clientes/' + ROW.fto_cliente);
+                }
 
                 // Condición para verificar el tipo de cliente y ajustar la visibilidad
                 if (ROW.tipo_cliente == 'Persona juridica') {
@@ -204,11 +291,22 @@ export default function EditarPerfil({ navigation }) {
             formData.append('user_apellidos', apellido);
             formData.append('user_departamento', depaSeleccionado);
             formData.append('user_nit', nit);
+
+            if (imagen) {
+                formData.append('user_img', {
+                    uri: imagen,
+                    type: 'image/jpeg',
+                    name: imagen.split('/').pop(),
+                });
+                console.log('va con imagen')
+            }
+
             if (opacity == 1) {
                 formData.append('user_rubro', rubroSeleccionado);
                 formData.append('user_nrc', nrc);
                 formData.append('user_nrf', nrf);
             }
+
             const responseProfile = await fetchData(API, 'editProfile', formData);
             if (responseProfile.status) {
                 Alert.alert('Éxito', `${responseProfile.message}`);
@@ -223,17 +321,14 @@ export default function EditarPerfil({ navigation }) {
         }
     };
 
-    const [image, setImage] = useState(null);
-
-    const pickImage = async () => {
-        // Pide permiso para acceder a la galería
+    const changeImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-            Alert.alert('Error', 'Lo siento, necesitamos permisos para acceder a tu galería.');
+            Alert.alert('Permiso de cámara', 'Se necesita permiso para acceder a la galería.');
             return;
         }
 
-        let result = await ImagePicker.launchImageLibraryAsync({
+        const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
@@ -241,12 +336,8 @@ export default function EditarPerfil({ navigation }) {
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            setImagen(result.assets[0].uri); // Actualiza el estado con la imagen seleccionada
         }
-    };
-
-    const changeImage = async () => {
-        pickImage();
     };
 
     return (
@@ -289,6 +380,7 @@ export default function EditarPerfil({ navigation }) {
                             onChangeText={setCodigo}
                             width='95%'
                             iconImage={(require('../images/icons/iconContra.png'))}
+                            secureTextEntry={true}
                         />
                     </Dialog.Content>
                     <Dialog.Actions style={styles.center}>
@@ -311,6 +403,17 @@ export default function EditarPerfil({ navigation }) {
                             onChangeText={setpasswordReset}
                             width='95%'
                             iconImage={(require('../images/icons/iconContra.png'))}
+                            secureTextEntry={true}
+                            maxLength={50}
+                        />
+                        <Input
+                            placeholder='Confirme su contraseña'
+                            value={password}
+                            onChangeText={setPassword}
+                            width='95%'
+                            iconImage={(require('../images/icons/iconContra.png'))}
+                            secureTextEntry={true}
+                            maxLength={50}
                         />
                     </Dialog.Content>
                     <Dialog.Actions style={styles.center}>
@@ -325,7 +428,11 @@ export default function EditarPerfil({ navigation }) {
             >
                 <ScrollView contentContainerStyle={styles.container}>
                     <View style={styles.avatarContainer}>
-                        <Avatar.Icon size={75} icon="alpha-c" style={styles.avatarIcon} />
+                        {imagen ? (
+                            <Image source={{ uri: imagen }} style={styles.imagePerfil} />
+                        ) : (
+                            <Avatar.Icon size={75} icon="alpha-c" style={styles.avatarIcon} />
+                        )}
                         <Text texto='Cuenta' font='PoppinsBold' fontSize={20} textAlign='center' />
                         <TouchableRipple
                             onPress={changeImage} // Acción al presionar el botón
@@ -518,5 +625,10 @@ const styles = StyleSheet.create({
     dialog: {
         borderRadius: 10,
         backgroundColor: 'white'
+    },
+    imagePerfil: {
+        width: 105,
+        height: 105,
+        borderRadius: 100,
     },
 });
