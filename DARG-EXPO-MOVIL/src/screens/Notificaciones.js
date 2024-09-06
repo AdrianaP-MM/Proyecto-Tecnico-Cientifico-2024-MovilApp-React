@@ -11,9 +11,10 @@ export default function AppNotificaciones() {
 
     const readCitasExistentes = async () => {
         try {
-            const responseCitas = await fetchData('citas.php', 'readAllEspecific');
+            const responseCitas = await fetchData('citas.php', 'readAllNotisCitas');
             if (responseCitas.status) {
                 setCitas(responseCitas.dataset);
+                console.log(responseCitas);
             } else {
                 setCitas([]);
                 Alert.alert('Error', `${responseCitas.error}`);
@@ -30,22 +31,38 @@ export default function AppNotificaciones() {
 
     const processCitas = (citas) => {
         const now = new Date();
+        now.setHours(0, 0, 0, 0); // Ajustar 'now' para que sea a medianoche para comparaciones de fecha
+    
         return citas.map(cita => {
-            const citaDate = new Date(cita.date);
+            const citaDate = new Date(cita.fecha_hora_cita);
+            citaDate.setHours(0, 0, 0, 0); // Ajustar la fecha de la cita para que sea a medianoche para comparaciones de fecha
+    
             const diffTime = citaDate - now;
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            if (diffDays <= 1 && diffDays >= 0) { // Notificar 1 día antes o el mismo día
+    
+            // Notificar 3 días antes o en el mismo día
+            if (diffDays <= 3 && diffDays >= 0) { 
+                const day = String(citaDate.getDate()).padStart(2, '0');
+                const month = String(citaDate.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript van de 0 a 11
+                const year = citaDate.getFullYear();
+                const formattedDate = `${day}/${month}/${year}`;
+    
                 return {
-                    title: 'Se acerca tu próximo cambio de aceite para tu vehículo:',
-                    vehicle: cita.vehicle, // Ajusta esto si 'vehicle' no es la propiedad correcta
-                    date: citaDate.toLocaleDateString(),
-                    time: citaDate.toLocaleTimeString(),
-                    key: cita.id // Ajusta esto si tienes una propiedad única para la cita
+                    title: 'Se acerca tu proxima cita con nosotros para tu vehículo:',
+                    vehicle: cita.modelo_automovil, // Ajusta esto si 'modelo_automovil' no es la propiedad correcta
+                    date: formattedDate, // Formatear la fecha manualmente
+                    time: cita.hora_cita,
+                    service: cita.nombre_servicio,
+                    finishdate: cita.fecha_aproximada_finalizacion,
+                    key: cita.id_cita // Ajusta esto si tienes una propiedad única para la cita
                 };
             }
             return null;
         }).filter(cita => cita !== null); // Filtra citas nulas
     };
+    
+    
+    
 
     const citasProcesadas = processCitas(citas);
 
@@ -70,9 +87,11 @@ export default function AppNotificaciones() {
                         vehicle={cita.vehicle}
                         date={cita.date}
                         time={cita.time}
+                        service={cita.service}
+                        finishdate={cita.finishdate}
                         onPress={() => {
                             // Acción cuando se presiona la tarjeta
-                            Alert.alert('Cita', `Detalles de la cita para ${cita.vehicle}`);
+                            Alert.alert('Detalle', `El servicio que espera el auto ${cita.vehicle} es ${cita.service} a las ${cita.finishdate}`);
                         }}
                     />
                 ))}
