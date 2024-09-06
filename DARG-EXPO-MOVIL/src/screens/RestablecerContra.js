@@ -5,6 +5,7 @@ import Text from '../components/utilidades/Text'; // Importación del componente
 import Button from '../components/buttons/ButtonRojo'; // Importación del componente de botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importación del componente de entrada de texto personalizado
 
+import {correoValidate, validateEmail} from '../utils/Validator'
 import fetchData from '../utils/FetchData';
 
 export default function AppRestablecerContra() {
@@ -23,38 +24,44 @@ export default function AppRestablecerContra() {
     const [correo, setCorreo] = useState(''); // Estado para almacenar el correo electrónico ingresado
     const [codeSend, setCodeSend] = useState('');
     const [isValidCorreo, setIsValidCorreo] = useState(false); // Estado para verificar si el correo es válido
-
+   
     // Función para enviar el código de verificación al correo ingresado
     const handleSendCode = async () => {
-        const formData = new FormData();
-        formData.append('user_correo', correo);
-        try {
-            const confirmCorreo = await fetchData('usuarios_clientes.php', 'checkCorreo', formData);
-            // Validar y usar la respuesta de tallas
-            if (confirmCorreo.status) {
-                console.log('El usuario con correo existe', confirmCorreo);
+        if (correoValidate(correo)) {
+            const formData = new FormData();
+            formData.append('user_correo', correo);
+            try {
+                const confirmCorreo = await fetchData('usuarios_clientes.php', 'checkCorreo', formData);
+                // Validar y usar la respuesta de tallas
+                if (confirmCorreo.status) {
+                    console.log('El usuario con correo existe', confirmCorreo);
 
-                const sendCorreo = await fetchData('usuarios_clientes.php', 'enviarCodigoRecuperacion', formData);
-                //console.log(formData)
-                if (sendCorreo.status) {
-                    Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
-                    setCodeSend(sendCorreo.codigo);
-                    console.log('Código: ', sendCorreo.codigo)
-                    return true;
+                    const sendCorreo = await fetchData('usuarios_clientes.php', 'enviarCodigoRecuperacion', formData);
+                    //console.log(formData)
+                    if (sendCorreo.status) {
+                        Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
+                        setCodeSend(sendCorreo.codigo);
+                        console.log('Código: ', sendCorreo.codigo)
+                        return true;
+                    } else {
+                        Alert.alert('Error', sendCorreo.error);
+                        return false;
+                    }
                 } else {
-                    Alert.alert('Error', sendCorreo.error);
+                    Alert.alert('No se encontró el usuario', 'Necesita un usuario con ese correo electrónico para restablecer su contraseña');
                     return false;
                 }
-            } else {
-                Alert.alert('No se encontró el usuario', 'Necesita un usuario con ese correo electrónico para restablecer su contraseña');
+
+            } catch (error) {
+                console.error(error);
+                Alert.alert('Error', 'Hubo un problema al enviar el código.');
                 return false;
             }
-
-        } catch (error) {
-            console.error(error);
-            Alert.alert('Error', 'Hubo un problema al enviar el código.');
+        } else {
+            Alert.alert('Error', 'El dominio del correo electrónico no es válido.');
             return false;
         }
+
     };
 
     // Función para manejar el envío del correo 1
@@ -71,11 +78,6 @@ export default function AppRestablecerContra() {
     function sendCorreo2() {
         handleSendCode(); // Llamar handleSendCode directamente
     }
-    // Función para validar el formato del correo electrónico utilizando una expresión regular
-    const validateEmail = (correo) => {
-        const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar formato de email
-        return correoRegex.test(correo); // Devuelve true si el email cumple con el formato, false si no
-    };
 
     // Función para manejar el cambio en el campo de texto del correo electrónico
     const handleEmailChange = (correo) => {
@@ -164,12 +166,12 @@ export default function AppRestablecerContra() {
 
     // Función para manejar el cambio en el campo de texto de la contraseña
     const handlePasswordChange = (text) => {
-        setContra(text); // Actualizamos el estado 'password' con el valor ingresado
+        setContra(text);
     };
 
     // Función para manejar el cambio en el campo de texto de la confirmación de la contraseña
     const handleConfirmPasswordChange = (text) => {
-        setConfirmContra(text); // Actualizamos el estado 'confirmPassword' con el valor ingresado
+        setConfirmContra(text);
     };
 
     return (
@@ -260,6 +262,8 @@ export default function AppRestablecerContra() {
                         iconImage={(require('../images/icons/iconLock.png'))} // Icono de candado
                         secureTextEntry={true}
                         onChangeText={handlePasswordChange}
+                        maxLength={16}
+                        keyboardType='password'
                     />
                     <Input
                         placeholder='Confirmar contraseña'
@@ -267,6 +271,8 @@ export default function AppRestablecerContra() {
                         iconImage={(require('../images/icons/iconLock.png'))} // Icono de candado
                         secureTextEntry={true}
                         onChangeText={handleConfirmPasswordChange}
+                        maxLength={16}
+                        keyboardType='password'
                     />
                     <Button
                         textoBoton='Restablecer'

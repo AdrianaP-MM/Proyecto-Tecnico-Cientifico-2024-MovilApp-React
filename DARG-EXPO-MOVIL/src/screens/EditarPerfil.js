@@ -6,8 +6,8 @@ import Button from '../components/buttons/ButtonRojo'; // Importa el botón pers
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 import fetchData from '../utils/FetchData';
 import * as ImagePicker from 'expo-image-picker';
-
 import Config from '../utils/Constantes'
+import { correoValidate, validateEmail, formatNit, formatTel, formatDui} from '../utils/Validator'
 const IMAGE_URL = Config.IMAGE_URL;
 
 // Componente principal que exporta la pantalla de edición jurídica
@@ -234,49 +234,65 @@ export default function EditarPerfil({ navigation }) {
         }
     };
 
-    // Función para formatear el número de teléfono
-    const formatTel = (value) => {
-        const numericValue = value.replace(/\D/g, ''); // Elimina todos los caracteres no numéricos
-        if (numericValue.length <= 4) {
-            return numericValue;
-        } else if (numericValue.length <= 8) {
-            return numericValue.slice(0, 4) + '-' + numericValue.slice(4);
-        } else {
-            return numericValue.slice(0, 4) + '-' + numericValue.slice(4, 8);
-        }
-    };
-
-    // Función para formatear el DUI
-    const formatDui = (value) => {
-        const numericValue = value.replace(/\D/g, ''); // Elimina todos los caracteres no numéricos
-        if (numericValue.length <= 8) {
-            return numericValue;
-        } else {
-            return numericValue.slice(0, 8) + '-' + numericValue.slice(8, 9);
-        }
-    };
-
-    // Función para formatear el NIT
-    const formatNit = (value) => {
-        return value.replace(/\D/g, '').slice(0, 14); // Elimina caracteres no numéricos y limita a 14 dígitos
-    };
-
     const validateFields = () => {
         // Verifica los campos básicos
-        if (!dui || !telefono || !correo || !nombre || !apellido || !depaSeleccionado || !nit) {
+        const fields = { dui, telefono, correo, nombre, apellido, depaSeleccionado, nit };
+        const missingFields = Object.entries(fields)
+            .filter(([key, value]) => !value)
+            .map(([key]) => key);
+
+        if (missingFields.length > 0) {
             Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
             return false;
         }
-        // Verifica los campos adicionales si `opacity` es igual a 1
-        if (opacity == 1) {
-            if (!rubroSeleccionado || !nrc || !nrf) {
+
+        if(telefono.length != 9){
+            Alert.alert('Campos incorrectos', 'El número telefónico no es válido.');
+            return false;
+        }
+
+        // Valida el correo electrónico
+        if (!validateEmail(correo)) {
+            Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido.');
+            return false;
+        }
+
+        if (!correoValidate(correo)) {
+            Alert.alert('Correo electrónico incorrecto', 'El dominio del correo electrónico no es válido.');
+            return false;
+        }
+
+        // Sanitiza y valida nombre y apellido
+        const sanitizedInputNombre = nombre.replace(/[^a-zA-Z]/g, '');
+        const sanitizedInputApellido = apellido.replace(/[^a-zA-Z]/g, '');
+
+        if (nombre !== sanitizedInputNombre) {
+            Alert.alert('Campos incorrectos', 'Ingrese un nombre válido');
+            return false;
+        }
+
+        if (apellido !== sanitizedInputApellido) {
+            Alert.alert('Campos incorrectos', 'Ingrese un apellido válido');
+            return false;
+        }
+
+        // Verifica campos adicionales si `opacity` es igual a 1
+        if (opacity === 1) {
+            const additionalFields = { rubroSeleccionado, nrc, nrf };
+            const missingAdditionalFields = Object.entries(additionalFields)
+                .filter(([key, value]) => !value)
+                .map(([key]) => key);
+
+            if (missingAdditionalFields.length > 0) {
                 Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
                 return false;
             }
         }
+
         // Si todo está completo, retorna true
         return true;
     };
+
 
 
     // Función para navegar a otra pantalla
