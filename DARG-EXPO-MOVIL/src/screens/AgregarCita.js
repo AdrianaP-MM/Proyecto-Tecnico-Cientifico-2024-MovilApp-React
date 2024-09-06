@@ -135,7 +135,7 @@ export default function AppAddCita({ navigation, route }) {
 
     return (
         <ScrollView contentContainerStyle={styles.contenedorTotal}>
-            <StatusBar style="dark" backgroundColor="#F9FAFB" />
+            <StatusBar style="light" backgroundColor="#E5383B" />
             <View style={styles.contenedorForm}>
                 <Input
                     placeholder='Fecha de llegada'

@@ -16,7 +16,7 @@ const CitasStack = () => {
                     backgroundColor: '#E5383B', // Color de fondo del header
                 },
                 headerTintColor: 'white',
-                title: 'Agregar cita'
+                title: 'Agendar cita'
             }} />
             <Stack.Screen name="Detalles de la cita" component={AgregarCita} options={{
                 headerShown: true, headerBackImage: () => <CustomBackButton />,  // Componente personalizado para el botón de retroceso
