@@ -121,7 +121,7 @@ export default function AppCitas({ navigation }) {
 
     return (
         <SafeAreaView style={styles.contenedorTotal}>
-            <StatusBar style="light" backgroundColor="#E5383B" />
+            <StatusBar style="light" backgroundColor="#E5383B"/>
             <Text texto='REVOLUTION GARAGE' font='PoppinsBold' fontSize={13} color='white' textAlign='center' />
             <View style={styles.contenedorTitulo}>
                 <Text texto='Citas' font='PoppinsMedium' fontSize={25} color='white' />
@@ -234,7 +234,7 @@ export default function AppCitas({ navigation }) {
 const styles = StyleSheet.create({
     contenedorTotal: {
         flex: 1, // Ocupa todo el espacio disponible
-        backgroundColor: '#E5383B', // Fondo gris claro
+        backgroundColor: '#BA181B', // Fondo gris claro
         alignItems: 'center', // Alinea elementos al inicio horizontalmente
         justifyContent: 'flex-start', // Alinea elementos al inicio verticalmente
         marginTop: 20, // Margen superior de 20 unidades
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     },
     contenedorTitulo: {
         width: '100%', // Ancho completo
-        backgroundColor: '#E5383B', // Fondo rojo
+        backgroundColor: '#BA181B', // Fondo rojo
         flexDirection: 'row', // Disposición en fila para los elementos hijos
         alignItems: 'center', // Alinea elementos al centro verticalmente
         justifyContent: 'flex-start', // Alinea elementos al inicio horizontalmente
