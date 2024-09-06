@@ -7,7 +7,7 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 import fetchData from '../utils/FetchData';
 import * as ImagePicker from 'expo-image-picker';
 import Config from '../utils/Constantes'
-import { correoValidate, validateEmail, formatNit, formatTel, formatDui} from '../utils/Validator'
+import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces} from '../utils/Validator'
 const IMAGE_URL = Config.IMAGE_URL;
 
 // Componente principal que exporta la pantalla de edición jurídica
@@ -63,36 +63,41 @@ export default function EditarPerfil({ navigation }) {
     const handleAbrirCodigo = async () => {
         if (email) {
             if (email == correo) {
-                const formData = new FormData();
-                formData.append('user_correo', email);
-                console.log(email);
-                try {
-                    const confirmCorreo = await fetchData('usuarios_clientes.php', 'checkCorreo', formData);
-                    // Validar y usar la respuesta de tallas
-                    if (confirmCorreo.status) {
-                        console.log('El usuario con correo existe', confirmCorreo);
-                        const sendCorreo = await fetchData('usuarios_clientes.php', 'enviarCodigoRecuperacion', formData);
-                        //console.log(formData)
-                        if (sendCorreo.status) {
-                            Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
-                            setCodeSend(sendCorreo.codigo);
-                            console.log('Código: ', sendCorreo.codigo)
-                            setVisibleCamposDialog(false);
-                            setvisibleCamposCodigo(true);
-                            return true;
+                if (correoValidate(email)) {
+                    const formData = new FormData();
+                    formData.append('user_correo', email);
+                    console.log(email);
+                    try {
+                        const confirmCorreo = await fetchData('usuarios_clientes.php', 'checkCorreo', formData);
+                        // Validar y usar la respuesta de tallas
+                        if (confirmCorreo.status) {
+                            console.log('El usuario con correo existe', confirmCorreo);
+                            const sendCorreo = await fetchData('usuarios_clientes.php', 'enviarCodigoRecuperacion', formData);
+                            //console.log(formData)
+                            if (sendCorreo.status) {
+                                Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
+                                setCodeSend(sendCorreo.codigo);
+                                console.log('Código: ', sendCorreo.codigo)
+                                setVisibleCamposDialog(false);
+                                setvisibleCamposCodigo(true);
+                                return true;
+                            } else {
+                                Alert.alert('Error', sendCorreo.error);
+                                return false;
+                            }
                         } else {
-                            Alert.alert('Error', sendCorreo.error);
+                            Alert.alert('No se encontró el usuario', 'Necesita un usuario con ese correo electrónico para restablecer su contraseña');
                             return false;
                         }
-                    } else {
-                        Alert.alert('No se encontró el usuario', 'Necesita un usuario con ese correo electrónico para restablecer su contraseña');
+
+                    } catch (error) {
+                        console.error(error);
+                        Alert.alert('Error', 'Hubo un problema al enviar el código.');
                         return false;
                     }
-
-                } catch (error) {
-                    console.error(error);
-                    Alert.alert('Error', 'Hubo un problema al enviar el código.');
-                    return false;
+                }
+                else {
+                    Alert.alert('Error', 'El correo electrónico no es válido, dominio inexistente.');
                 }
             }
             else {
@@ -246,35 +251,45 @@ export default function EditarPerfil({ navigation }) {
             return false;
         }
 
-        if(telefono.length != 9){
-            Alert.alert('Campos incorrectos', 'El número telefónico no es válido.');
+        if (nit.length != 17) {
+            Alert.alert('Campos incorrectos', 'El número de NIT no es válido, se requiere de 15 digítos.');
+            return false;
+        }
+
+        if (telefono.length != 9) {
+            Alert.alert('Campos incorrectos', 'El número telefónico no es válido, se requiere de 8 digítos.');
+            return false;
+        }
+
+        if (dui.length != 10) {
+            Alert.alert('Campos incorrectos', 'El número de dui no es válido, se requiere de 9 digítos.');
             return false;
         }
 
         // Valida el correo electrónico
         if (!validateEmail(correo)) {
-            Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido.');
+            Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, contiene caracteres no permitidos.');
             return false;
         }
 
         if (!correoValidate(correo)) {
-            Alert.alert('Correo electrónico incorrecto', 'El dominio del correo electrónico no es válido.');
+            Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, dominio inexistente.');
             return false;
         }
 
-        // Sanitiza y valida nombre y apellido
-        const sanitizedInputNombre = nombre.replace(/[^a-zA-Z]/g, '');
-        const sanitizedInputApellido = apellido.replace(/[^a-zA-Z]/g, '');
+        // // Sanitiza y valida nombre y apellido
+        // const sanitizedInputNombre = nombre.replace(/[^a-zA-Z]/g, '');
+        // const sanitizedInputApellido = apellido.replace(/[^a-zA-Z]/g, '');
 
-        if (nombre !== sanitizedInputNombre) {
-            Alert.alert('Campos incorrectos', 'Ingrese un nombre válido');
-            return false;
-        }
+        // if (nombre !== sanitizedInputNombre) {
+        //     Alert.alert('Campos incorrectos', 'El nombre ');
+        //     return false;
+        // }
 
-        if (apellido !== sanitizedInputApellido) {
-            Alert.alert('Campos incorrectos', 'Ingrese un apellido válido');
-            return false;
-        }
+        // if (apellido !== sanitizedInputApellido) {
+        //     Alert.alert('Campos incorrectos', 'Ingrese un apellido válido');
+        //     return false;
+        // }
 
         // Verifica campos adicionales si `opacity` es igual a 1
         if (opacity === 1) {
@@ -371,7 +386,7 @@ export default function EditarPerfil({ navigation }) {
                         <Input
                             placeholder='Correo'
                             value={email}
-                            onChangeText={setEmail}
+                            onChangeText={(text) => setEmail(formatEmail(text))}
                             width='95%'
                             iconImage={(require('../images/icons/iconUser.png'))}
                         />
@@ -397,6 +412,7 @@ export default function EditarPerfil({ navigation }) {
                             width='95%'
                             iconImage={(require('../images/icons/iconContra.png'))}
                             secureTextEntry={true}
+                            maxLength={8}
                         />
                     </Dialog.Content>
                     <Dialog.Actions style={styles.center}>
@@ -416,7 +432,7 @@ export default function EditarPerfil({ navigation }) {
                         <Input
                             placeholder='Nueva contraseña'
                             value={passwordReset}
-                            onChangeText={setpasswordReset}
+                            onChangeText={(text) =>setpasswordReset(formatNOSpaces(text))}
                             width='95%'
                             iconImage={(require('../images/icons/iconContra.png'))}
                             secureTextEntry={true}
@@ -425,7 +441,7 @@ export default function EditarPerfil({ navigation }) {
                         <Input
                             placeholder='Confirme su contraseña'
                             value={password}
-                            onChangeText={setPassword}
+                            onChangeText={(text) =>setPassword(formatNOSpaces(text))}
                             width='95%'
                             iconImage={(require('../images/icons/iconContra.png'))}
                             secureTextEntry={true}
@@ -464,7 +480,7 @@ export default function EditarPerfil({ navigation }) {
                         <Input
                             placeholder='Nombres'
                             value={nombre}
-                            onChangeText={setNombre}
+                            onChangeText={(text) => setNombre(formatAlphabetic(text))}
                             width='100%'
                             iconImage={require('../images/icons/iconUser.png')}
                             maxLength={50}
@@ -473,7 +489,7 @@ export default function EditarPerfil({ navigation }) {
                         <Input
                             placeholder='Apellidos'
                             value={apellido}
-                            onChangeText={setApellido}
+                            onChangeText={(text) => setApellido(formatAlphabetic(text))}
                             width='100%'
                             iconImage={require('../images/icons/iconUser.png')}
                             maxLength={50}
@@ -497,9 +513,9 @@ export default function EditarPerfil({ navigation }) {
                             pickerValues={pickerValuesDepa}
                         />
                         <Input
-                            placeholder='Correo'
+                            placeholder='Correo electrónico'
                             value={correo}
-                            onChangeText={setCorreo}
+                            onChangeText={(text) => setCorreo(formatEmail(text))}
                             width='100%'
                             iconImage={require('../images/icons/iconCorreo.png')}
                             maxLength={50}

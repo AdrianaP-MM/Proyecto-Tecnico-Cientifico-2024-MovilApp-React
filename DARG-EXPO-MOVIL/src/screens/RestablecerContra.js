@@ -5,7 +5,7 @@ import Text from '../components/utilidades/Text'; // Importación del componente
 import Button from '../components/buttons/ButtonRojo'; // Importación del componente de botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importación del componente de entrada de texto personalizado
 
-import {correoValidate, validateEmail} from '../utils/Validator'
+import { correoValidate, formatNOSpaces, validateEmail, formatEmail } from '../utils/Validator'
 import fetchData from '../utils/FetchData';
 
 export default function AppRestablecerContra() {
@@ -24,7 +24,7 @@ export default function AppRestablecerContra() {
     const [correo, setCorreo] = useState(''); // Estado para almacenar el correo electrónico ingresado
     const [codeSend, setCodeSend] = useState('');
     const [isValidCorreo, setIsValidCorreo] = useState(false); // Estado para verificar si el correo es válido
-   
+
     // Función para enviar el código de verificación al correo ingresado
     const handleSendCode = async () => {
         if (correoValidate(correo)) {
@@ -81,7 +81,7 @@ export default function AppRestablecerContra() {
 
     // Función para manejar el cambio en el campo de texto del correo electrónico
     const handleEmailChange = (correo) => {
-        setCorreo(correo); // Actualiza el estado 'correo' con el valor ingresado
+        setCorreo(formatEmail(correo)); // Actualiza el estado 'correo' con el valor ingresado
         setIsValidCorreo(validateEmail(correo)); // Actualiza el estado 'isValidEmail' con el resultado de la validación
     };
 
@@ -133,6 +133,12 @@ export default function AppRestablecerContra() {
             Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
             return false;
         }
+
+        if(contra.length < 8 || confirmContra.length < 8){
+            Alert.alert('Error', 'La contraseña es menor a 8 caracteres.');
+            return false;
+        }
+
         return true;
     };
 
@@ -164,15 +170,7 @@ export default function AppRestablecerContra() {
         }
     };
 
-    // Función para manejar el cambio en el campo de texto de la contraseña
-    const handlePasswordChange = (text) => {
-        setContra(text);
-    };
 
-    // Función para manejar el cambio en el campo de texto de la confirmación de la contraseña
-    const handleConfirmPasswordChange = (text) => {
-        setConfirmContra(text);
-    };
 
     return (
         <View style={styles.contenedorTotal}>
@@ -261,7 +259,8 @@ export default function AppRestablecerContra() {
                         width='95%'
                         iconImage={(require('../images/icons/iconLock.png'))} // Icono de candado
                         secureTextEntry={true}
-                        onChangeText={handlePasswordChange}
+                        value={contra}
+                        onChangeText={(text) => setContra(formatNOSpaces(text))}
                         maxLength={16}
                         keyboardType='password'
                     />
@@ -270,7 +269,8 @@ export default function AppRestablecerContra() {
                         width='95%'
                         iconImage={(require('../images/icons/iconLock.png'))} // Icono de candado
                         secureTextEntry={true}
-                        onChangeText={handleConfirmPasswordChange}
+                        value={confirmContra}
+                        onChangeText={(text) => setConfirmContra(formatNOSpaces(text))}
                         maxLength={16}
                         keyboardType='password'
                     />
