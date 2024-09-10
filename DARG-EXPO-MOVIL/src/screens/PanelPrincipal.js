@@ -15,7 +15,27 @@ export default function DashboardScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
+  const [notificaciones, setNotificaciones] = useState(0);
   const API = 'automoviles.php';
+
+  const fetchNotificaciones = async () => {
+    try {
+      const responseCitas = await fetchData('citas.php', 'readAllNotisCitas');
+      if (responseCitas.status && responseCitas.dataset) {
+        const numeroNotificaciones = responseCitas.dataset.length; // Guarda el valor correcto
+        setNotificaciones(numeroNotificaciones); // Actualiza el número de notificaciones
+        console.log("Estas son las notificaciones " + numeroNotificaciones);
+      } else {
+        setNotificaciones(0);
+        console.log('Error al obtener las notificaciones');
+      }
+    } catch (error) {
+      console.error('Error en obtener notificaciones:', error);
+      setNotificaciones(0);
+    }
+  };
+
+
 
   // Función que se encarga de llenar los autos disponibles
   const fillCardsCarsAll = async (searchValue = '') => {
@@ -25,7 +45,7 @@ export default function DashboardScreen({ navigation }) {
       const DATA = await fetchData(API, 'readAllMyCars', formData); // Llama a la API para obtener todos los autos
       //console.log('DATA DE CARROsss',DATA);
       if (DATA.status) {
-         // Mapea los datos obtenidos para crear un array con los autos
+        // Mapea los datos obtenidos para crear un array con los autos
         const data = DATA.dataset.map(item => ({
           id: item.id_automovil,
           imagen: `${item.imagen_automovil}`,
@@ -33,7 +53,7 @@ export default function DashboardScreen({ navigation }) {
           placa: item.placa_automovil
         }));
         setAllCars(data);  // Actualiza el estado con los autos obtenidos
-        console.log('DATA DE CARRO',data);
+        console.log('DATA DE CARRO', data);
       } else {
         console.log(DATA.error);
         setAllCars([]); // Si hay error, limpia el estado de los autos
@@ -86,8 +106,8 @@ export default function DashboardScreen({ navigation }) {
           placa: item.placa_automovil
         }));
         setAppointments(data); // Actualiza el estado con las citas obtenidas
-      } else { 
-        console.log(DATA.error); 
+      } else {
+        console.log(DATA.error);
         setAppointments([]); // Si hay error, limpia el estado de las citas
       }
     } catch (error) {
@@ -99,23 +119,25 @@ export default function DashboardScreen({ navigation }) {
     }
   };
 
-// useEffect que ejecuta las funciones al montar el componente
-useEffect(() => {
-  fillCardsCarsAll(); // Llena todos los autos
-  fillCardsCarsDelete(); // Llena los autos eliminados
-  fillCardsCarAppointments(); // Llena las citas de los autos
-}, []);
-
-// useFocusEffect que actualiza las listas de autos al enfocar la pantalla
-useFocusEffect(
-  useCallback(() => {
-    fillCardsCarsAll(search); // Llena todos los autos filtrados por búsqueda
+  // useEffect que ejecuta las funciones al montar el componente
+  useEffect(() => {
+    fillCardsCarsAll(); // Llena todos los autos
     fillCardsCarsDelete(); // Llena los autos eliminados
     fillCardsCarAppointments(); // Llena las citas de los autos
-  }, [search])
-);
+    fetchNotificaciones(); // Llama a la función para obtener notificaciones
+  }, []);
 
-// Función para renderizar la lista de autos
+
+  // useFocusEffect que actualiza las listas de autos al enfocar la pantalla
+  useFocusEffect(
+    useCallback(() => {
+      fillCardsCarsAll(search); // Llena todos los autos filtrados por búsqueda
+      fillCardsCarsDelete(); // Llena los autos eliminados
+      fillCardsCarAppointments(); // Llena las citas de los autos
+    }, [search])
+  );
+
+  // Función para renderizar la lista de autos
   const renderCarros = (carros) => {
     return carros.map((carro, index) => (
       <TarjetaCarro key={index} carro={carro} />
@@ -124,7 +146,7 @@ useFocusEffect(
 
   // Función para manejar la acción al presionar un auto
   const handleCarPress = (carro) => {
-    console.log('Id de carro',carro.id);
+    console.log('Id de carro', carro.id);
     try {
       // Mostrar un mensaje de confirmación antes de eliminar
       Alert.alert(
@@ -159,11 +181,11 @@ useFocusEffect(
     }
 
   };
-  
+
   // Función para renderizar todos los autos disponibles con la opción de presionarlos
   const renderCarrosAll = (carros) => {
     return carros.map((carro, index) => (
-      <TarjetaCarro key={index} carro={carro} onPress={() => handleCarPress(carro)}/>
+      <TarjetaCarro key={index} carro={carro} onPress={() => handleCarPress(carro)} />
     ));
   };
 
@@ -172,15 +194,22 @@ useFocusEffect(
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text texto='Bienvenido' font='PoppinsMedium' fontSize={25} />
-        <TouchableOpacity onPress={() => navigation.navigate('Notificaciones')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Notificaciones')}
+          style={styles.notificationButton}
+        >
           <MaterialIcons name="notifications" size={30} color="black" />
+          {notificaciones > 0 && (
+            <Text texto={notificaciones.toString()} font='PoppinsMedium' fontSize={15} style={styles.notificationCount} />
+          )}
         </TouchableOpacity>
       </View>
+
       <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar..."
-          value={search}
-        />
+        style={styles.searchInput}
+        placeholder="Buscar..."
+        value={search}
+      />
       <View style={styles.appointmentstwo}>
         <Text texto='Agrega un auto nuevo' font='PoppinsRegular' fontSize={15} />
         <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('CarrosVista')}>
@@ -285,5 +314,33 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 10.01, // Borde inferior izquierdo redondeado (el valor decimal no tiene efecto visible)
     paddingLeft: 20, // Espaciado interior izquierdo
     height: 95, // Altura del contenedor
+  },
+  notificationCount: {
+    position: 'absolute',
+    right: -10,  // Ajusta la posición
+    top: -5,     // Ajusta la posición
+    backgroundColor: 'red',
+    color: 'white',
+    borderRadius: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  notificationButton: {
+    flexDirection: 'row', // Orienta los elementos hijos horizontalmente
+    alignItems: 'center', // Alinea verticalmente al centro
+  },
+  notificationCount: {
+    position: 'absolute',
+    right: -10,  // Ajusta la posición
+    top: -5,     // Ajusta la posición
+    backgroundColor: 'red',
+    color: 'white',
+    borderRadius: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });
