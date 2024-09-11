@@ -22,7 +22,9 @@ export default function DashboardScreen({ navigation }) {
     try {
       const responseCitas = await fetchData('citas.php', 'readAllNotisCitas');
       if (responseCitas.status && responseCitas.dataset) {
-        const numeroNotificaciones = responseCitas.dataset.length; // Guarda el valor correcto
+        // Usa processCitas para filtrar las citas próximas
+        const citasProximas = processCitas(responseCitas.dataset);
+        const numeroNotificaciones = citasProximas.length; // Número de citas próximas
         setNotificaciones(numeroNotificaciones); // Actualiza el número de notificaciones
         console.log("Estas son las notificaciones " + numeroNotificaciones);
       } else {
@@ -33,6 +35,39 @@ export default function DashboardScreen({ navigation }) {
       console.error('Error en obtener notificaciones:', error);
       setNotificaciones(0);
     }
+  };
+  
+
+  const processCitas = (citas) => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Ajustar 'now' para que sea a medianoche para comparaciones de fecha
+  
+    return citas.map(cita => {
+      const citaDate = new Date(cita.fecha_hora_cita);
+      citaDate.setHours(0, 0, 0, 0); // Ajustar la fecha de la cita para que sea a medianoche para comparaciones de fecha
+  
+      const diffTime = citaDate - now;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+      // Notificar 3 días antes o en el mismo día
+      if (diffDays <= 3 && diffDays >= 0) {
+        const day = String(citaDate.getDate()).padStart(2, '0');
+        const month = String(citaDate.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript van de 0 a 11
+        const year = citaDate.getFullYear();
+        const formattedDate = `${day}/${month}/${year}`;
+  
+        return {
+          title: 'Se acerca tu próxima cita con nosotros para tu vehículo:',
+          vehicle: cita.modelo_automovil, // Ajusta esto si 'modelo_automovil' no es la propiedad correcta
+          date: formattedDate, // Formatear la fecha manualmente
+          time: cita.hora_cita,
+          service: cita.nombre_servicio,
+          finishdate: cita.fecha_aproximada_finalizacion,
+          key: cita.id_cita // Ajusta esto si tienes una propiedad única para la cita
+        };
+      }
+      return null;
+    }).filter(cita => cita !== null); // Filtra citas nulas
   };
 
 
@@ -126,14 +161,13 @@ export default function DashboardScreen({ navigation }) {
     fillCardsCarAppointments(); // Llena las citas de los autos
     fetchNotificaciones(); // Llama a la función para obtener notificaciones
   }, []);
-
-
-  // useFocusEffect que actualiza las listas de autos al enfocar la pantalla
+  
   useFocusEffect(
     useCallback(() => {
       fillCardsCarsAll(search); // Llena todos los autos filtrados por búsqueda
       fillCardsCarsDelete(); // Llena los autos eliminados
       fillCardsCarAppointments(); // Llena las citas de los autos
+      fetchNotificaciones(); // Actualiza el número de notificaciones
     }, [search])
   );
 
