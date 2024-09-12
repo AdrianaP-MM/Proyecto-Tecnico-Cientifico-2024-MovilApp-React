@@ -7,6 +7,7 @@ import CardCita from '../components/citas/CardCita'; // Importación del compone
 import Input from '../components/inputs/AllBorder';
 import { useFocusEffect } from '@react-navigation/native';
 import fetchData from '../utils/FetchData';
+import Button from '../components/buttons/ButtonRojo'; // Importa el componente Button desde su ruta
 
 import { verDetalles } from '../utils/CitasFunctions'
 
@@ -56,12 +57,21 @@ export default function AppCitas({ navigation }) {
     const [showFilters, setShowFilters] = useState(false); // Estado para mostrar/ocultar el menú de filtros
     const animation = useRef(new Animated.Value(0)).current; // Valor de animación
     const [opacity, setOpacity] = useState(0);
+    const [anchoDatePicker, setAnchoDatePicker] = useState(0);
+    const [altoDatePicker, setAltoDatePicker] = useState(0);
 
     // Función para manejar el toggle del menú de filtros
     const toggleFilters = () => {
         const toValue = showFilters ? 0 : 120; // Altura del menú de filtros cuando está visible
         setOpacity(showFilters ? 0 : 1);
         setShowFilters(!showFilters);
+        if (!showFilters) {
+            setAltoDatePicker(40);
+            setAnchoDatePicker(105);
+        } else {
+            setAltoDatePicker(0);
+            setAnchoDatePicker(0);
+        }
 
         Animated.timing(animation, {
             toValue,
@@ -133,6 +143,24 @@ export default function AppCitas({ navigation }) {
         }
     };
 
+    const [fechaLlegada, setFechaLlegada] = useState('');
+
+    const searchByFechaLLegada = async (fecha_llegada) => {
+        try {
+            const formData = new FormData();
+            formData.append('fecha_llegada', fecha_llegada);
+            const responseSearch = await fetchData('citas.php', 'searchByFechaLLegada', formData);
+            if (responseCitas.status) {
+                Alert.responseSearch('Éxito', `${responseSearch.message}`);
+                readElements(); // Re-cargar los elementos después de la eliminación
+            } else {
+                Alert.alert('Error', `${responseSearch.error}`);
+            }
+        } catch (error) {
+            console.error('Error en buscar la cita solicitada:', error);
+            Alert.alert('Error', 'Hubo un error.');
+        }
+    };
 
     return (
         <SafeAreaView style={styles.contenedorTotal}>
@@ -168,11 +196,13 @@ export default function AppCitas({ navigation }) {
                             <Text texto='Buscar por fecha de llegada' fontSize={12}
                                 paddingHorizontal={10} font='PoppinsMedium' />
                             <Input
-                                placeholder='27/06/24'
-                                width={90}
-                                textAlign='center'
-                                padding={0}
-                                fontSize={12}
+                                placeholder='12/09/24'
+                                keyboardType='fecha'
+                                width={anchoDatePicker}
+                                height={altoDatePicker}
+                                padding={8}
+                                value={fechaLlegada}
+                                onChangeText={setFechaLlegada}
                             />
                         </View>
                         <View style={styles.contenedorNumero}>
@@ -185,6 +215,8 @@ export default function AppCitas({ navigation }) {
                                 fontSize={12}
                             />
                         </View>
+                        <Button textoBoton='Buscar' fontSize={17} />
+
                     </Animated.View>
                     <View style={styles.contenedorMenu}>
                         <ButtonPastilla
@@ -283,6 +315,7 @@ const styles = StyleSheet.create({
     iconImage: {
         width: 17, // Ancho fijo de 40 unidades
         height: 17, // Altura fija de 40 unidades
+        zIndex: 3,
     },
     contenedorCuerpo: {
         flex: 1, // Ocupa todo el espacio disponible
@@ -325,9 +358,9 @@ const styles = StyleSheet.create({
         height: 'auto', // Altura automática basada en su contenido
         backgroundColor: 'white', // Fondo gris claro
         alignItems: 'center', // Alinea elementos al centro verticalmente
-        justifyContent: 'space-between', // Espacio uniformemente distribuido entre elementos
+        justifyContent: 'space-evenly', // Espacio uniformemente distribuido entre elementos
         top: 0, // Desde la parte superior
-        zIndex: 1, // Orden en la pila
+        zIndex: 3, // Orden en la pila
         borderRadius: 15,
         paddingHorizontal: 5,
     },
@@ -336,6 +369,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         flexDirection: 'row',
         alignItems: 'center',
+        zIndex: 1,
     },
     contenedorNumero: {
         width: '100%',
