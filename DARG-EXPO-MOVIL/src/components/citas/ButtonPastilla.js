@@ -2,10 +2,10 @@ import React from 'react';
 import Text from '../utilidades/Text'; // Importa el componente de texto personalizado
 import { StyleSheet, TouchableOpacity } from 'react-native'; // Importa los estilos y el componente TouchableOpacity de React Native
 
-export default function ButtonPastilla({ textoBoton, accionBoton, selected }) {
+export default function ButtonPastilla({ textoBoton, accionBoton, selected, width = '28%', }) {
     // Componente de botón tipo pastilla que cambia el estilo según esté seleccionado o no
     return (
-        <TouchableOpacity style={[styles.button, selected ? styles.selectedButton : null]} onPress={accionBoton}>
+        <TouchableOpacity style={[styles.button, { width }, selected ? styles.selectedButton : null]} onPress={accionBoton}>
             <Text
                 texto={textoBoton} // Propiedad para el texto del botón
                 fontSize={14} // Tamaño de fuente fijo en 14
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Centra el contenido horizontalmente
         justifyContent: 'center', // Centra el contenido verticalmente
         height: 'auto', // Altura automática basada en el contenido
-        width: '28%', // Ancho del botón fijo al 30% del contenedor
         backgroundColor: '#F9FAFB', // Color de fondo del botón por defecto
         padding: 5, // Relleno interno del botón
         paddingVertical: 7, // Relleno vertical adicional

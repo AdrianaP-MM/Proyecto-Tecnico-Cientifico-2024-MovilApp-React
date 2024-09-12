@@ -121,13 +121,16 @@ export default function AppCitas({ navigation }) {
 
     return (
         <SafeAreaView style={styles.contenedorTotal}>
-            <StatusBar style="light" backgroundColor="#E5383B"/>
+            <StatusBar style="light" backgroundColor="#010101" />
+            <Image
+                source={require('../images/panelPrincipal/backImage.png')}
+                style={styles.headerImage} />
             <Text texto='REVOLUTION GARAGE' font='PoppinsBold' fontSize={13} color='white' textAlign='center' />
             <View style={styles.contenedorTitulo}>
-                <Text texto='Citas' font='PoppinsMedium' fontSize={25} color='white' />
+                <Text texto='Citas' font='PoppinsSemiBold' fontSize={25} color='white' />
                 <TouchableOpacity onPress={() => navigation.navigate('AgregarCita')}>
                     <Image
-                        source={require('../images/icons/iconAddWht.png')} /// Ruta de la imagen de botón de agregar
+                        source={require('../images/icons/iconAddRed.png')} /// Ruta de la imagen de botón de agregar
                         style={styles.image}
                     />
                 </TouchableOpacity>
@@ -234,17 +237,16 @@ export default function AppCitas({ navigation }) {
 const styles = StyleSheet.create({
     contenedorTotal: {
         flex: 1, // Ocupa todo el espacio disponible
-        backgroundColor: '#BA181B', // Fondo gris claro
+        backgroundColor: '#010101', // Fondo gris claro
         alignItems: 'center', // Alinea elementos al inicio horizontalmente
         justifyContent: 'flex-start', // Alinea elementos al inicio verticalmente
-        marginTop: 20, // Margen superior de 20 unidades
+        marginTop: 24, // Margen superior de 20 unidades
         paddingTop: 30, // Relleno superior de 20 unidades
         paddingBottom: 40,
         padding: 0, // Sin relleno horizontal adicional
     },
     contenedorTitulo: {
         width: '100%', // Ancho completo
-        backgroundColor: '#BA181B', // Fondo rojo
         flexDirection: 'row', // Disposición en fila para los elementos hijos
         alignItems: 'center', // Alinea elementos al centro verticalmente
         justifyContent: 'flex-start', // Alinea elementos al inicio horizontalmente
@@ -334,5 +336,8 @@ const styles = StyleSheet.create({
     iconCalendar: {
         width: 28,
         height: 30,
-    }
+    },
+    headerImage: {
+        position: 'absolute'
+    },
 });

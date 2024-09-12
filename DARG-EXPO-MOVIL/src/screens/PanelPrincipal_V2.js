@@ -7,57 +7,80 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as contants from '../utils/Constantes';
 import { MaterialIcons } from '@expo/vector-icons';
 import Input from '../components/inputs/AllBorder';
+import TarjetaCarro from '../components/carros/CardCarro';
+import ButtonPastilla from '../components/citas/ButtonPastilla'; // Importación del componente de botón personalizado
+
 
 // Componente principal del dashboard
 export default function DashboardScreen({ navigation }) {
+  const [selectedButton, setSelectedButton] = useState('Mis autos'); // Estado para el botón seleccionado
+  // Función para cambiar el estado del botón seleccionado
+  const changeEstado = (button) => {
+    setSelectedButton(button);
+  };
   const nombre = 'Jackeline';
   const apellido = 'Melanie'
   // Render principal del componente DashboardScreen
   return (
     <View style={styles.contenedorTotal}>
-      <StatusBar style="light" backgroundColor="#000" />
+      <StatusBar style="light" backgroundColor="#010101" />
       <View style={styles.header}>
-        <View style={styles.whtRectangle1}></View>
-        <View style={styles.whtRectangle2}></View>
         <Image
-          source={require('../images/panelPrincipal/panelImg.png')} /// Ruta de la imagen de botón de agregar
+          source={require('../images/panelPrincipal/backImage.png')}
           style={styles.headerImage} />
-        <View style={styles.headerTextContainer}>
-          <Text texto='¡Bienvenido' font='PoppinsMedium' fontSize={24} color='white' />
-          <Text texto={`${apellido}`} font='PoppinsMedium' fontSize={24} color='white' />
-          <Text texto={`${nombre}!`} font='PoppinsMedium' fontSize={24} color='white' />
+        <View style={styles.titleContainer}>
+          <Text texto='REVOLUTION GARAGE' font='PoppinsBold' fontSize={13} color='white' textAlign='center' />
         </View>
-        <View style={styles.headerTitleContainer}>
-          <Text texto='Revolution Garage' font='PoppinsRegular' fontSize={14} color='white' />
+        <View style={styles.campanitaContainer}>
           <TouchableOpacity style={styles.notificationIcon} onPress={() => navigation.navigate('Notificaciones')}>
-            <MaterialIcons name="notifications" size={30} color="white" />
+            <MaterialIcons name="notifications" size={35} color="#E5383B" />
           </TouchableOpacity>
+        </View>
+        <View style={styles.saludoContainer}>
+          <View style={styles.textContainer}>
+            <Text texto={`¡Bienvenido`} font='PoppinsSemiBold' fontSize={25} color='white' textAlign='right' />
+            <Text texto={`${apellido} ${nombre}!`} font='PoppinsSemiBold' fontSize={25} color='white' textAlign='right' />
+          </View>
+          <View style={styles.searchContainer}>
+            <Input
+              placeholder='Buscar..'
+              textAlign='left'
+              padding={5}
+              fontSize={12}
+              iconImage={(require('../images/icons/iconLupa.png'))}
+              backgroundColor='#000000'
+              textColor='white'
+              tintColor='#E5383B'
+              width='95%'
+            />
+            <Text texto='Por aqui podras buscar tus automóviles, citas y servicios que te interesen ' fontSize={10}
+              paddingHorizontal={10} font='PoppinsLight' color='white' />
+          </View>
         </View>
       </View>
       <View style={styles.body}>
-        <View style={styles.bodySearchContainer}>
-          <Input
-            placeholder='Buscar..'
-            textAlign='left'
-            padding={5}
-            fontSize={12}
-            iconImage={(require('../images/icons/iconLupa.png'))}
-            backgroundColor='#BA181B'
-            textColor='white'
-            tintColor='white'
+        <View style={styles.contenedorMenu}>
+          <ButtonPastilla
+            textoBoton='Mis autos'
+            accionBoton={() => changeEstado('Mis autos')}
+            selected={selectedButton === 'Mis autos'}
+            width='22%'
           />
-          <Text texto='Por aqui podras buscar tus automóviles, citas y servicios que te interesen ' fontSize={12}
-            paddingHorizontal={10} font='PoppinsLight' color='white' />
+          <ButtonPastilla
+            textoBoton='Autos eliminados'
+            accionBoton={() => changeEstado('Autos eliminados')}
+            selected={selectedButton === 'Autos eliminados'}
+            width='35%'
+          />
+          <ButtonPastilla
+            textoBoton='Citas próximas'
+            accionBoton={() => changeEstado('Citas próximas')}
+            selected={selectedButton === 'Citas próximas'}
+            width='30%'
+          />
         </View>
-        <View style={styles.bodyMenuContainer}>
-
+        <View style={styles.contenedorResult}>
         </View>
-        <View style={styles.bodyCarouselContainer}>
-
-        </View>
-      </View>
-      <View style={styles.footer}>
-
       </View>
     </View>
   );
@@ -67,68 +90,49 @@ export default function DashboardScreen({ navigation }) {
 const styles = StyleSheet.create({
   contenedorTotal: {
     flex: 1,
-    backgroundColor: '#BA181B',
-    marginTop: 42,
+    backgroundColor: 'white',
+    marginTop: 24,
     paddingBottom: 40,
-    flexDirection: 'column'
+    alignItems: 'center',
+    paddingHorizontal: 15,
   },
   header: {
-    height: '29%',
-    backgroundColor: '#000000',
+    position: 'relative',
+    flexDirection: 'column',
+    height: 310,
     width: '100%',
-    justifyContent: 'center',
-    position: 'relative'
-  },
-  headerTextContainer: {
-    paddingLeft: 40,
-    position: 'absolute'
+    alignItems: 'center',
   },
   headerImage: {
-    position: 'absolute',
+    position: 'absolute'
+  },
+  titleContainer: {
+    paddingTop: 25,
+  },
+  campanitaContainer: {
+    alignSelf: 'flex-end',
+  },
+  saludoContainer: {
+    flex: 1,
     width: '100%',
-  },
-  whtRectangle1: {
-    width: 110,
-    height: 110,
-    borderColor: 'white',
-    borderWidth: 0.5,
-    position: 'absolute',
-    zIndex: 3,
-    top: 20,
-    left: '6%'
-  },
-  whtRectangle2: {
-    width: 110,
-    height: 110,
-    borderColor: 'white',
-    borderWidth: 0.5,
-    position: 'absolute',
-    zIndex: 3,
-    top: '40%',
-    left: '20%'
-  },
-  headerTitleContainer: {
-    display: 'flex',
-    width: '100%',
-    height: '100%',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
-    paddingTop: 15,
-    paddingRight: 15,
+    paddingVertical: 20,
   },
-  notificationIcon: {
-    zIndex: 4,
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    paddingTop: 5,
-    paddingRight: 40,
+  contenedorMenu: {
+    width: '100%', // Ancho completo
+    height: 'auto', // Altura automática basada en su contenido
+    flexDirection: 'row', // Disposición en fila para los elementos hijos
+    alignItems: 'center', // Alinea elementos al centro verticalmente
+    justifyContent: 'center', // Espacio uniformemente distribuido entre elementos
+    zIndex: 1, // Orden en la pila
   },
   body: {
-    width: '100%'
+    flex: 1,
+    width: '100%',
   },
-  bodySearchContainer: {
-    paddingHorizontal: 20,
+  contenedorResult: {
+    flex: 1,
+    marginTop: 30,
   },
 });

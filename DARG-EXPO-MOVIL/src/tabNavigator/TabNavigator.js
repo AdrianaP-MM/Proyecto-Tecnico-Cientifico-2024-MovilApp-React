@@ -11,8 +11,6 @@ import Servicios from './ServiciosStack'; // Importación de la navegación en s
 import CitasStack from './CitasStack'; // Importación de la navegación en stack para Citas
 import PanelStack from './PanelStack'; // Importación de la navegación en stack para Panel Principal
 
-import PanelPrincipalv2 from '../screens/PanelPrincipal_V2'
-
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -51,7 +49,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="CarrosVista" component={CarrosStack} options={{ headerShown: false }} />
       <Tab.Screen name="Mi Perfil" component={Perfil} options={{ headerShown: false }} />
-      <Tab.Screen name="Panel Principal" component={PanelPrincipalv2} //component={PanelStack}
+      <Tab.Screen name="Panel Principal" component={PanelStack} //component={PanelStack}
         options={{ headerShown: false }} />
         <Tab.Screen name="Citas" component={CitasStack} options={{ headerShown: false }} />
       <Tab.Screen name="GrupoServicios" component={Servicios} options={{ headerShown: false }} />

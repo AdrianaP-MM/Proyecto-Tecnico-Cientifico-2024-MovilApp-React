@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import NotificacionesSub from '../screens/Notificaciones'; // Importa la pantalla NotificacionesSub desde su ruta
-import PanelPrincipal from '../screens/PanelPrincipal'; // Importa la pantalla PanelPrincipal desde su ruta
+import PanelPrincipal from '../screens/PanelPrincipal_V2'; // Importa la pantalla PanelPrincipal desde su ruta
 import CustomBackButton from './CustomBackButton'; // Importa el componente CustomBackButton desde su ruta
 
 const Stack = createStackNavigator(); // Crea un nuevo StackNavigator
