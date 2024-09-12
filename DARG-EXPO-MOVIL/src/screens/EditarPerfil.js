@@ -7,7 +7,7 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 import fetchData from '../utils/FetchData';
 import * as ImagePicker from 'expo-image-picker';
 import Config from '../utils/Constantes'
-import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces} from '../utils/Validator'
+import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces } from '../utils/Validator'
 const IMAGE_URL = Config.IMAGE_URL;
 
 // Componente principal que exporta la pantalla de edición jurídica
@@ -432,7 +432,7 @@ export default function EditarPerfil({ navigation }) {
                         <Input
                             placeholder='Nueva contraseña'
                             value={passwordReset}
-                            onChangeText={(text) =>setpasswordReset(formatNOSpaces(text))}
+                            onChangeText={(text) => setpasswordReset(formatNOSpaces(text))}
                             width='95%'
                             iconImage={(require('../images/icons/iconContra.png'))}
                             secureTextEntry={true}
@@ -441,7 +441,7 @@ export default function EditarPerfil({ navigation }) {
                         <Input
                             placeholder='Confirme su contraseña'
                             value={password}
-                            onChangeText={(text) =>setPassword(formatNOSpaces(text))}
+                            onChangeText={(text) => setPassword(formatNOSpaces(text))}
                             width='95%'
                             iconImage={(require('../images/icons/iconContra.png'))}
                             secureTextEntry={true}
@@ -465,15 +465,18 @@ export default function EditarPerfil({ navigation }) {
                         ) : (
                             <Avatar.Icon size={75} icon="alpha-c" style={styles.avatarIcon} />
                         )}
-                        <Text texto='Cuenta' font='PoppinsBold' fontSize={20} textAlign='center' />
+                        <Text texto='Cuenta' font='PoppinsBold' fontSize={20} textAlign='center' color='white' />
                         <TouchableRipple
                             onPress={changeImage} // Acción al presionar el botón
                             rippleColor="rgba(0, 0, 0, .32)" // Color del efecto ripple
                             style={styles.changePhotoButton} // Estilos del botón
                         >
-                            <Text texto='Cambiar foto de perfil' font='PoppinsRegular' fontSize={14} textAlign='center' color='#BA181B' />
+                            <Text texto='Cambiar foto de perfil' font='PoppinsRegular' fontSize={14} textAlign='center' color='white' />
                         </TouchableRipple>
-                        <Button textoBoton='Cerrar sesion' accionBoton={handleCerrarSesion} fontSize={15} width={130} />
+                        <Button textoBoton='Cerrar sesión' accionBoton={handleCerrarSesion} fontSize={15} width={130} height={30} />
+                        <Image
+                            source={require('../images/panelPrincipal/backImage.png')}
+                            style={styles.headerImage} />
                     </View>
 
                     <View style={styles.ContainerInputs}>
@@ -609,6 +612,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Centra el contenido horizontalmente
         padding: 20, // Padding alrededor del contenedor
         paddingBottom: 80, // Padding adicional en la parte inferior
+        zIndex: 3,
     },
     image: {
         width: 75,
@@ -618,16 +622,20 @@ const styles = StyleSheet.create({
     avatarContainer: {
         alignItems: 'center', // Centra el contenido horizontalmente
         paddingBottom: 35, // Reducido el padding vertical para acercar los inputs al botón
-        paddingTop: 35,
+        paddingTop: 17,
+        position: 'relative',
+        zIndex: 3,
     },
     avatarIcon: {
         marginBottom: 10, // Espacio debajo del icono del avatar
         backgroundColor: '#BA181B', // Color de fondo del icono del avatar
+        zIndex: 3,
     },
     ContainerInputs: {
         width: '100%', // Ancho completo del contenedor
         paddingHorizontal: 20, // Padding horizontal
         paddingBottom: 20, // Padding inferior
+        paddingTop: 25,
     },
     input: {
         marginBottom: 10, // Espacio debajo de cada input
@@ -662,5 +670,14 @@ const styles = StyleSheet.create({
         width: 105,
         height: 105,
         borderRadius: 100,
+        zIndex: 3,
+    },
+    headerImage: {
+        position: 'absolute',
+        zIndex: 1,
+        bottom: 0
+    },
+    changePhotoButton: {
+        zIndex: 3,
     },
 });

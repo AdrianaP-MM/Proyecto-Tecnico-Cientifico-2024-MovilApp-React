@@ -7,37 +7,40 @@ import Citas from '../screens/Citas'; // Importa la pantalla Citas desde su ruta
 
 const Stack = createStackNavigator(); // Crea un nuevo StackNavigator
 
-const CitasStack = () => {
-    
-    const CustomHeader = () => (
-        <ImageBackground
-            source={require('../images/panelPrincipal/backImage.png')} // Reemplaza con la ruta a tu imagen
-            style={styles.headerBackground}
-        >
-            <View style={styles.headerContent}>
-                <Text style={styles.headerTitle}>Agendar cita</Text>
-            </View>
-        </ImageBackground>
-    );
+const CustomHeaderWithBackground = ({ title }) => (
+    <ImageBackground
+        source={require('../images/panelPrincipal/backImage.png')} // Reemplaza con la ruta a tu imagen
+        style={styles.headerBackground}
+    >
+        <View style={styles.headerContent}>
+            <CustomBackButton />
+            <Text style={styles.headerTitle}>{title}</Text>
+        </View>
+    </ImageBackground>
+);
 
+const CitasStack = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Citas" component={Citas} options={{ headerShown: false }} />
-            <Stack.Screen name="AgregarCita" component={AgregarCita} options={{
-                headerShown: true, headerBackImage: () => <CustomBackButton />,  // Componente personalizado para el botón de retroceso
-                headerStyle: {
-                    backgroundColor: '#010101', // Color de fondo del header
-                },
-                headerTintColor: 'white',
-                title: 'Agendar cita'
-            }} />
-            <Stack.Screen name="Detalles de la cita" component={AgregarCita} options={{
-                headerShown: true, headerBackImage: () => <CustomBackButton />,  // Componente personalizado para el botón de retroceso
-                headerStyle: {
-                    backgroundColor: '#E5383B', // Color de fondo del header
-                },
-                headerTintColor: 'white',
-            }} />
+            <Stack.Screen
+                name="AgregarCita"
+                component={AgregarCita}
+                options={{
+                    headerShown: true,
+                    headerBackImage: () => <CustomBackButton />,  // Componente personalizado para el botón de retroceso
+                    header: (props) => <CustomHeaderWithBackground title="Agendar cita" />
+                }}
+            />
+            <Stack.Screen
+                name="Detalles de la cita"
+                component={AgregarCita}
+                options={{
+                    headerShown: true,
+                    headerBackImage: () => <CustomBackButton />,  // Componente personalizado para el botón de retroceso
+                    header: (props) => <CustomHeaderWithBackground title="Detalles de la cita" />
+                }}
+            />
         </Stack.Navigator>
     );
 }
@@ -47,18 +50,21 @@ export default CitasStack; // Exporta el componente CitasStack para su uso en la
 const styles = StyleSheet.create({
     headerBackground: {
         width: '100%',
-        height: '100%',
+        height: 95,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     headerContent: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        padding: 20,
     },
     headerTitle: {
         color: 'white',
         fontSize: 20,
         fontWeight: 'bold',
+        marginHorizontal: 15,
     },
 });

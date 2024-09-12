@@ -61,9 +61,9 @@ export default function App() {
   // Función para renderizar las tarjetas verticales de servicios
   const renderServiciosDisponibles = (servicios) => {
     return servicios.map((item) => (
-      <VerticalCard 
+      <VerticalCard
         key={item.id} // Utiliza el id como clave para evitar advertencias de React
-        title={item.nombre} 
+        title={item.nombre}
         tipo={item.descripcion}
         idServiciosDisponibles={item.id}
       />
@@ -71,31 +71,35 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}> 
+    <View style={styles.container}>
       <View style={styles.titulo}>
-        <Text texto={`Servicios: ${title}`} font='PoppinsMedium' fontSize={25} /> 
-        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}> 
+        <Text texto={`Servicios: ${title}`} font='PoppinsMedium' fontSize={25} color='white' />
+        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
           <Image
             source={require('../images/icons/btnBack.png')} // Imagen del botón de retroceso
-            style={{ width: 35, height: 27 }} // Estilo de la imagen
+            style={{ width: 35, height: 27, zIndex: 3}} // Estilo de la imagen
+            tintColor='white'
           />
         </TouchableOpacity>
+        <Image
+          source={require('../images/panelPrincipal/backImage.png')}
+          style={styles.headerImage} />
       </View>
 
       <View
         style={styles.scrollViewContainer}
-        onLayout={(e) => setContainerHeight(e.nativeEvent.layout.height)} 
+        onLayout={(e) => setContainerHeight(e.nativeEvent.layout.height)}
       >
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.containerCards} // Estilo para el contenedor de tarjetas
-          onContentSizeChange={(width, height) => setContentHeight(height)} 
+          onContentSizeChange={(width, height) => setContentHeight(height)}
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
             useNativeDriver: false, // No utiliza el controlador nativo para la animación
           })}
           showsVerticalScrollIndicator={false} // Oculta la barra de scroll vertical predeterminada
         >
-          {renderServiciosDisponibles(readOne)} 
+          {renderServiciosDisponibles(readOne)}
         </ScrollView>
 
         <CustomScrollBar
@@ -116,6 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', /* Alinea los elementos hijos al centro horizontalmente */
     justifyContent: 'center', /* Alinea los elementos hijos al centro verticalmente */
     marginBottom: 10, /* Espacio en la parte inferior del contenedor */
+    position: 'relative'
   },
   titulo: {
     flexDirection: 'row', /* Alinea los elementos en una fila */
@@ -124,6 +129,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20, /* Espacio interior horizontal del contenedor del título */
     marginTop: -160,  /* Ajusta el margen superior del título */
     marginBottom: 20, /* Espacio en la parte inferior del título */
+    position: 'relative',
   },
   backButton: {
     flexDirection: 'row', /* Alinea los elementos del botón en una fila */
@@ -131,6 +137,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto', /* Empuja el botón hacia la derecha */
     marginBottom: 20, /* Espacio en la parte inferior del botón */
     marginTop: -55,  /* Ajusta el margen superior del botón */
+    zIndex: 3,
   },
   backButtonText: {
     fontSize: 16, /* Tamaño de fuente del texto del botón */
@@ -156,5 +163,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF', /* Color de fondo del contenedor de información */
     borderRadius: 8, /* Bordes redondeados del contenedor de información */
     alignItems: 'center', /* Alinea los elementos hijos al centro horizontalmente */
+  },
+  headerImage: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: 0
   },
 });

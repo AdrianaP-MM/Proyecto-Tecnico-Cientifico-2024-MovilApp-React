@@ -12,7 +12,7 @@ export default function CustomBackButton() {
             <Image
                 source={require('../images/icons/btnBack.png')} // Ruta a la imagen del boton
                 tintColor='white'
-                style={{ width: 35, height: 27 }} // Estilo para el tamaño de la imagen
+                style={{ width: 35, height: 27, zIndex: 3,}} // Estilo para el tamaño de la imagen
             />
         </TouchableOpacity>
     );

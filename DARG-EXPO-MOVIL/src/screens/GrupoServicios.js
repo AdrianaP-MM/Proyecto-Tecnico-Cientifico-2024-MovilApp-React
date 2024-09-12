@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'; // Importa hooks necesarios de React
-import { StyleSheet, View, ScrollView, Animated, Button, TextInput } from 'react-native'; // Importa componentes de React Native
+import { StyleSheet, View, ScrollView, Animated, Button, TextInput, Image } from 'react-native'; // Importa componentes de React Native
 // Importa la card que se utiliza para mostrar el contenido
 import HorizontalCard from '../components/servicios/CardGruposServicios';
 // Importa la barra de scroll personalizada
@@ -63,7 +63,10 @@ export default function App() {
     // Container principal de pantalla
     <View style={styles.container}>
       <View style={styles.titulo} /*Contenedor del titulo de la pantalla*/>
-        <Text texto='Grupos de servicio' font='PoppinsMedium' fontSize={25} />
+        <Text texto='Grupos de servicio'font='PoppinsSemiBold' fontSize={25} color='white'/>
+        <Image
+          source={require('../images/panelPrincipal/backImage.png')}
+          style={styles.headerImage} />
       </View>
 
       <View /*Contenedor que guarda el scroll de las cards de servicios*/
@@ -82,7 +85,7 @@ export default function App() {
           /* Oculta la barra de scroll vertical predeterminada */
           showsVerticalScrollIndicator={false}
         >
-          {renderServicios(readAll)} 
+          {renderServicios(readAll)}
         </ScrollView>
 
         <CustomScrollBar /* Se agregan los parámetros que espera recibir la custom bar */
@@ -99,7 +102,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1, /* Propiedad flex para hacer que el contenedor ocupe todo el espacio disponible */
-    backgroundColor: '#F9FAFB', /* Color de fondo del contenedor */
+    backgroundColor: 'black', /* Color de fondo del contenedor */
     alignItems: 'center', /* Alinea los elementos hijos al centro horizontalmente */
     justifyContent: 'center', /* Alinea los elementos hijos al centro verticalmente */
   },
@@ -114,11 +117,14 @@ const styles = StyleSheet.create({
     width: '100%', /* Ancho del contenedor del título */
     paddingHorizontal: 20, /* Espacio interior horizontal del contenedor del título */
     marginVertical: 20, /* Espacio vertical alrededor del contenedor del título */
+    zIndex: 2,
+    position: 'relative',
   },
   scrollViewContainer: {
     width: '92%', /* Ancho del contenedor del scroll */
     maxHeight: '78%', /* Altura máxima del contenedor del scroll */
     position: 'relative', /* Posición relativa del contenedor del scroll */
+    zIndex: 3,
   },
   inputContainer: {
     width: '100%', /* Ancho del contenedor del input */
@@ -133,5 +139,9 @@ const styles = StyleSheet.create({
     borderColor: '#ccc', /* Color del borde del input */
     borderRadius: 5, /* Radio del borde del input */
     marginBottom: 10, /* Margen inferior del input */
+  },
+  headerImage: {
+    position: 'absolute',
+    zIndex: 1,
   },
 });

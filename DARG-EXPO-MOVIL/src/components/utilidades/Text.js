@@ -9,6 +9,7 @@ export default function TextC({ texto = 'Indefinido', font = 'PoppinsRegular', f
         color: color,
         textAlign: textAlign, // Si no se proporciona `color`, se usará 'black'
         paddingHorizontal: paddingHorizontal,
+        zIndex: 3,
     };
 
     return (

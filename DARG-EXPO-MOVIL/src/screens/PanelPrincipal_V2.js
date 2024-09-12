@@ -162,7 +162,7 @@ export default function DashboardScreen({ navigation }) {
             textoBoton='Citas próximas'
             accionBoton={() => changeEstado('Citas próximas')}
             selected={selectedButton === 'Citas próximas'}
-            width={145}
+            width={130}
           />
         </View>
         <View style={styles.contenedorResult}>

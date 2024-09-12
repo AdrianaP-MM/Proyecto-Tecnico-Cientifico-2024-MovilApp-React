@@ -19,7 +19,7 @@ export default function App() {
 
     const navigation = useNavigation(); // Hook para la navegación
     const route = useRoute(); // Hook para obtener los parámetros de la ruta
-    const { idServiciosDisponibles, title} = route.params; // Parámetro de la ruta
+    const { idServiciosDisponibles, title } = route.params; // Parámetro de la ruta
 
     // Función para volver a la pantalla anterior
     const handleGoBack = () => {
@@ -98,45 +98,49 @@ export default function App() {
     return (
         <View style={styles.container}>
             <View style={styles.titulo}>
-                <Text texto={`Autos en ${title}`} font='PoppinsMedium' fontSize={25} />
+                <Text texto={`Autos en ${title}`} font='PoppinsMedium' fontSize={25} color='white' />
                 <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
                     <Image
                         source={require('../images/icons/btnBack.png')}
-                        style={{ width: 35, height: 27}}
+                        style={{ width: 35, height: 27, zIndex: 3 }} // Estilo de la imagen
+                        tintColor='white'
                     />
                 </TouchableOpacity>
+                <Image
+                    source={require('../images/panelPrincipal/backImage.png')}
+                    style={styles.headerImage} />
             </View>
 
-                <ScrollView style={styles.scrollView}>
-                    {readCarrosenProceso.length === 0 ? (
-                            <Text
-                                texto='No hay servicios para mostrar'
-                                fontSize={12}
-                                paddingHorizontal={10}
-                                font='PoppinsMedium'
-                                textAlign='center'
-                            />
-                        ) : readCarrosenProceso.length === 1 ? (
-                            <CardDescripcion
-                                key={0} // Para un solo elemento, el índice puede ser 0
-                                servicioData={{
-                                    nombre_servicio: readCarrosenProceso[0].nombre_servicio,
-                                    descripcion_servicio: readCarrosenProceso[0].descripcion_servicio,
-                                }}
-                            />
-                        ) : (
-                            readCarrosenProceso.map((servicio, index) => (
-                                <CardDescripcion
-                                    key={index} // Usa el índice aquí para asegurar que cada elemento tenga una clave única
-                                    servicioData={{
-                                        nombre_servicio: servicio.nombre_servicio,
-                                        descripcion_servicio: servicio.descripcion_servicio,
-                                    }}
-                                />
-                            ))
-                        )
-                    }
-                </ScrollView>
+            <ScrollView style={styles.scrollView}>
+                {readCarrosenProceso.length === 0 ? (
+                    <Text
+                        texto='No hay servicios para mostrar'
+                        fontSize={12}
+                        paddingHorizontal={10}
+                        font='PoppinsMedium'
+                        textAlign='center'
+                    />
+                ) : readCarrosenProceso.length === 1 ? (
+                    <CardDescripcion
+                        key={0} // Para un solo elemento, el índice puede ser 0
+                        servicioData={{
+                            nombre_servicio: readCarrosenProceso[0].nombre_servicio,
+                            descripcion_servicio: readCarrosenProceso[0].descripcion_servicio,
+                        }}
+                    />
+                ) : (
+                    readCarrosenProceso.map((servicio, index) => (
+                        <CardDescripcion
+                            key={index} // Usa el índice aquí para asegurar que cada elemento tenga una clave única
+                            servicioData={{
+                                nombre_servicio: servicio.nombre_servicio,
+                                descripcion_servicio: servicio.descripcion_servicio,
+                            }}
+                        />
+                    ))
+                )
+                }
+            </ScrollView>
             <View style={styles.line} />
             <Text texto='Autos en proceso' font='PoppinsMedium' fontSize={17} />
             <View
@@ -214,7 +218,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginLeft: 'auto',
         marginBottom: 0,
-        marginTop: 60,
+        marginTop: -100,
+        zIndex: 3,
     },
     backButtonText: {
         fontSize: 16,
@@ -241,4 +246,9 @@ const styles = StyleSheet.create({
         marginVertical: 20,
         width: '100%',
     },
+    headerImage: {
+        position: 'absolute',
+        zIndex: 1,
+        bottom: 0
+      },
 })

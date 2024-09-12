@@ -9,6 +9,7 @@ export default function Button({ textoBoton, accionBoton, fontSize = 15, width =
         height: height,
         marginTop: marginTop,
         marginBottom: marginBottom,
+        zIndex: 3,
     };
 
     return (
