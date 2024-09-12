@@ -6,6 +6,7 @@ import Button from '../components/buttons/ButtonRojo'; // Importa el botón pers
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
 import fetchData from '../utils/FetchData';
+import { correoValidate, validateEmail, formatEmail, formatNOSpaces } from '../utils/Validator'
 
 export default function Login({ navigation }) {
   // Define los estados para el correo electrónico y la contraseña
@@ -23,14 +24,45 @@ export default function Login({ navigation }) {
   const [visibleCamposCodigo, setvisibleCamposCodigo] = React.useState(false);
   const [visibleCamposContraseña, setvisibleCamposContraseña] = React.useState(false);
 
-  const handleLogin = async () => {
 
-    // Validar que los campos no estén vacíos
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Por favor, completa todos los campos.');
-      return; // Salir de la función si alguno de los campos está vacío
+  const validateFields = () => {
+    // Verifica los campos básicos
+    const fields = {email, password};
+    const missingFields = Object.entries(fields)
+      .filter(([key, value]) => !value)
+      .map(([key]) => key);
+
+    if (missingFields.length > 0) {
+      Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
+      return false;
     }
 
+    if (password.length != 8) {
+      Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+      return false;
+    }
+
+    // Valida el correo electrónico
+    if (!validateEmail(email)) {
+      Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, contiene caracteres no permitidos.');
+      return false;
+    }
+
+    if (!correoValidate(email)) {
+      Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, dominio inexistente.');
+      return false;
+    }
+
+    // Si todo está completo, retorna true
+    return true;
+  };
+
+  const handleLogin = async () => {
+
+    if (!validateFields()) {
+      //Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
+      return; // Salir de la función si alguno de los campos está vacío o incorrecto
+    }
     // Si la contraseña es '00000000', abre el diálogo
     if (password === '00000000') {
       handleAbrirDialogo();
@@ -311,14 +343,14 @@ export default function Login({ navigation }) {
           <Input
             placeholder='Correo'
             value={email}
-            onChangeText={setEmail}
+            onChangeText={(text) => setEmail(formatEmail(text))}
             width='95%'
             iconImage={(require('../images/icons/iconUser.png'))}
           />
           <Input
             placeholder='Contraseña'
             value={password}
-            onChangeText={setPassword}
+            onChangeText={(text) =>setPassword(formatNOSpaces(text))}
             width='95%'
             iconImage={(require('../images/icons/iconLock.png'))}
             secureTextEntry={true}

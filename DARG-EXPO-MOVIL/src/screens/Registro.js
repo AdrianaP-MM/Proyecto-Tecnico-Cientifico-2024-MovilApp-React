@@ -6,6 +6,7 @@ import Button from '../components/buttons/ButtonRojo'; // Import the custom butt
 import Input from '../components/inputs/AllBorder'; // Import the custom input
 import CustomPicker from '../components/inputs/ComboBox'; // Import the custom input
 import { StatusBar } from 'expo-status-bar'; // Import the status bar
+import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces} from '../utils/Validator'
 import fetchData from '../utils/FetchData';
 
 export default function Registrate({ navigation }) {
