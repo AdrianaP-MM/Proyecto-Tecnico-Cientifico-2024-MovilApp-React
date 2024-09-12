@@ -8,6 +8,7 @@ import fetchData from '../utils/FetchData';
 export default function AppNotificaciones() {
 
     const [citas, setCitas] = useState([]);
+    const [actEstadoCita, setActEstadoCita] = useState([]);
 
     const readCitasExistentes = async () => {
         try {
@@ -25,8 +26,25 @@ export default function AppNotificaciones() {
         }
     };
 
+    const readActEstadoCita = async () => {
+        try {
+            const responseCitas = await fetchData('citas.php', 'actualizacionCitaNoti');
+            if (responseCitas.status) {
+                setActEstadoCita(responseCitas.dataset);
+                console.log(responseCitas);
+            } else {
+                setActEstadoCita([]);
+                Alert.alert('Error', `${responseCitas.error}`);
+            }
+        } catch (error) {
+            console.error('Error en leer los elementos:', error);
+            Alert.alert('Error', 'Hubo un error.');
+        }
+    };
+
     useEffect(() => {
         readCitasExistentes();
+        readActEstadoCita();
     }, []);
 
     const processCitas = (citas) => {
