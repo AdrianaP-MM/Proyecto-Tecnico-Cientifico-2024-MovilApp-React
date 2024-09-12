@@ -8,29 +8,50 @@ import Input from '../components/inputs/AllBorder';
 import { useFocusEffect } from '@react-navigation/native';
 import fetchData from '../utils/FetchData';
 
+import { verDetalles } from '../utils/CitasFunctions'
+
 export default function AppCitas({ navigation }) {
     //TODO Aqui empiezan las funciones y variables que tienen que ver con la dinamica visual de la pantalla
     const [selectedButton, setSelectedButton] = useState('En espera'); // Estado para el botón seleccionado
 
     // Función para cambiar el estado del botón seleccionado
-    const changeEstado = (button) => {
+    const changeEstado = async (button) => {
+        // Mapeo de estados a valores de la base de datos
+        const estadoMap = {
+            'En espera': 'En espera',
+            'Aceptadas': 'Aceptado',
+            'Finalizadas': 'Finalizada' // Cambié 'Finalizada' a 'Finalizada' para consistencia
+        };
+
+        // Determinar el estado de cita a consultar
+        const estadoCita = estadoMap[button] || '';
+
+        // Solo realizar la solicitud si el estado es válido
+        if (estadoCita) {
+            const formData = new FormData();
+            formData.append('estado_cita', estadoCita);
+            try {
+                const responseCitas = await fetchData('citas.php', 'readAllEspecific', formData);
+                // Actualizar el estado de citas basado en la respuesta
+                if (responseCitas.status) {
+                    setCitas(responseCitas.dataset);
+                } else {
+                    setCitas([]);
+                }
+            } catch (error) {
+                // Manejo de errores de la solicitud
+                console.error('Error fetching citas:', error);
+                setCitas([]);
+            }
+        } else {
+            // En caso de un estado de botón inválido, limpiar citas
+            setCitas([]);
+        }
+
+        // Actualizar el botón seleccionado
         setSelectedButton(button);
     };
 
-    // Función para navegar a la pantalla de detalles de la cita
-    const verDetalles = async (id_cita, fecha, hora, auto, movilizacion, zona, ida, regreso, estado) => {
-        navigation.navigate('Detalles de la cita', {
-            id_cita: id_cita,
-            fecha: fecha,
-            hora: hora,
-            auto: auto,
-            movilizacion: movilizacion,
-            zona: zona,
-            ida: ida,
-            regreso: regreso,
-            estado: estado
-        });
-    };
 
     const [showFilters, setShowFilters] = useState(false); // Estado para mostrar/ocultar el menú de filtros
     const animation = useRef(new Animated.Value(0)).current; // Valor de animación
@@ -64,33 +85,9 @@ export default function AppCitas({ navigation }) {
     // Función para leer datos de la API
     const readElements = async () => {
         try {
-            const responseCitas = await fetchData('citas.php', 'readAllEspecific')
-            if (responseCitas.status) {
-                setCitas(responseCitas.dataset);
-                //console.log(responseCitas.dataset)
-            } else {
-                setCitas([]);
-                //Alert.alert('Error', `${responseCitas.error}`);
-            }
+            changeEstado('En espera');
         } catch (error) {
             console.error('Error en leer los elementos:', error);
-            Alert.alert('Error', 'Hubo un error.');
-        }
-    };
-
-    const deleteRow = async (id_cita) => {
-        try {
-            const formData = new FormData();
-            formData.append('id_cita', id_cita);
-            const responseCitas = await fetchData('citas.php', 'deleteRow', formData);
-            if (responseCitas.status) {
-                Alert.alert('Éxito', `${responseCitas.message}`);
-                readElements(); // Re-cargar los elementos después de la eliminación
-            } else {
-                Alert.alert('Error', `${responseCitas.error}`);
-            }
-        } catch (error) {
-            console.error('Error en eliminar la cita:', error);
             Alert.alert('Error', 'Hubo un error.');
         }
     };
@@ -118,6 +115,24 @@ export default function AppCitas({ navigation }) {
             { cancelable: false } // No permite cancelar el alert tocando fuera de él
         );
     };
+
+    const deleteRow = async (id_cita) => {
+        try {
+            const formData = new FormData();
+            formData.append('id_cita', id_cita);
+            const responseCitas = await fetchData('citas.php', 'deleteRow', formData);
+            if (responseCitas.status) {
+                Alert.alert('Éxito', `${responseCitas.message}`);
+                readElements(); // Re-cargar los elementos después de la eliminación
+            } else {
+                Alert.alert('Error', `${responseCitas.error}`);
+            }
+        } catch (error) {
+            console.error('Error en eliminar la cita:', error);
+            Alert.alert('Error', 'Hubo un error.');
+        }
+    };
+
 
     return (
         <SafeAreaView style={styles.contenedorTotal}>
@@ -191,12 +206,12 @@ export default function AppCitas({ navigation }) {
                 </View>
                 <ScrollView style={styles.scrollCitas}>
                     {citas.length === 0 ? (
-                        <Text texto='Sin citas para mostrar' fontSize={22}
+                        <Text texto='Sin citas para mostrar' fontSize={20}
                             paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
                         />
                     ) : citas.length === 1 ? (
                         <CardCita
-                            accionCard={() => verDetalles(citas[0].id_cita, citas[0].fecha_cita, citas[0].hora_cita, citas[0].id_automovil, citas[0].movilizacion_vehiculo, citas[0].zona_habilitada, citas[0].direccion_ida, citas[0].direccion_regreso, citas[0].estado_cita)}
+                            accionCard={() => verDetalles(navigation, citas[0].id_cita, citas[0].fecha_cita, citas[0].hora_cita, citas[0].id_automovil, citas[0].movilizacion_vehiculo, citas[0].zona_habilitada, citas[0].direccion_ida, citas[0].direccion_regreso, citas[0].estado_cita)}
                             cita={citas[0]}
                             citaData={{
                                 fotoCarro: citas[0].imagen_automovil,
@@ -213,7 +228,7 @@ export default function AppCitas({ navigation }) {
                         citas.map(cita => (
                             <CardCita
                                 key={cita.id_cita}
-                                accionCard={() => verDetalles(cita.id_cita, cita.fecha_cita, cita.hora_cita, cita.id_automovil, cita.movilizacion_vehiculo, cita.zona_habilitada, cita.direccion_ida, cita.direccion_regreso, cita.estado_cita)}
+                                accionCard={() => verDetalles(navigation, cita.id_cita, cita.fecha_cita, cita.hora_cita, cita.id_automovil, cita.movilizacion_vehiculo, cita.zona_habilitada, cita.direccion_ida, cita.direccion_regreso, cita.estado_cita)}
                                 citaData={{
                                     fotoCarro: cita.imagen_automovil,
                                     fecha_cita: cita.fecha_cita,

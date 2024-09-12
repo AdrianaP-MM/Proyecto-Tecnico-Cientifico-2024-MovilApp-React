@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center', // Centra el contenido horizontalmente
         justifyContent: 'center', // Centra el contenido verticalmente
-        backgroundColor: '#BA181B', // Color de fondo del botón cuando está activo
+        backgroundColor: '#E5383B', // Color de fondo del botón cuando está activo
         borderRadius: 10, // Borde redondeado del botón
     },
     buttonDisabled: {

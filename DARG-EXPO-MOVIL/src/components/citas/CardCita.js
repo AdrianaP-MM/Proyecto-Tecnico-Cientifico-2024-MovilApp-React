@@ -4,7 +4,7 @@ import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'; // Imp
 
 import Config from '../../utils/Constantes'; // Importa el objeto de configuración desde 'Constantes'
 
-export default function CardCita({ accionCard, citaData={}, onLongPress}) {
+export default function CardCita({ accionCard, citaData, onLongPress }) {
     // Componente de tarjeta de cita que muestra información del automóvil y detalles de la cita
     return (
         <TouchableOpacity onPress={accionCard} onLongPress={onLongPress}>
@@ -18,38 +18,38 @@ export default function CardCita({ accionCard, citaData={}, onLongPress}) {
                     />
                     <View style={styles.cardHeaderTextContainer}>
                         <View style={styles.rowUpper}>
-                            <Text texto={`Fecha y hora de llegada: (${citaData.anio_cita})`} font='PoppinsLightItalic' fontSize={12} color='white' /> 
+                            <Text texto={`Fecha y hora de llegada: (${citaData.anio_cita})`} font='PoppinsLightItalic' fontSize={12} color='white' />
                         </View>
                         <View style={styles.row}>
-                            <Text texto='Fecha: ' font='PoppinsSemiBold' fontSize={11} color='white' /> 
+                            <Text texto='Fecha: ' font='PoppinsSemiBold' fontSize={11} color='white' />
                             <Text texto={`${citaData.fecha_cita}`} fontSize={12} color='white' />
                         </View>
                         <View style={styles.row}>
                             <Text texto='hora: ' font='PoppinsSemiBold' fontSize={11} color='white' />
-                            <Text texto={`${citaData.hora_cita}`} fontSize={12} color='white' />  
+                            <Text texto={`${citaData.hora_cita}`} fontSize={12} color='white' />
                         </View>
                     </View>
                 </View>
                 <View style={styles.cardBody}>
                     <View style={styles.col}>
                         <View style={styles.colUpper}>
-                            <Text texto='Información del carro:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' /> 
+                            <Text texto='Información del carro:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' />
                         </View>
                         <View style={styles.row}>
-                            <Text texto='Modelo: ' font='PoppinsSemiBold' fontSize={11} /> 
+                            <Text texto='Modelo: ' font='PoppinsSemiBold' fontSize={11} />
                             <Text texto={`${citaData.modelo_automovil}`} fontSize={12} />
                         </View>
                         <View style={styles.row}>
-                            <Text texto='Placa: ' font='PoppinsSemiBold' fontSize={11} /> 
-                            <Text texto={`${citaData.placa_automovil}`} fontSize={12} /> 
+                            <Text texto='Placa: ' font='PoppinsSemiBold' fontSize={11} />
+                            <Text texto={`${citaData.placa_automovil}`} fontSize={12} />
                         </View>
                     </View>
                     <View style={styles.col}>
                         <View style={styles.colUpper}>
-                            <Text texto='Detalles de la cita:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' /> 
+                            <Text texto='Detalles de la cita:' font='PoppinsLightItalic' fontSize={12} color='#2F2F2F' />
                         </View>
                         <View>
-                            <Text texto='Movilización' font='PoppinsSemiBold' fontSize={11} /> 
+                            <Text texto='Movilización' font='PoppinsSemiBold' fontSize={11} />
                             <Text texto={`${citaData.movilizacion_vehiculo}`} fontSize={12} />
                         </View>
                     </View>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         borderRadius: 15, // Borde redondeado
         borderBottomWidth: 2, // Ancho del borde inferior
         borderColor: '#E4E5EB', // Color del borde
-        marginBottom: 30, // Margen vertical
+        marginBottom: 15, // Margen vertical
         marginTop: 12,
     },
     cardHeader: {
