@@ -6,7 +6,7 @@ import Button from '../components/buttons/ButtonRojo'; // Import the custom butt
 import Input from '../components/inputs/AllBorder'; // Import the custom input
 import CustomPicker from '../components/inputs/ComboBox'; // Import the custom input
 import { StatusBar } from 'expo-status-bar'; // Import the status bar
-import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces} from '../utils/Validator'
+import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces } from '../utils/Validator'
 import fetchData from '../utils/FetchData';
 
 export default function Registrate({ navigation }) {
@@ -57,14 +57,119 @@ export default function Registrate({ navigation }) {
         { label: 'Calzado', value: 'Calzado' },
     ]
 
+    const validateFieldsNatural = () => {
+        // Verifica los campos básicos
+        const fields = { dui, telefono, correo, contraseña, confirmarContraseña, nombres, apellidos, checked, departamentos, nit };
+        const missingFields = Object.entries(fields)
+            .filter(([key, value]) => !value)
+            .map(([key]) => key);
+
+        if (missingFields.length > 0) {
+            Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
+            return false;
+        }
+
+        if (contraseña.length != 8) {
+            Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+            return false;
+        }
+
+        if (confirmarContraseña.length != 8) {
+            Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+            return false;
+        }
+
+        if (dui.length != 10) {
+            Alert.alert('Campos incorrectos', 'El número de dui no es válido, se requiere de 9 digítos.');
+            return false;
+        }
+
+        if (telefono.length != 9) {
+            Alert.alert('Campos incorrectos', 'El número telefónico no es válido, se requiere de 8 digítos.');
+            return false;
+        }
+
+        // Valida el correo electrónico
+        if (!validateEmail(correo)) {
+            Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, contiene caracteres no permitidos.');
+            return false;
+        }
+
+        if (!correoValidate(correo)) {
+            Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, dominio inexistente.');
+            return false;
+        }
+
+        if (nit.length != 17) {
+            Alert.alert('Campos incorrectos', 'El número de NIT no es válido, se requiere de 15 digítos.');
+            return false;
+        }
+
+        // Si todo está completo, retorna true
+        return true;
+    };
+
+    const validateFieldsJuridico = () => {
+        // Verifica los campos básicos
+        const fields = { dui, telefono, correo, contraseña, confirmarContraseña, nombres, apellidos, checked, departamentos, nit, nrc, nrf, rubro };
+        const missingFields = Object.entries(fields)
+            .filter(([key, value]) => !value)
+            .map(([key]) => key);
+
+        if (missingFields.length > 0) {
+            Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
+            return false;
+        }
+
+        if (contraseña.length != 8) {
+            Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+            return false;
+        }
+
+        if (confirmarContraseña.length != 8) {
+            Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+            return false;
+        }
+
+        if (dui.length != 10) {
+            Alert.alert('Campos incorrectos', 'El número de dui no es válido, se requiere de 9 digítos.');
+            return false;
+        }
+
+        if (telefono.length != 9) {
+            Alert.alert('Campos incorrectos', 'El número telefónico no es válido, se requiere de 8 digítos.');
+            return false;
+        }
+
+        // Valida el correo electrónico
+        if (!validateEmail(correo)) {
+            Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, contiene caracteres no permitidos.');
+            return false;
+        }
+
+        if (!correoValidate(correo)) {
+            Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, dominio inexistente.');
+            return false;
+        }
+
+        if (nit.length != 17) {
+            Alert.alert('Campos incorrectos', 'El número de NIT no es válido, se requiere de 15 digítos.');
+            return false;
+        }
+
+        // Si todo está completo, retorna true
+        return true;
+    };
+
+
 
     const handleRegistroNatural = async () => {
 
-        // Validar que los campos no estén vacíos
-        if (!dui.trim() || !telefono.trim() || !correo.trim() || !contraseña.trim() || !confirmarContraseña.trim() || !nombres.trim() || !apellidos.trim() || !checked.trim() || !departemento.trim() || !nit.trim()) {
-            Alert.alert('Error', 'Por favor, completa todos los campos.');
-            return; // Salir de la función si alguno de los campos está vacío
+        if (!validateFieldsNatural()) {
+            //Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
+            return; // Salir de la función si alguno de los campos está vacío o incorrecto
         }
+
 
         if (contraseña === '00000000') {
             Alert.alert('Error', 'No puedes usar esa contraseña intenta con otra');
@@ -101,10 +206,9 @@ export default function Registrate({ navigation }) {
     // Función para manejar la entrada el registro al sistema
     const handleRegistroJuridico = async () => {
 
-        // Validar que los campos no estén vacíos
-        if (!dui.trim() || !telefono.trim() || !correo.trim() || !contraseña.trim() || !confirmarContraseña.trim() || !nombres.trim() || !apellidos.trim() || !checked.trim() || !departemento.trim() || !nit.trim() || !nrc.trim() || !nrf.trim() || !rubro.trim()) {
-            Alert.alert('Error', 'Por favor, completa todos los campos.');
-            return; // Salir de la función si alguno de los campos está vacío
+        if (!validateFieldsJuridico()) {
+            //Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
+            return; // Salir de la función si alguno de los campos está vacío o incorrecto
         }
 
         if (contraseña === '00000000') {
@@ -183,41 +287,6 @@ export default function Registrate({ navigation }) {
         handleNext(); // Cambia el estado para mostrar el siguiente modal
     };
 
-    // Format the phone number
-    const formatTel = (value) => {
-        const numericValue = value.replace(/\D/g, '');
-        if (numericValue.length <= 4) {
-            return numericValue;
-        } else if (numericValue.length <= 8) {
-            return numericValue.slice(0, 4) + '-' + numericValue.slice(4);
-        } else {
-            return numericValue.slice(0, 4) + '-' + numericValue.slice(4, 8);
-        }
-    };
-
-    // Format the DUI
-    const formatDui = (value) => {
-        const numericValue = value.replace(/\D/g, '');
-        if (numericValue.length <= 8) {
-            return numericValue;
-        } else {
-            return numericValue.slice(0, 8) + '-' + numericValue.slice(8, 9);
-        }
-    };
-
-    // Format the NIT
-    const formatNit = (value) => {
-        const numericValue = value.replace(/\D/g, '');
-        if (numericValue.length <= 4) {
-            return numericValue;
-        } else if (numericValue.length <= 10) {
-            return numericValue.slice(0, 4) + '-' + numericValue.slice(4);
-        } else if (numericValue.length <= 13) {
-            return numericValue.slice(0, 4) + '-' + numericValue.slice(4, 10) + '-' + numericValue.slice(10);
-        } else {
-            return numericValue.slice(0, 4) + '-' + numericValue.slice(4, 10) + '-' + numericValue.slice(10, 13) + '-' + numericValue.slice(13, 14);
-        }
-    };
 
     return (
         <Provider>
@@ -344,7 +413,7 @@ export default function Registrate({ navigation }) {
                 <Input
                     placeholder='Nombres'
                     value={nombres}
-                    onChangeText={setNombres}
+                    onChangeText={(text) => setNombres(formatAlphabetic(text))}
                     width='95%'
                     iconImage={require('../images/icons/iconUser.png')}
                     maxLength={50}
@@ -353,7 +422,7 @@ export default function Registrate({ navigation }) {
                 <Input
                     placeholder='Apellidos'
                     value={apellidos}
-                    onChangeText={setApellidos}
+                    onChangeText={(text) => setApellidos(formatAlphabetic(text))}
                     width='95%'
                     iconImage={require('../images/icons/iconUser.png')}
                     maxLength={50}
@@ -362,7 +431,7 @@ export default function Registrate({ navigation }) {
                 <Input
                     placeholder='Correo'
                     value={correo}
-                    onChangeText={setCorreo}
+                    onChangeText={(text) => setCorreo(formatEmail(text))}
                     width='95%'
                     iconImage={require('../images/icons/iconCorreo.png')}
                     maxLength={50}
@@ -371,7 +440,7 @@ export default function Registrate({ navigation }) {
                 <Input
                     placeholder='Contraseña'
                     value={contraseña}
-                    onChangeText={setContraseña}
+                    onChangeText={(text) =>setContraseña(formatNOSpaces(text))}
                     width='95%'
                     iconImage={require('../images/icons/iconContra.png')}
                     secureTextEntry={true}
@@ -380,7 +449,7 @@ export default function Registrate({ navigation }) {
                 <Input
                     placeholder='Confirmar contraseña'
                     value={confirmarContraseña}
-                    onChangeText={setconfirmarContraseña}
+                    onChangeText={(text) =>setconfirmarContraseña(formatNOSpaces(text))}
                     width='95%'
                     iconImage={require('../images/icons/iconContra.png')}
                     secureTextEntry={true}
