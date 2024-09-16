@@ -13,12 +13,96 @@ import CardCita from '../components/citas/CardCita';
 import { verDetalles } from '../utils/CitasFunctions'
 
 
+
 // Componente principal del dashboard
 export default function DashboardScreen({ navigation }) {
+
+  const [notificaciones, setNotificaciones] = useState(0);
+  const [actEstadoCita, setActEstadoCita] = useState([]);
+  const [totalNotificaciones, setTotalNotificaciones] = useState(0);
+
+  const actualizarTotalNotificaciones = (nuevasCitas, nuevasActualizaciones) => {
+    const total = nuevasCitas.length + nuevasActualizaciones.length;
+    setTotalNotificaciones(total); // Actualiza el total de notificaciones
+};
+
+  // Función para obtener las notificaciones de citas próximas
+  const fetchNotificaciones = async () => {
+    try {
+      const responseCitas = await fetchData('citas.php', 'readAllNotisCitas');
+      if (responseCitas.status && responseCitas.dataset) {
+        const citasProximas = processCitas(responseCitas.dataset); // Procesar citas próximas
+        const numeroNotificaciones = citasProximas.length; // Número de citas próximas
+
+        // Actualizar el total de notificaciones sumando a las actuales
+        setNotificaciones(prevNotificaciones => prevNotificaciones + numeroNotificaciones);
+        console.log("Notificaciones de citas próximas: " + numeroNotificaciones);
+      } else {
+        console.log('Error al obtener las notificaciones de citas.');
+      }
+    } catch (error) {
+      console.error('Error al obtener notificaciones de citas:', error);
+    }
+  };
+
+
+  const processCitas = (citas) => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Ajustar 'now' para que sea a medianoche para comparaciones de fecha
+
+    return citas.map(cita => {
+      const citaDate = new Date(cita.fecha_hora_cita);
+      citaDate.setHours(0, 0, 0, 0); // Ajustar la fecha de la cita para que sea a medianoche para comparaciones de fecha
+
+      const diffTime = citaDate - now;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      // Notificar 3 días antes o en el mismo día
+      if (diffDays <= 3 && diffDays >= 0) {
+        const day = String(citaDate.getDate()).padStart(2, '0');
+        const month = String(citaDate.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript van de 0 a 11
+        const year = citaDate.getFullYear();
+        const formattedDate = `${day}/${month}/${year}`;
+
+        return {
+          title: 'Se acerca tu próxima cita con nosotros para tu vehículo:',
+          vehicle: cita.modelo_automovil, // Ajusta esto si 'modelo_automovil' no es la propiedad correcta
+          date: formattedDate, // Formatear la fecha manualmente
+          time: cita.hora_cita,
+          service: cita.nombre_servicio,
+          finishdate: cita.fecha_aproximada_finalizacion,
+          key: cita.id_cita // Ajusta esto si tienes una propiedad única para la cita
+        };
+      }
+      return null;
+    }).filter(cita => cita !== null); // Filtra citas nulas
+  };
+
+  // Función para obtener las actualizaciones de estado de cita
+  const readActEstadoCita = async () => {
+    try {
+        const responseCitas = await fetchData('citas.php', 'actualizacionCitaNoti');
+        if (responseCitas.status) {
+            setActEstadoCita(responseCitas.dataset); // Actualizar actualizaciones de estado
+            actualizarTotalNotificaciones(citas, responseCitas.dataset); // Actualiza el total de notificaciones
+            console.log(responseCitas);
+        } else {
+            setActEstadoCita([]); // Si no hay datos, vacía actualizaciones de estado
+            actualizarTotalNotificaciones(citas, []); // Actualiza el total
+            Alert.alert('¡Aviso!', `${responseCitas.error}`);
+        }
+    } catch (error) {
+        console.error('Error en leer los elementos:', error);
+        Alert.alert('Error', 'Hubo un error.');
+    }
+};
+
 
   useFocusEffect(
     React.useCallback(() => {
       readElements(); // Leer elementos de la API
+      fetchNotificaciones();
+      readActEstadoCita();
     }, [])
   );
 
@@ -120,8 +204,14 @@ export default function DashboardScreen({ navigation }) {
         <View style={styles.campanitaContainer}>
           <TouchableOpacity style={styles.notificationIcon} onPress={() => navigation.navigate('Notificaciones')}>
             <MaterialIcons name="notifications" size={35} color="#E5383B" />
+            {notificaciones > 0 && ( // Mostrar el indicador si el total de notificaciones es mayor a 0
+              <View style={styles.notificationIndicator}>
+                <MaterialIcons name="error-outline" size={15} color="white" />
+              </View>
+            )}
           </TouchableOpacity>
         </View>
+
         <View style={styles.saludoContainer}>
           <View style={styles.textContainer}>
             <Text texto={`¡Bienvenido`} font='PoppinsSemiBold' fontSize={25} color='white' textAlign='right' />
@@ -302,5 +392,20 @@ const styles = StyleSheet.create({
     width: '100%', // Ancho completo
     backgroundColor: 'white',
     paddingTop: 15,
+  },
+  notificationIcon: {
+    position: 'relative',
+    alignSelf: 'flex-end',
+  },
+  notificationIndicator: {
+    position: 'absolute',
+    right: -4,
+    top: -4,
+    backgroundColor: '#E5383B',
+    borderRadius: 15,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
