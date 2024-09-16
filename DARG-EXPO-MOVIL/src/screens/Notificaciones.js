@@ -137,7 +137,7 @@ export default function AppNotificaciones() {
                         style={styles.image}
                     />
                 </View>
-                <Text texto={`Tienes ${citasProcesadas.length} notificaciones nuevas`} font='PoppinsRegular' fontSize={14} color='#6A6A6A' />
+                <Text texto={`¡Mantente al tanto tus citas aqui!`} font='PoppinsRegular' fontSize={14} color='#6A6A6A' />
             </View>
             <ScrollView style={styles.scrollCards}>
 
