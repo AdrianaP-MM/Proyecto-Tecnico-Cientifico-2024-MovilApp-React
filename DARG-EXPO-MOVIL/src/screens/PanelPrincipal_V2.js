@@ -19,12 +19,8 @@ export default function DashboardScreen({ navigation }) {
 
   const [notificaciones, setNotificaciones] = useState(0);
   const [actEstadoCita, setActEstadoCita] = useState([]);
-  const [totalNotificaciones, setTotalNotificaciones] = useState(0);
 
-  const actualizarTotalNotificaciones = (nuevasCitas, nuevasActualizaciones) => {
-    const total = nuevasCitas.length + nuevasActualizaciones.length;
-    setTotalNotificaciones(total); // Actualiza el total de notificaciones
-};
+
 
   // Función para obtener las notificaciones de citas próximas
   const fetchNotificaciones = async () => {
@@ -81,21 +77,20 @@ export default function DashboardScreen({ navigation }) {
   // Función para obtener las actualizaciones de estado de cita
   const readActEstadoCita = async () => {
     try {
-        const responseCitas = await fetchData('citas.php', 'actualizacionCitaNoti');
-        if (responseCitas.status) {
-            setActEstadoCita(responseCitas.dataset); // Actualizar actualizaciones de estado
-            actualizarTotalNotificaciones(citas, responseCitas.dataset); // Actualiza el total de notificaciones
-            console.log(responseCitas);
-        } else {
-            setActEstadoCita([]); // Si no hay datos, vacía actualizaciones de estado
-            actualizarTotalNotificaciones(citas, []); // Actualiza el total
-            Alert.alert('¡Aviso!', `${responseCitas.error}`);
-        }
+      const responseCitas = await fetchData('citas.php', 'actualizacionCitaNoti');
+      if (responseCitas.status && responseCitas.dataset) {
+        setActEstadoCita(responseCitas.dataset); // Guardar las actualizaciones de estado
+
+        // Actualizar el total de notificaciones sumando a las actuales
+        setNotificaciones(prevNotificaciones => prevNotificaciones + responseCitas.dataset.length);
+        console.log("Notificaciones de actualizaciones de estado: " + responseCitas.dataset.length);
+      } else {
+        console.log('Error al obtener actualizaciones de estado.');
+      }
     } catch (error) {
-        console.error('Error en leer los elementos:', error);
-        Alert.alert('Error', 'Hubo un error.');
+      console.error('Error en leer actualizaciones de estado:', error);
     }
-};
+  };
 
 
   useFocusEffect(
