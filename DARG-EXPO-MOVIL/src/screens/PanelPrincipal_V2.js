@@ -138,7 +138,7 @@ export default function DashboardScreen({ navigation }) {
             setCitasProximas([]);
           }
         } catch (error) {
-          console.error('Error fetching citas:', error);
+          console.error('Error leyendo citas:', error);
           setCitasProximas([]);
         }
         setSelectedButton(button);
@@ -163,9 +163,15 @@ export default function DashboardScreen({ navigation }) {
   const [cliente, setCliente] = useState([]);
   const [typePickerValues, setTypePickerValues] = useState('');
 
+  const [searchState, setSearchState] = useState(false)
+
   // Función para leer datos de la API
   const readElements = async () => {
     try {
+      if (!pickerMasc) {
+        setSearchState(true)
+      }
+
       setTypePickerValues([
         { id: 'Auto', nombre: 'Auto' },
         { id: 'Cita', nombre: 'Cita' },
@@ -193,23 +199,61 @@ export default function DashboardScreen({ navigation }) {
   const [showSearchResult, setShowSearchResult] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
+  const [dataSetFound, setDataSetFound] = useState([])
+
   const searchElements = async () => {
-    // Aquí iría la lógica para buscar elementos
-    Alert.alert('Buscando elementos con valor:', searchValue);
+    let endPoint;
+    let php;
+    const formData = new FormData();
+    formData.append('search_value', searchValue);
+
+    // Determina el endpoint y archivo PHP basados en el valor de pickerMasc
+    if (pickerMasc === 'Auto') {
+      endPoint = 'searchAutosByPlaca';
+      php = 'automoviles.php';
+    } else if (pickerMasc === 'Cita') {
+      endPoint = 'searchCitaByNumber';
+      php = 'citas.php';
+    } else {
+      endPoint = 'searchServicioByName';
+      php = 'servicio.php';
+    }
+
+    try {
+      // Usa el endpoint y archivo PHP correctos
+      const response = await fetchData(php, endPoint, formData);
+      if (response.status) {
+        setDataSetFound(response.dataset);
+      } else {
+        setDataSetFound([]);
+      }
+    } catch (error) {
+      console.error('Error buscando', error);
+      setDataSetFound([]);
+    }
+    console.log('Buscando elementos con valor:', searchValue);
   };
 
+
   const toggleView = () => {
+    // Verifica si hay un tipo de valor seleccionado
+    if (!pickerMasc) {
+      Alert.alert('Error', 'Debe escoger el tipo de valor a buscar.');
+      return; // Detiene la ejecución si no se ha seleccionado el tipo de valor
+    }
+
+    // Verifica si se ha ingresado un valor de búsqueda
     if (!searchValue) {
       Alert.alert('Error', 'Debe ingresar un valor para poder buscar.');
-      return; // Detenemos si no hay valor de búsqueda
-    } else {
-      // Cambia el estado para mostrar el resultado de búsqueda
-      setShowSearchResult(!showSearchResult);
+      return; // Detiene la ejecución si no se ha ingresado un valor de búsqueda
+    }
 
-      // Si estamos cambiando para mostrar resultados, ejecuta la búsqueda
-      if (!showSearchResult) {
-        searchElements();
-      }
+    // Alterna la vista de búsqueda
+    setShowSearchResult(!showSearchResult);
+
+    // Si estamos mostrando resultados de búsqueda, ejecuta la búsqueda
+    if (!showSearchResult) {
+      searchElements();
     }
   };
 
@@ -244,10 +288,17 @@ export default function DashboardScreen({ navigation }) {
           </View>
           <View style={styles.searchContainer}>
             <Input
-              placeholder='A buscar:'
-              value={pickerMasc}
-              onChangeText={setPikerMasc} // Actualiza el estado
+              placeholder="A buscar:"
               keyboardType='picker'
+              value={pickerMasc}
+              onChangeText={(text) => {
+                setPikerMasc(text);
+                if (!pickerMasc) {
+                  setSearchState(true);
+                } else {
+                  setSearchState(false);
+                }
+              }}
               pickerValues={typePickerValues}
             />
             <Input
@@ -262,6 +313,7 @@ export default function DashboardScreen({ navigation }) {
               width='95%'
               textColorI='white'
               value={searchValue}
+              editable={searchState}
               onChangeText={(text) => {
                 if (pickerMasc === 'Auto') {
                   setSearchValue(formatPlaca(text));
@@ -271,7 +323,6 @@ export default function DashboardScreen({ navigation }) {
                   setSearchValue(formatAlphabetic(text))
                 }
               }}
-
             />
             <Text texto='Por aqui podras buscar tus automóviles por la placa, citas por el número de cita y servicios por nombre del servicio que te interesen ' fontSize={10}
               paddingHorizontal={10} font='PoppinsLight' color='white' />
@@ -280,9 +331,70 @@ export default function DashboardScreen({ navigation }) {
         </View>
       </View>
       {showSearchResult ? (
-        <ScrollView contentContainerStyle={styles.contenedorSearchResult}>
-          <Button title="Mostrar Body" onPress={toggleView} />
-        </ScrollView>
+        <View Style={styles.contenedorSearchResult}>
+          <Button textoBoton="Regresar" accionBoton={toggleView} />
+          <View style={styles.contenedorSearch}>
+            {pickerMasc === 'Auto' && (
+              dataSetFound.length === 0 ? (
+                <Text>No se encontro el automóvil con es placa</Text>
+              ) : (
+                <FlatList
+                  data={dataSetFound}
+                  renderItem={({ item }) => (
+                    <TarjetaCarro
+                      carro={item}
+                      onPress={() => navigation.navigate('InformacionCarro', { carro: item })}
+                    />
+                  )}
+                  keyExtractor={(item) => item.placa}
+                  numColumns={2}
+                  columnWrapperStyle={styles.row}
+                  style={styles.scrollAutos}
+                />
+              )
+            )}
+            {pickerMasc === 'Cita' && (
+              dataSetFound.length === 0 ? (
+                <Text>No se encontraron citas con ese número</Text>
+              ) : (
+                <ScrollView>
+                  {citasProximas.map(cita => (
+                    <CardCita
+                      key={cita.id_cita}
+                      accionCard={() => verDetalles(navigation, cita)}
+                      citaData={{
+                        fotoCarro: cita.imagen_automovil,
+                        fecha_cita: cita.fecha_cita,
+                        anio_cita: cita.anio_cita,
+                        hora_cita: cita.hora_cita,
+                        modelo_automovil: cita.modelo_automovil,
+                        placa_automovil: cita.placa_automovil,
+                        movilizacion_vehiculo: cita.movilizacion_vehiculo
+                      }}
+                    />
+                  ))}
+                </ScrollView>
+              )
+            )}
+            {pickerMasc !== 'Auto' && pickerMasc !== 'Cita' && (
+              dataSetFound.length === 0 ? (
+                <Text>No se encontraron servicios con ese nombre.</Text>
+              ) : (
+                <ScrollView>
+                  {dataSetFound.map((item) => (
+                    <VerticalCard
+                      key={item.id} // Utiliza el id como clave para evitar advertencias de React
+                      title={item.nombre_servicio}
+                      tipo={item.descripcion_servicio}
+                      idServiciosDisponibles={item.id_servicio}
+                    />
+                  ))}
+                </ScrollView>
+              )
+            )}
+          </View>
+
+        </View>
       ) : (
         <View style={styles.body}>
           <View style={styles.contenedorMenu}>
