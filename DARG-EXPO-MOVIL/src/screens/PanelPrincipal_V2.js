@@ -10,8 +10,9 @@ import Input from '../components/inputs/AllBorder';
 import TarjetaCarro from '../components/carros/CardCarro';
 import ButtonPastilla from '../components/citas/ButtonPastilla'; // Importación del componente de botón personalizado
 import CardCita from '../components/citas/CardCita';
-import { verDetalles } from '../utils/CitasFunctions'
-
+import { verDetalles } from '../utils/CitasFunctions';
+import Button from '../components/buttons/ButtonRojo'; // Importa el componente Button desde su ruta
+import { formatAlphabetic, formatAlphanumeric, formatNumeric, formatPlaca } from '../utils/Validator'
 
 
 // Componente principal del dashboard
@@ -19,7 +20,6 @@ export default function DashboardScreen({ navigation }) {
 
   const [notificaciones, setNotificaciones] = useState(0);
   const [actEstadoCita, setActEstadoCita] = useState([]);
-
 
 
   // Función para obtener las notificaciones de citas próximas
@@ -40,7 +40,6 @@ export default function DashboardScreen({ navigation }) {
       console.error('Error al obtener notificaciones de citas:', error);
     }
   };
-
 
   const processCitas = (citas) => {
     const now = new Date();
@@ -145,7 +144,6 @@ export default function DashboardScreen({ navigation }) {
         setSelectedButton(button);
         return;
     }
-
     try {
       const response = await fetchData('automoviles.php', endpoint);
       if (response.status) {
@@ -163,10 +161,17 @@ export default function DashboardScreen({ navigation }) {
   };
 
   const [cliente, setCliente] = useState([]);
+  const [typePickerValues, setTypePickerValues] = useState('');
 
   // Función para leer datos de la API
   const readElements = async () => {
     try {
+      setTypePickerValues([
+        { id: 'Auto', nombre: 'Auto' },
+        { id: 'Cita', nombre: 'Cita' },
+        { id: 'Servicio', nombre: 'Servicio' },
+      ]);
+
       const responseCliente = await fetchData('usuarios_clientes.php', 'readProfile');
       changeEstado('Mis autos');
 
@@ -184,6 +189,31 @@ export default function DashboardScreen({ navigation }) {
   };
 
   const nombre = cliente.nombres_cliente;
+
+  const [showSearchResult, setShowSearchResult] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  const searchElements = async () => {
+    // Aquí iría la lógica para buscar elementos
+    Alert.alert('Buscando elementos con valor:', searchValue);
+  };
+
+  const toggleView = () => {
+    if (!searchValue) {
+      Alert.alert('Error', 'Debe ingresar un valor para poder buscar.');
+      return; // Detenemos si no hay valor de búsqueda
+    } else {
+      // Cambia el estado para mostrar el resultado de búsqueda
+      setShowSearchResult(!showSearchResult);
+
+      // Si estamos cambiando para mostrar resultados, ejecuta la búsqueda
+      if (!showSearchResult) {
+        searchElements();
+      }
+    }
+  };
+
+  const [pickerMasc, setPikerMasc] = useState('');
 
   // Render principal del componente DashboardScreen
   return (
@@ -214,6 +244,13 @@ export default function DashboardScreen({ navigation }) {
           </View>
           <View style={styles.searchContainer}>
             <Input
+              placeholder='A buscar:'
+              value={pickerMasc}
+              onChangeText={setPikerMasc} // Actualiza el estado
+              keyboardType='picker'
+              pickerValues={typePickerValues}
+            />
+            <Input
               placeholder='Buscar..'
               textAlign='left'
               padding={5}
@@ -223,107 +260,96 @@ export default function DashboardScreen({ navigation }) {
               textColor='white'
               tintColor='#E5383B'
               width='95%'
+              textColorI='white'
+              value={searchValue}
+              onChangeText={(text) => {
+                if (pickerMasc === 'Auto') {
+                  setSearchValue(formatPlaca(text));
+                } else if (pickerMasc == 'Cita') {
+                  setSearchValue(formatNumeric(text));
+                } else {
+                  setSearchValue(formatAlphabetic(text))
+                }
+              }}
+
             />
-            <Text texto='Por aqui podras buscar tus automóviles, citas y servicios que te interesen ' fontSize={10}
+            <Text texto='Por aqui podras buscar tus automóviles por la placa, citas por el número de cita y servicios por nombre del servicio que te interesen ' fontSize={10}
               paddingHorizontal={10} font='PoppinsLight' color='white' />
+            <Button textoBoton='Buscar' fontSize={11} height={20} width={90} marginBottom={5} marginTop={5} accionBoton={toggleView} />
           </View>
         </View>
       </View>
-      <View style={styles.body}>
-        <View style={styles.contenedorMenu}>
-          <ButtonPastilla
-            textoBoton='Mis autos'
-            accionBoton={() => changeEstado('Mis autos')}
-            selected={selectedButton === 'Mis autos'}
-            width={90}
-          />
-          <ButtonPastilla
-            textoBoton='Autos eliminados'
-            accionBoton={() => changeEstado('Autos eliminados')}
-            selected={selectedButton === 'Autos eliminados'}
-            width={145}
-          />
-          <ButtonPastilla
-            textoBoton='Citas próximas'
-            accionBoton={() => changeEstado('Citas próximas')}
-            selected={selectedButton === 'Citas próximas'}
-            width={130}
-          />
+      {showSearchResult ? (
+        <ScrollView contentContainerStyle={styles.contenedorSearchResult}>
+          <Button title="Mostrar Body" onPress={toggleView} />
+        </ScrollView>
+      ) : (
+        <View style={styles.body}>
+          <View style={styles.contenedorMenu}>
+            <ButtonPastilla
+              textoBoton='Mis autos'
+              accionBoton={() => setSelectedButton('Mis autos')}
+              selected={selectedButton === 'Mis autos'}
+              width={90}
+            />
+            <ButtonPastilla
+              textoBoton='Autos eliminados'
+              accionBoton={() => setSelectedButton('Autos eliminados')}
+              selected={selectedButton === 'Autos eliminados'}
+              width={145}
+            />
+            <ButtonPastilla
+              textoBoton='Citas próximas'
+              accionBoton={() => setSelectedButton('Citas próximas')}
+              selected={selectedButton === 'Citas próximas'}
+              width={130}
+            />
+          </View>
+          <View style={styles.contenedorResult}>
+            {selectedButton === 'Mis autos' || selectedButton === 'Autos eliminados' ? (
+              autos.length === 0 ? (
+                <Text>Sin autos para mostrar</Text>
+              ) : (
+                <FlatList
+                  data={autos}
+                  renderItem={({ item }) => (
+                    <TarjetaCarro
+                      carro={item}
+                      onPress={() => navigation.navigate('InformacionCarro', { carro: item })}
+                    />
+                  )}
+                  keyExtractor={(item) => item.placa}
+                  numColumns={2}
+                  columnWrapperStyle={styles.row}
+                  style={styles.scrollAutos}
+                />
+              )
+            ) : selectedButton === 'Citas próximas' ? (
+              citasProximas.length === 0 ? (
+                <Text>Sin citas para mostrar</Text>
+              ) : (
+                <ScrollView>
+                  {citasProximas.map(cita => (
+                    <CardCita
+                      key={cita.id_cita}
+                      accionCard={() => verDetalles(navigation, cita)}
+                      citaData={{
+                        fotoCarro: cita.imagen_automovil,
+                        fecha_cita: cita.fecha_cita,
+                        anio_cita: cita.anio_cita,
+                        hora_cita: cita.hora_cita,
+                        modelo_automovil: cita.modelo_automovil,
+                        placa_automovil: cita.placa_automovil,
+                        movilizacion_vehiculo: cita.movilizacion_vehiculo
+                      }}
+                    />
+                  ))}
+                </ScrollView>
+              )
+            ) : null}
+          </View>
         </View>
-        <View style={styles.contenedorResult}>
-          {selectedButton === 'Mis autos' || selectedButton === 'Autos eliminados' ? (
-            autos.length === 0 ? (
-              <Text texto='Sin autos para mostrar' fontSize={20}
-                paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
-              />
-            ) : (
-
-              <FlatList
-                data={autos} // Datos para la lista
-                renderItem={({ item }) => (
-                  <TarjetaCarro
-                    carro={item}
-                    onPress={() => navigation.navigate('InformacionCarro', { carro: item })} // Navega a la información del carro al presionar
-                  />
-                )}
-                keyExtractor={(item) => item.placa} // Clave única para cada item basado en la placa del carro
-                numColumns={2} // Número de columnas en la cuadrícula
-                columnWrapperStyle={styles.row} // Estilo para las filas de la cuadrícula
-                style={styles.scrollAutos}
-              />
-            )
-          ) : selectedButton === 'Citas próximas' ? (
-            citasProximas.length === 0 ? (
-              <Text texto='Sin citas para mostrar' fontSize={20}
-                paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
-              />
-            ) : citasProximas.length === 1 ? (
-              <CardCita
-                accionCard={() => verDetalles(navigation, citasProximas[0].id_cita, citasProximas[0].fecha_cita, citasProximas[0].hora_cita, citasProximas[0].id_automovil, citasProximas[0].movilizacion_vehiculo, citasProximas[0].zona_habilitada, citasProximas[0].direccion_ida, citasProximas[0].direccion_regreso, citasProximas[0].estado_cita)}
-                cita={citasProximas[0]}
-                citaData={{
-                  fotoCarro: citasProximas[0].imagen_automovil,
-                  fecha_cita: citasProximas[0].fecha_cita,
-                  anio_cita: citasProximas[0].anio_cita,
-                  hora_cita: citasProximas[0].hora_cita,
-                  modelo_automovil: citasProximas[0].modelo_automovil,
-                  placa_automovil: citasProximas[0].placa_automovil,
-                  movilizacion_vehiculo: citasProximas[0].movilizacion_vehiculo
-                }}
-              />
-            ) : (
-              <ScrollView>
-                {citasProximas.map(cita => (
-                  <CardCita
-                    key={cita.id_cita}
-                    accionCard={() => verDetalles(
-                      navigation,
-                      cita.id_cita,
-                      cita.fecha_cita,
-                      cita.hora_cita,
-                      cita.id_automovil,
-                      cita.movilizacion_vehiculo,
-                      cita.zona_habilitada,
-                      cita.direccion_ida,
-                      cita.direccion_regreso,
-                      cita.estado_cita
-                    )}
-                    citaData={{
-                      fotoCarro: cita.imagen_automovil,
-                      fecha_cita: cita.fecha_cita,
-                      anio_cita: cita.anio_cita,
-                      hora_cita: cita.hora_cita,
-                      modelo_automovil: cita.modelo_automovil,
-                      placa_automovil: cita.placa_automovil,
-                      movilizacion_vehiculo: cita.movilizacion_vehiculo
-                    }}
-                  />
-                ))}
-              </ScrollView>
-            )
-          ) : null}
-        </View>
-      </View>
+      )}
     </View>
   );
 }

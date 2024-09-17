@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', /* Alinea los elementos hijos al centro horizontalmente */
     justifyContent: 'center', /* Alinea los elementos hijos al centro verticalmente */
     marginBottom: 10, /* Espacio en la parte inferior del contenedor */
-    position: 'relative'
+    position: 'relative',
   },
   titulo: {
     flexDirection: 'row', /* Alinea los elementos en una fila */
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     marginTop: -160,  /* Ajusta el margen superior del título */
     marginBottom: 20, /* Espacio en la parte inferior del título */
     position: 'relative',
+    
   },
   backButton: {
     flexDirection: 'row', /* Alinea los elementos del botón en una fila */
@@ -167,6 +168,6 @@ const styles = StyleSheet.create({
   headerImage: {
     position: 'absolute',
     zIndex: 1,
-    bottom: 0
+    bottom: 0,
   },
 });

@@ -149,13 +149,17 @@ export default function AppCitas({ navigation }) {
         try {
             const formData = new FormData();
             formData.append('fecha_llegada', fecha_llegada);
-            const responseSearch = await fetchData('citas.php', 'searchByFechaLLegada', formData);
-            if (responseCitas.status) {
-                Alert.responseSearch('Éxito', `${responseSearch.message}`);
-                readElements(); // Re-cargar los elementos después de la eliminación
-            } else {
-                Alert.alert('Error', `${responseSearch.error}`);
-            }
+            formData.append('estado_cita', selectedButton)
+
+            console.log(formData);
+
+            // const responseSearch = await fetchData('citas.php', 'searchByFechaLLegada', formData);
+            // if (responseCitas.status) {
+            //     Alert.responseSearch('Éxito', `${responseSearch.message}`);
+            //     readElements(); // Re-cargar los elementos después de la eliminación
+            // } else {
+            //     Alert.alert('Error', `${responseSearch.error}`);
+            // }
         } catch (error) {
             console.error('Error en buscar la cita solicitada:', error);
             Alert.alert('Error', 'Hubo un error.');
@@ -216,7 +220,6 @@ export default function AppCitas({ navigation }) {
                             />
                         </View>
                         <Button textoBoton='Buscar' fontSize={17} />
-
                     </Animated.View>
                     <View style={styles.contenedorMenu}>
                         <ButtonPastilla

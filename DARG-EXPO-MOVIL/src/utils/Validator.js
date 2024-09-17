@@ -79,6 +79,13 @@ export const formatAlphabetic = (value) => {
     return value.replace(/[^a-zA-Z\s]/g, '');
 };
 
+// Función que filtra solo números en una cadena de texto
+export const formatNumeric = (value) => {
+    // Elimina todos los caracteres que no sean números (0-9)
+    return value.replace(/[^0-9]/g, '');
+};
+
+
 // Función que filtra y sanitiza una cadena de texto para un correo electrónico
 export const formatEmail = (email) => {
     // Elimina los espacios en blanco
@@ -92,4 +99,53 @@ export const formatEmail = (email) => {
 export const formatNOSpaces = (password) => {
     // Elimina los espacios en blanco
     return password.replace(/\s+/g, '');
+};
+
+// Función que filtra solo números y letras, eliminando caracteres especiales
+export const formatAlphanumeric = (value) => {
+    // Elimina todos los caracteres que no sean letras (mayúsculas o minúsculas) o números
+    return value.replace(/[^a-zA-Z0-9]/g, '');
+};
+
+// Función que formatea una placa de automóvil según los prefijos válidos
+export const formatPlaca = (value) => {
+    // Definir los prefijos válidos
+    const validPrefixes = [
+        'A', 'AB', 'C', 'CC', 'CD', 'D', 'E', 'F', 'M', 'MB', 'MI',
+        'N', 'O', 'P', 'PR', 'PNC', 'RE', 'T', 'V'
+    ];
+
+    // Eliminar espacios en blanco del valor
+    value = value.replace(/\s+/g, '');
+
+    // Verificar si comienza con un prefijo válido
+    let isValidPrefix = false;
+    let prefix = '';
+    
+    for (let validPrefix of validPrefixes) {
+        if (value.startsWith(validPrefix)) {
+            prefix = validPrefix;
+            isValidPrefix = true;
+            break;
+        }
+    }
+
+    // Si no tiene un prefijo válido, retornar una cadena vacía
+    if (!isValidPrefix) {
+        return '';
+    }
+
+    // Obtener el sufijo (parte después del prefijo)
+    let suffix = value.slice(prefix.length);
+
+    // Validar que el sufijo tenga letras (excepto 'O'), números o guiones
+    const validSuffix = /^[A-NP-Za-z0-9\-]+$/;
+
+    // Si el sufijo es inválido, retornar solo el prefijo
+    if (!validSuffix.test(suffix)) {
+        return prefix;
+    }
+
+    // Retornar el valor completo formateado
+    return prefix + suffix;
 };

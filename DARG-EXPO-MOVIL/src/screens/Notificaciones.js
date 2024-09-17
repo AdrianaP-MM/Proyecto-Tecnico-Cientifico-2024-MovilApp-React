@@ -128,7 +128,7 @@ export default function AppNotificaciones() {
 
     return (
         <View style={styles.contenedorTotal}>
-            <StatusBar style="dark" backgroundColor="#ffffff" />
+            <StatusBar style="light" backgroundColor="#010101" />
             <View style={styles.col}>
                 <View style={styles.contenedorTitulo}>
                     <Text texto='Notificaciones' font='PoppinsMedium' fontSize={25} />

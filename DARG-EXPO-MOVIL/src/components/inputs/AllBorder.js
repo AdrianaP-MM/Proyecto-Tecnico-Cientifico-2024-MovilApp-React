@@ -4,7 +4,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Picker } from '@react-native-picker/picker';
 
 
-const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, pickerValues = [], iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key, opacity = 1, padding = 15, tintColor = '#A8AFB9', fontSize = 14, height = 'auto', backgroundColor = 'white', textColor = '#7B7B7B' }) => {
+const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, pickerValues = [], iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key, opacity = 1, padding = 15, tintColor = '#A8AFB9', fontSize = 14, height = 'auto', backgroundColor = 'white', textColor = '#7B7B7B', textColorI = 'black' }) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState(value);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
@@ -126,7 +126,7 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
                 </>
             ) : (
                 <TextInput
-                    style={[styles.input, { textAlign, padding, fontSize}]}
+                    style={[styles.input, { textAlign, padding, fontSize, color:textColorI }]}
                     placeholder={placeholder}
                     keyboardType={keyboardType}
                     value={value}
@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         fontFamily: 'PoppinsRegular',
-        
     },
     picker: {
         height: 50,
