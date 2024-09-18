@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, TextInput, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import CustomPicker from '../components/inputs/ComboBox'; // Importa el componente de selección personalizada
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente de botón personalizado
@@ -20,16 +20,17 @@ const colores = [
 ];
 
 const InformacionCarro = ({ route, navigation }) => {
-  const { carro } = route.params; // Obtiene los parámetros de la ruta, específicamente el objeto 'carro'
+  const { carro } = route.params;
+  const { cliente } = route.params; // Obtiene los parámetros de la ruta, específicamente el objeto 'carro'
   const [modelo, setModelo] = useState(carro.modelo);
   const [color, setColor] = useState(carro.color);
   const [fecha, setFecha] = useState(carro.fecha);
   const [placa, setPlaca] = useState(carro.placa);
   const [imagen, setImagen] = useState(carro.imagen);
-  const [tipoAutomovil, setTipoAutomovil] = useState('');
-  const [marcaAutomovil, setMarcaAutomovil] = useState('') // Estado para el tipo de automóvil
+  const [tipoAutomovil, setTipoAutomovil] = useState(carro.id_tipo_automovil);
+  const [marcaAutomovil, setMarcaAutomovil] = useState(carro.id_marca_automovil);
   const [pickerValuesMarca, setPickerValuesMarca] = useState([]);
-  const [pickerValuesTipos, setPickerValuesTipos] = useState([]); // Estado para los valores del picker 
+  const [pickerValuesTipos, setPickerValuesTipos] = useState([]);
 
   const API = 'automoviles.php'; // URL del servidor
 
@@ -62,14 +63,14 @@ const InformacionCarro = ({ route, navigation }) => {
           value: item.id_tipo_automovil, // Asegúrate de que el campo id sea correcto
         })));
       } else {
-        Alert.alert('Error', `${responseTiposAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
+        Alert.alert('Error', responseTiposAutomoviles.error);
       }
     } catch (error) {
-      console.error('Error en leer los elementos:', error);
-      Alert.alert('Error', 'Hubo un error.');
+      console.error('Error en leer los tipos:', error);
+      Alert.alert('Error', 'Hubo un error al leer los tipos de automóvil.');
     }
   };
- 
+
   const fetchMarcasAutomovil = async () => {
     try {
       const responseMarcasAutomoviles = await fetchData(API, 'readMarcas');
@@ -79,29 +80,29 @@ const InformacionCarro = ({ route, navigation }) => {
           value: item.id_marca_automovil, // Asegúrate de que el campo id sea correcto
         })));
       } else {
-        Alert.alert('Error', `${responseMarcasAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
+        Alert.alert('Error', responseMarcasAutomoviles.error);
       }
     } catch (error) {
-      console.error('Error en leer los elementos:', error);
-      Alert.alert('Error', 'Hubo un error.');
+      console.error('Error en leer las marcas:', error);
+      Alert.alert('Error', 'Hubo un error al leer las marcas de automóvil.');
     }
   };
-  
-
 
   useEffect(() => {
     fetchTiposAutomovil();
     fetchMarcasAutomovil();
-  }, []);
+    console.log('Carro recibido:', carro);
+  }, [carro]);
 
-  // Función para manejar la acción de guardar el carro modificado
+  
+  
+
   const handleGuardarCarro = async () => {
-    if (!modelo || !color || !tipoAutomovil || !marcaAutomovil || !fecha || !placa || !imagen) {
+    if (!modelo || !color || !tipoAutomovil || !marcaAutomovil || !fecha || !placa) {
       Alert.alert('Error', 'Todos los campos son requeridos.');
       return;
     }
 
-    // Creamos un objeto FormData para enviar los datos al servidor
     const formData = new FormData();
     formData.append('modelo_automovil', modelo);
     formData.append('color_automovil', color);
@@ -109,6 +110,8 @@ const InformacionCarro = ({ route, navigation }) => {
     formData.append('id_marca_automovil', marcaAutomovil);
     formData.append('fecha_fabricacion_automovil', fecha);
     formData.append('placa_automovil', placa);
+    formData.append('id_cliente', cliente.id_cliente);
+    formData.append('id_automovil', carro.id_automovil); // Se envía el ID del automóvil para la actualización
 
     if (imagen) {
       formData.append('imagen_automovil', {
@@ -117,23 +120,27 @@ const InformacionCarro = ({ route, navigation }) => {
         name: imagen.split('/').pop(),
       });
     }
+    console.log('ID del automóvil:', carro.id_automovil);
+    console.log('FormData:', formData); // Log para verificar los datos enviados
 
     try {
-      const response = await fetchData(API, 'updateCar', formData);
-      if (!response.error) {
+      const response = await fetchData(API, 'updateRow', formData);
+      console.log('Server Response:', response); // Log para verificar la respuesta del servidor
+
+      if (response.status) {
         Alert.alert('Éxito', 'El vehículo ha sido actualizado correctamente.');
         navigation.goBack();
       } else {
-        Alert.alert('Error', response.error);
+        Alert.alert('Error', response.error || 'Error desconocido.');
       }
     } catch (error) {
-      console.error(error);
+      console.error('Error al guardar el carro:', error);
       Alert.alert('Error', 'Hubo un problema al actualizar el carro.');
     }
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.label}>Modelo</Text>
       <TextInput
         placeholder="Modelo automóvil"
@@ -168,7 +175,7 @@ const InformacionCarro = ({ route, navigation }) => {
 
       <Text style={styles.label}>Fecha de Fabricación</Text>
       <TextInput
-        placeholder="Fecha fabricación"
+        placeholder="Fecha fabricación (yyyy)"
         value={fecha}
         onChangeText={setFecha}
         style={styles.input}
@@ -196,17 +203,16 @@ const InformacionCarro = ({ route, navigation }) => {
       </View>
 
       <Button textoBoton='Guardar' accionBoton={handleGuardarCarro} />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
     backgroundColor: 'white',
     alignItems: 'center',
-    paddingBottom: 180,
+    paddingBottom: 300,
   },
   label: {
     fontSize: 16,
@@ -225,32 +231,33 @@ const styles = StyleSheet.create({
   },
   imageButton: {
     flexDirection: 'row',
+    backgroundColor: 'lightgray',
+    width: '100%',
+    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
-    borderColor: 'lightgray',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 12,
-    backgroundColor: 'white',
+    justifyContent: 'center',
+    marginTop: 10,
   },
   imageButtonText: {
-    flex: 1,
-    fontSize: 16,
+    color: 'black',
+    marginRight: 10,
   },
   imageButtonPlus: {
-    fontSize: 24,
+    color: 'black',
     fontWeight: 'bold',
-    color: 'gray',
+    fontSize: 16,
   },
   imageContainer: {
-    width: '100%',
+    marginTop: 10,
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'center',
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
+    width: 150,
+    height: 150,
+    resizeMode: 'cover',
+    borderRadius: 10,
   },
 });
 

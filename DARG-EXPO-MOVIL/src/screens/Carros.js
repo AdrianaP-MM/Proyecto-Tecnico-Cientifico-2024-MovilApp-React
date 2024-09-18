@@ -18,6 +18,8 @@ const CarrosVista = ({ navigation }) => {
       const DATA = await fetchData(API, 'readAllMyCars');
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
+          id_automovil: item.id_automovil, // Asegúrate de que id_automovil esté presente
+          id_cliente: item.id_cliente,
           imagen: item.imagen_automovil,
           modelo: item.modelo_automovil,
           placa: item.placa_automovil
@@ -32,6 +34,7 @@ const CarrosVista = ({ navigation }) => {
       setCarros([]);
     }
   };
+  
 
   useFocusEffect(
     useCallback(() => {
@@ -55,7 +58,9 @@ const CarrosVista = ({ navigation }) => {
         renderItem={({ item }) => (
           <TarjetaCarro
             carro={item}
-            onPress={() => navigation.navigate('InformacionCarro', { carro: item })} // Navega a la información del carro al presionar
+            cliente={item}
+            onPress={() => navigation.navigate('InformacionCarro', { carro: item, cliente: item, })} // Navega a la información del carro al presionar
+            
           />
         )}
         keyExtractor={(item) => item.placa} // Clave única para cada item basado en la placa del carro

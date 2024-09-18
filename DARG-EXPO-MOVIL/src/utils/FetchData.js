@@ -26,13 +26,16 @@ export default async function fetchData(filename, action, form = null) {
             throw new Error(`HTTP error! status: ${RESPONSE.status}`); // Lanza un error si el estado no es OK
         }
 
-        // Parseo del JSON de la respuesta
-        const DATA = await RESPONSE.json();
-        //console.log('RESPONSE:', action, DATA); // Imprime los datos recibidos para depuración
+        // Registrar la respuesta como texto antes de intentar parsear JSON
+        const text = await RESPONSE.text();
+        console.log('Server Response:', text); // Imprime la respuesta del servidor para depuración
+
+        // Intentar parsear el texto como JSON
+        const DATA = JSON.parse(text);
         return DATA; // Devuelve los datos obtenidos
 
     } catch (error) {
-        console.log('Fetch error:', error); // Imprime el error de fetch
+        console.error('Fetch error:', error.message); // Imprime el mensaje de error
         throw error; // Lanza el error para que el llamador pueda manejarlo
     }
 }
