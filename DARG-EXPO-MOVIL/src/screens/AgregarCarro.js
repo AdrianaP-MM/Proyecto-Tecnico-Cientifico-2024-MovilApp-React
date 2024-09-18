@@ -49,7 +49,7 @@ const AgregarVehiculo = ({ navigation }) => {
       Alert.alert('Error', 'Hubo un error.');
     }
   };
- 
+
   const fetchMarcasAutomovil = async () => {
     try {
       const responseMarcasAutomoviles = await fetchData(API, 'readMarcas');
@@ -66,8 +66,6 @@ const AgregarVehiculo = ({ navigation }) => {
       Alert.alert('Error', 'Hubo un error.');
     }
   };
-  
-
 
   useEffect(() => {
     fetchTiposAutomovil();
@@ -100,16 +98,17 @@ const AgregarVehiculo = ({ navigation }) => {
       Alert.alert('Error', 'Todos los campos son requeridos.');
       return;
     }
-  
+
     // Creamos un objeto FormData para enviar los datos al servidor
     const formData = new FormData();
     formData.append('modelo_automovil', modelo);
     formData.append('color_automovil', color);
     formData.append('id_tipo_automovil', tipoAutomovil);
+    formData.append('id_marca_automovil', marcaAutomovil);
     formData.append('fecha_fabricacion_automovil', fecha);
     formData.append('placa_automovil', placa);
-    formData.append('id_marca_automovil', marcaAutomovil);
-  
+    
+
     if (imagen) {
       formData.append('imagen_automovil', {
         uri: imagen,
@@ -117,12 +116,7 @@ const AgregarVehiculo = ({ navigation }) => {
         name: imagen.split('/').pop(),
       });
     }
-  
-    // Imprime los datos de FormData en consola
-    for (let pair of formData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
-  
+
     try {
       const response = await fetchData(API, 'createRow', formData);
       if (!response.error) {
@@ -138,7 +132,7 @@ const AgregarVehiculo = ({ navigation }) => {
       Alert.alert('Error', 'Hubo un problema al guardar el carro.');
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <Input
@@ -158,7 +152,7 @@ const AgregarVehiculo = ({ navigation }) => {
         iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
         items={pickerValuesTipos}
       />
-        <CustomPicker
+      <CustomPicker
         selectedValue={marcaAutomovil}
         onValueChange={(itemValue) => setMarcaAutomovil(itemValue)}
         iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
@@ -174,10 +168,12 @@ const AgregarVehiculo = ({ navigation }) => {
         value={placa}
         onChangeText={setPlaca} // Actualiza el estado de la placa
       />
+      <Button textoBoton='Guardar' accionBoton={handleGuardarCarro} />
       <TouchableOpacity style={styles.imageButton} onPress={handleAgregarImagen}>
         <Text style={styles.imageButtonText}>Agregar imagen</Text>
         <Text style={styles.imageButtonPlus}>+</Text>
       </TouchableOpacity>
+
       <View style={styles.imageContainer}>
         {imagen ? (
           <Image source={{ uri: imagen }} style={styles.image} />
@@ -185,7 +181,7 @@ const AgregarVehiculo = ({ navigation }) => {
           <Text>No se ha seleccionado imagen</Text>
         )}
       </View>
-      <Button textoBoton='Guardar' accionBoton={handleGuardarCarro} />
+
     </View>
   );
 };
