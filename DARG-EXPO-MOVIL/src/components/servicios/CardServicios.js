@@ -36,16 +36,16 @@ const VerticalCard = ({ title, tipo, idServiciosDisponibles}) => {
 // Hoja de estilos para el componente
 const styles = StyleSheet.create({
     verticalCard: {
-        width: '48%', // Ancho de la tarjeta (48% del ancho del contenedor padre)
-        borderRadius: 10, // Radio de los bordes redondeados
-        marginBottom: 16, // Margen inferior de la tarjeta
-        backgroundColor: '#fff', // Color de fondo de la tarjeta
-        shadowColor: '#000', // Color de la sombra
-        shadowOffset: { width: 0, height: 2 }, // Desplazamiento de la sombra
-        shadowOpacity: 0.8, // Opacidad de la sombra
-        shadowRadius: 4, // Radio de difuminado de la sombra
-        elevation: 5, // Elevación para la sombra en plataformas Android
-        alignItems: 'center', // Alinea los elementos hijos al centro horizontalmente
+        width: '48%', 
+        borderRadius: 10, 
+        marginBottom: 16, 
+        backgroundColor: '#fff', 
+        shadowColor: '#000', 
+        shadowOffset: { width: 0, height: 2 }, 
+        shadowOpacity: 0.8, 
+        shadowRadius: 4, 
+        elevation: 5, 
+        alignItems: 'center', 
     },
     imageContainer: {
         marginTop: 20, // Margen superior del contenedor de la imagen
@@ -62,10 +62,11 @@ const styles = StyleSheet.create({
         marginTop: 20, // Margen superior de la línea separadora
     },
     cardContent: {
-        padding: 16, // Espacio interior del contenedor de contenido
-        alignItems: 'center', // Alinea los elementos hijos al centro horizontalmente
-        justifyContent: 'center', // Alinea los elementos hijos al centro verticalmente
-        width: '100%', // Ancho completo del contenedor de contenido
+        flex: 1, // Para ocupar todo el espacio disponible
+        padding: 16, 
+        alignItems: 'center', 
+        justifyContent: 'space-between', // Distribuye el contenido con espacio entre ellos
+        width: '100%', 
     },
 });
 
