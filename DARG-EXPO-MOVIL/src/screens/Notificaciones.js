@@ -109,7 +109,7 @@ export default function AppNotificaciones() {
     const showAlert = (responseCitas) => {
         Alert.alert(
             'Detalle',
-            `Tu cita registrada para la fecha ${responseCitas.fecha_hora_cita} con tu auto modelo ${responseCitas.modelo_automovil} ha sido ${responseCitas.estado_nuevo} el ${responseCitas.fecha_creacion} para nuestro servicio ${responseCitas.nombre_servicio}.`,
+            `Tu cita registrada para la fecha ${responseCitas.fecha_hora_cita} con tu auto modelo ${responseCitas.modelo_automovil} ha sido ${responseCitas.estado_nuevo} el ${responseCitas.fecha_creacion} para la cita de ese dia.`,
             [
                 {
                     text: 'Marcar como leido',
@@ -155,7 +155,7 @@ export default function AppNotificaciones() {
                             finishdate={cita.finishdate}
                             onPress={() => {
                                 // Acción cuando se presiona la tarjeta
-                                Alert.alert('Detalle', `El servicio que espera el auto ${cita.vehicle} es ${cita.service} a las ${cita.finishdate}`);
+                                Alert.alert('Detalle', `Esperamos que tu cita con tu auto${cita.vehicle} cumpla tus espectativas`);
                             }}
                         />
                     ))}
