@@ -127,7 +127,40 @@ export default function EditarPerfil({ navigation }) {
 
     };
 
+    const validateFieldsContra = () => {
+        // Verifica los campos básicos
+        const fields = {password, passwordReset};
+        const missingFields = Object.entries(fields)
+            .filter(([key, value]) => !value)
+            .map(([key]) => key);
+
+        if (missingFields.length > 0) {
+            Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
+            return false;
+        }
+
+        if (password.length < 8 || password.length > 50) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
+            return false;
+        }
+
+        if (passwordReset.length < 8 || passwordReset.length > 50) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
+            return false;
+        }
+
+
+        // Si todo está completo, retorna true
+        return true;
+    };
+
     const handlePasswordRessetExitoso = async () => {
+
+        if (!validateFieldsContra()) {
+            //Alert.alert('Error', 'Por favor, completa todos los campos correctamente.');
+            return; // Salir de la función si alguno de los campos está vacío o incorrecto
+        }
+
         if (passwordReset && password) {
             if (passwordReset !== password) {
                 Alert.alert('Error', 'Las contraseñas no coinciden');

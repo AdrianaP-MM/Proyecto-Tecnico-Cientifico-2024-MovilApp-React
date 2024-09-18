@@ -37,8 +37,8 @@ export default function Login({ navigation }) {
       return false;
     }
 
-    if (password.length != 8) {
-      Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+    if (password.length < 8 || password.length > 50) {
+      Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
       return false;
     }
 

@@ -69,15 +69,16 @@ export default function Registrate({ navigation }) {
             return false;
         }
 
-        if (contraseña.length != 8) {
-            Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+        if (contraseña.length < 8 || contraseña.length > 50) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
             return false;
         }
 
-        if (confirmarContraseña.length != 8) {
-            Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+        if (confirmarContraseña.length < 8 || confirmarContraseña.length > 50) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
             return false;
         }
+
 
         if (dui.length != 10) {
             Alert.alert('Campos incorrectos', 'El número de dui no es válido, se requiere de 9 digítos.');
@@ -121,13 +122,13 @@ export default function Registrate({ navigation }) {
             return false;
         }
 
-        if (contraseña.length != 8) {
-            Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+        if (contraseña.length < 8 || contraseña.length > 50) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
             return false;
         }
 
-        if (confirmarContraseña.length != 8) {
-            Alert.alert('Campos incorrectos', 'El numero de la contraseña debe ser de 8 digitos.');
+        if (confirmarContraseña.length < 8 || confirmarContraseña.length > 50) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
             return false;
         }
 
@@ -440,7 +441,7 @@ export default function Registrate({ navigation }) {
                 <Input
                     placeholder='Contraseña'
                     value={contraseña}
-                    onChangeText={(text) =>setContraseña(formatNOSpaces(text))}
+                    onChangeText={(text) => setContraseña(formatNOSpaces(text))}
                     width='95%'
                     iconImage={require('../images/icons/iconContra.png')}
                     secureTextEntry={true}
@@ -449,7 +450,7 @@ export default function Registrate({ navigation }) {
                 <Input
                     placeholder='Confirmar contraseña'
                     value={confirmarContraseña}
-                    onChangeText={(text) =>setconfirmarContraseña(formatNOSpaces(text))}
+                    onChangeText={(text) => setconfirmarContraseña(formatNOSpaces(text))}
                     width='95%'
                     iconImage={require('../images/icons/iconContra.png')}
                     secureTextEntry={true}
