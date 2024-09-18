@@ -207,6 +207,8 @@ export default function DashboardScreen({ navigation }) {
   const searchElements = async () => {
     let endPoint;
     let php;
+    let dataTransform;
+
     const formData = new FormData();
     formData.append('search_value', searchValue);
 
@@ -214,6 +216,10 @@ export default function DashboardScreen({ navigation }) {
     if (pickerMasc === 'Auto') {
       endPoint = 'searchAutosByPlaca';
       php = 'automoviles.php';
+        imagen: item.imagen_automovil,
+        modelo: item.modelo_automovil,
+        placa: item.placa_automovil
+      });
     } else if (pickerMasc === 'Cita') {
       endPoint = 'searchCitaByNumber';
       php = 'citas.php';
@@ -225,9 +231,13 @@ export default function DashboardScreen({ navigation }) {
     try {
       // Usa el endpoint y archivo PHP correctos
       const response = await fetchData(php, endPoint, formData);
-      console.log(response);
       if (response.status) {
-        setDataSetFound(response.dataset);
+        let data;
+        if (pickerMasc === 'Auto') {
+          data = response.dataset.map(dataTransform);
+        } else {
+          data = response.dataset;
+        }
       } else {
         setDataSetFound([]);
         if (response.error) { Alert.alert('Error', response.error) }
@@ -357,19 +367,15 @@ export default function DashboardScreen({ navigation }) {
                   paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
                 />
               ) : (
-                <FlatList
-                  data={dataSetFound}
-                  renderItem={({ item }) => (
+                <ScrollView>
+                  {dataSetFound.map(carro => (
                     <TarjetaCarro
-                      carro={item}
-                      onPress={() => navigation.navigate('InformacionCarro', { carro: item })}
+                      key={carro.placa_automovil} // Asignar una key única, por ejemplo la placa del carro
+                      carro={carro}
+                      onPress={() => navigation.navigate('InformacionCarro', { carro: carro })}
                     />
-                  )}
-                  keyExtractor={(item) => item.placa}
-                  numColumns={2}
-                  columnWrapperStyle={styles.row}
-                  style={styles.scrollAutos}
-                />
+                  ))}
+                </ScrollView>
               )
             )}
             {pickerMasc === 'Cita' && (
@@ -416,7 +422,7 @@ export default function DashboardScreen({ navigation }) {
                   keyExtractor={(item) => item.nombre_servicio}
                   numColumns={2}
                   columnWrapperStyle={styles.row}
-                  style={styles.scrollAutos} // Asegúrate de que este estilo permita el desplazamiento
+                  style={styles.scrollAutos}
                 />
               )
             )}
@@ -516,6 +522,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     alignItems: 'center',
     paddingHorizontal: 15,
+    width: '100%'
   },
   header: {
     position: 'relative',
@@ -594,7 +601,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   contenedorSearch: {
-    minHeight: 460,
+    minHeight: 390,
     marginTop: 10,
     width: '100%',
     paddingBottom: 30,

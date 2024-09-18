@@ -92,7 +92,7 @@ export default function AppAddCita({ navigation, route }) {
                 }
             }
             else {
-                Alert.alert('Error', `Para actualizar una cita que ha sido aceptada, por favor, comuníquese directamente con el taller.`);
+                Alert.alert('Error', `Para actualizar una cita que no esté en espera, por favor, comuníquese directamente con el taller.`);
             }
         } catch (error) {
             console.error('Error en actualizar la cita:', error);
