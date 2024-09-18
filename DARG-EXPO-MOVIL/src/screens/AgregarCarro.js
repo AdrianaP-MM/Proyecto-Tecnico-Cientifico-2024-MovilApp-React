@@ -107,25 +107,26 @@ const AgregarVehiculo = ({ navigation }) => {
     formData.append('id_marca_automovil', marcaAutomovil);
     formData.append('fecha_fabricacion_automovil', fecha);
     formData.append('placa_automovil', placa);
-    
 
     if (imagen) {
       formData.append('imagen_automovil', {
-        uri: imagen,
-        type: 'image/jpeg',
-        name: imagen.split('/').pop(),
+          uri: imagen,
+          type: 'image/jpeg',
+          name: imagen.split('/').pop(),
       });
-    }
+      console.log('va con imagen')
+  }
 
     try {
       const response = await fetchData(API, 'createRow', formData);
-      if (!response.error) {
+      if (response.status) {
         console.log(response);
         Alert.alert('Éxito', 'El vehículo ha sido agregado correctamente.');
         navigation.goBack();
       } else {
         Alert.alert('Error', response.error);
         console.log(response);
+        console.log(formData)
       }
     } catch (error) {
       console.error(error);

@@ -6,5 +6,5 @@ const createConfig = (ip) => ({
     SERVER_URL: `${ip}/PROYECTO-TECNICO-CIENTIFICO-2024/api/services/publico/`,
     IMAGE_URL: `${ip}/PROYECTO-TECNICO-CIENTIFICO-2024/api/images/`
 });
-const Config = createConfig('http://192.168.0.17'); // Aquí cambian la IP
+const Config = createConfig('http://192.168.153.128'); // Aquí cambian la IP
 export default Config;
