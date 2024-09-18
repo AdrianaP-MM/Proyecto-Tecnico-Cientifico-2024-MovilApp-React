@@ -384,7 +384,7 @@ export default function DashboardScreen({ navigation }) {
                       key={cita.id_cita}
                       accionCard={() => verDetalles(navigation, cita)}
                       citaData={{
-                        id_cita:cita.id_cita,
+                        id_cita: cita.id_cita,
                         fotoCarro: cita.imagen_automovil,
                         fecha_cita: cita.fecha_cita,
                         anio_cita: cita.anio_cita,
@@ -486,7 +486,7 @@ export default function DashboardScreen({ navigation }) {
                       key={cita.id_cita}
                       accionCard={() => verDetalles(navigation, cita)}
                       citaData={{
-                        id_cita:cita.id_cita,
+                        id_cita: cita.id_cita,
                         fotoCarro: cita.imagen_automovil,
                         fecha_cita: cita.fecha_cita,
                         anio_cita: cita.anio_cita,

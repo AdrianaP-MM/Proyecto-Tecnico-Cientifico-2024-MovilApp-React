@@ -8,6 +8,7 @@ import Input from '../components/inputs/AllBorder';
 import { useFocusEffect } from '@react-navigation/native';
 import fetchData from '../utils/FetchData';
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente Button desde su ruta
+import { convertirFechaSQL } from '../utils/Validator'
 
 import { verDetalles } from '../utils/CitasFunctions'
 
@@ -62,7 +63,7 @@ export default function AppCitas({ navigation }) {
 
     // Función para manejar el toggle del menú de filtros
     const toggleFilters = () => {
-        const toValue = showFilters ? 0 : 150; // Altura del menú de filtros cuando está visible
+        const toValue = showFilters ? 0 : 100; // Altura del menú de filtros cuando está visible
         setOpacity(showFilters ? 0 : 1);
         setShowFilters(!showFilters);
         if (!showFilters) {
@@ -101,7 +102,6 @@ export default function AppCitas({ navigation }) {
             Alert.alert('Error', 'Hubo un error.');
         }
     };
-
 
     const deleteCita = (idCita) => {
         Alert.alert(
@@ -145,24 +145,33 @@ export default function AppCitas({ navigation }) {
 
     const [fechaLlegada, setFechaLlegada] = useState('');
 
-    const searchByFechaLLegada = async (fecha_llegada) => {
+    const searchByFechaLLegada = async () => {
         try {
             const formData = new FormData();
-            formData.append('fecha_llegada', fecha_llegada);
-            formData.append('estado_cita', selectedButton)
+            formData.append('fecha_llegada', convertirFechaSQL(fechaLlegada));
+            formData.append('estado_cita', selectedButton);
+            console.log('Form Data:', formData);
 
-            console.log(formData);
+            const responseSearch = await fetchData('citas.php', 'searchByFechaLLegada', formData);
 
-            // const responseSearch = await fetchData('citas.php', 'searchByFechaLLegada', formData);
-            // if (responseCitas.status) {
-            //     Alert.responseSearch('Éxito', `${responseSearch.message}`);
-            //     readElements(); // Re-cargar los elementos después de la eliminación
-            // } else {
-            //     Alert.alert('Error', `${responseSearch.error}`);
-            // }
+            // Agrega un console.log para ver la estructura de la respuesta
+            console.log('Response:', responseSearch);
+
+            if (responseSearch.status) {
+                let citas = responseSearch.dataset;
+                // Verificar si es un objeto único en lugar de un array
+                if (!Array.isArray(citas)) {
+                    citas = [citas]; // Convierte el objeto único en un array con un solo elemento
+                }
+                setCitas(citas); // Actualiza el estado con el array de citas (puede tener 1 o más elementos)
+            } else {
+                Alert.alert('Error', `${responseSearch.error}`);
+                setCitas([]); // Limpia el estado si hay error
+            }
         } catch (error) {
             console.error('Error en buscar la cita solicitada:', error);
             Alert.alert('Error', 'Hubo un error.');
+            setCitas([]); // Limpia el estado en caso de error
         }
     };
 
@@ -209,18 +218,8 @@ export default function AppCitas({ navigation }) {
                                 onChangeText={setFechaLlegada}
                             />
                         </View>
-                        <View style={styles.contenedorNumero}>
-                            <Input
-                                placeholder='Buscar por número de cita'
-                                width='100%'
-                                iconImage={(require('../images/icons/iconLupa.png'))}
-                                padding={5}
-                                tintColor='#000000'
-                                fontSize={12}
-                            />
-                        </View>
                         <View style={styles.contenedorBoton}>
-                            <Button textoBoton='Buscar' fontSize={13} height={30} width={90} marginBottom={20} marginTop={20} />
+                            <Button textoBoton='Buscar' fontSize={13} height={30} width={90} marginBottom={20} marginTop={20} accionBoton={searchByFechaLLegada} />
                         </View>
                     </Animated.View>
                     <View style={styles.contenedorMenu}>
@@ -253,7 +252,7 @@ export default function AppCitas({ navigation }) {
                                     key={cita.id_cita}
                                     accionCard={() => verDetalles(navigation, cita)}
                                     citaData={{
-                                        id_cita:cita.id_cita,
+                                        id_cita: cita.id_cita,
                                         fotoCarro: cita.imagen_automovil,
                                         fecha_cita: cita.fecha_cita,
                                         anio_cita: cita.anio_cita,
@@ -346,6 +345,7 @@ const styles = StyleSheet.create({
         zIndex: 1, // Orden en la pila
         borderRadius: 50,
         paddingVertical: 10,
+        zIndex: 10,
     },
     contenedorFiltros: {
         width: '100%', // Ancho completo

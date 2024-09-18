@@ -149,3 +149,11 @@ export const formatPlaca = (value) => {
     // Retornar el valor completo formateado
     return prefix + suffix;
 };
+
+export const convertirFechaSQL = (fecha) => {
+    // Divide la fecha en día, mes y año usando el delimitador "/"
+    const [dia, mes, anio] = fecha.split('/');
+
+    // Retorna la fecha en formato 'YYYY-MM-DD' para la consulta SQL
+    return `${anio}-${mes}-${dia}`;
+}
