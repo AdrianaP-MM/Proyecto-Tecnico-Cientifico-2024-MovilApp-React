@@ -4,6 +4,8 @@ import { StyleSheet, View, SafeAreaView, ScrollView, Alert } from 'react-native'
 import Input from '../components/inputs/AllBorder'; // Importa el componente Input desde su ruta
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente Button desde su ruta
 import fetchData from '../utils/FetchData';
+import { convertirFechaSQL } from '../utils/Validator'
+
 
 // Componente funcional para agregar una cita
 export default function AppAddCita({ navigation, route }) {
@@ -174,11 +176,13 @@ export default function AppAddCita({ navigation, route }) {
                     placeholder='Dirección de ida'
                     value={direccionIda}
                     onChangeText={setDireccionIda} // Actualiza el estado
+                    maxLength={50}
                 />
                 <Input
                     placeholder='Dirección de regreso'
                     value={direccionRegreso}
                     onChangeText={setDireccionRegreso} // Actualiza el estado
+                    maxLength={50}
                 />
             </View>
             <View style={styles.contenedorBtn} >
