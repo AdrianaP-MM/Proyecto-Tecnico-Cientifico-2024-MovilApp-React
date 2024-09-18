@@ -216,6 +216,7 @@ export default function DashboardScreen({ navigation }) {
     if (pickerMasc === 'Auto') {
       endPoint = 'searchAutosByPlaca';
       php = 'automoviles.php';
+      dataTransform = item => ({
         imagen: item.imagen_automovil,
         modelo: item.modelo_automovil,
         placa: item.placa_automovil
@@ -238,6 +239,7 @@ export default function DashboardScreen({ navigation }) {
         } else {
           data = response.dataset;
         }
+        setDataSetFound(data);
       } else {
         setDataSetFound([]);
         if (response.error) { Alert.alert('Error', response.error) }
