@@ -27,7 +27,7 @@ const AgregarVehiculo = ({ navigation }) => {
   const [placa, setPlaca] = useState(''); // Estado para la placa del carro
   const [imagen, setImagen] = useState(null); // Estado para la imagen del carro
   const [tipoAutomovil, setTipoAutomovil] = useState('');
-  const [marcaAutomovil, setMarcaAutomovil] = useState('') // Estado para el tipo de automóvil
+  const [marcaAutomovil, setMarcaAutomovil] = useState(''); // Estado para el tipo de automóvil
   const [pickerValuesMarca, setPickerValuesMarca] = useState([]);
   const [pickerValuesTipos, setPickerValuesTipos] = useState([]); // Estado para los valores del picker 
 
@@ -110,12 +110,12 @@ const AgregarVehiculo = ({ navigation }) => {
 
     if (imagen) {
       formData.append('imagen_automovil', {
-          uri: imagen,
-          type: 'image/jpeg',
-          name: imagen.split('/').pop(),
+        uri: imagen,
+        type: 'image/jpeg',
+        name: imagen.split('/').pop(),
       });
       console.log('va con imagen')
-  }
+    }
 
     try {
       const response = await fetchData(API, 'createRow', formData);
@@ -131,6 +131,20 @@ const AgregarVehiculo = ({ navigation }) => {
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Hubo un problema al guardar el carro.');
+    }
+  };
+
+  // Función para limitar la longitud de la fecha a 4 dígitos
+  const handleChangeFecha = (text) => {
+    if (text.length <= 4) {
+      setFechaFabricacion(text);
+    }
+  };
+
+  // Función para limitar la longitud de la placa a 6 dígitos
+  const handleChangePlaca = (text) => {
+    if (text.length <= 6) {
+      setPlaca(text);
     }
   };
 
@@ -162,12 +176,12 @@ const AgregarVehiculo = ({ navigation }) => {
       <Input
         placeholder="Fecha fabricación"
         value={fecha}
-        onChangeText={setFechaFabricacion} // Actualiza el estado de la fecha
+        onChangeText={handleChangeFecha} // Actualiza el estado de la fecha con validación
       />
       <Input
         placeholder="Placa automóvil"
         value={placa}
-        onChangeText={setPlaca} // Actualiza el estado de la placa
+        onChangeText={handleChangePlaca} // Actualiza el estado de la placa con validación
       />
       <Button textoBoton='Guardar' accionBoton={handleGuardarCarro} />
       <TouchableOpacity style={styles.imageButton} onPress={handleAgregarImagen}>

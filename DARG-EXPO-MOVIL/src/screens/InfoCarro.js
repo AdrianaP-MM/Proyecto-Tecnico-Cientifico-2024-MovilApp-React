@@ -94,8 +94,19 @@ const InformacionCarro = ({ route, navigation }) => {
     console.log('Carro recibido:', carro);
   }, [carro]);
 
-  
-  
+  const handleChangeFecha = (text) => {
+    // Limita la longitud del campo de fecha a 4 dígitos
+    if (text.length <= 4) {
+      setFecha(text);
+    }
+  };
+
+  const handleChangePlaca = (text) => {
+    // Limita la longitud del campo de placa a 6 dígitos
+    if (text.length <= 6) {
+      setPlaca(text);
+    }
+  };
 
   const handleGuardarCarro = async () => {
     if (!modelo || !color || !tipoAutomovil || !marcaAutomovil || !fecha || !placa) {
@@ -177,15 +188,16 @@ const InformacionCarro = ({ route, navigation }) => {
       <TextInput
         placeholder="Fecha fabricación (yyyy)"
         value={fecha}
-        onChangeText={setFecha}
+        onChangeText={handleChangeFecha}
         style={styles.input}
+        keyboardType="numeric" // Solo permite ingresar números
       />
       
       <Text style={styles.label}>Placa</Text>
       <TextInput
         placeholder="Placa automóvil"
         value={placa}
-        onChangeText={setPlaca}
+        onChangeText={handleChangePlaca}
         style={styles.input}
       />
       
