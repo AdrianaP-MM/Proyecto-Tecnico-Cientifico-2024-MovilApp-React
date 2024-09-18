@@ -9,6 +9,9 @@ export default function CardCita({ accionCard, citaData, onLongPress }) {
     return (
         <TouchableOpacity onPress={accionCard} onLongPress={onLongPress}>
             <View style={styles.contenedorTotalCard}>
+                <View style={styles.numberContainer}>
+                    <Text texto={`${citaData.id_cita}`} fontSize={20} color='white' />
+                </View>
                 <View style={styles.cardHeader}>
                     <Image
                         source={citaData.fotoCarro ?
@@ -52,6 +55,7 @@ export default function CardCita({ accionCard, citaData, onLongPress }) {
                             <Text texto='Movilización' font='PoppinsSemiBold' fontSize={11} />
                             <Text texto={`${citaData.movilizacion_vehiculo}`} fontSize={12} />
                         </View>
+
                     </View>
                 </View>
             </View>
@@ -73,6 +77,7 @@ const styles = StyleSheet.create({
         borderColor: '#E4E5EB', // Color del borde
         marginBottom: 15, // Margen vertical
         marginTop: 12,
+        position: 'relative'
     },
     cardHeader: {
         width: '100%', // Ancho total del encabezado de la tarjeta
@@ -122,4 +127,16 @@ const styles = StyleSheet.create({
         alignItems: '', // Alineación del contenido
         borderBottomColor: '#D9D9D9', // Color del borde inferior
     },
+    numberContainer:{
+        backgroundColor: 'black',
+        borderRadius: 100,
+        width: 35,
+        height: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        zIndex: 3,
+        alignSelf: 'flex-start'
+    }
 });

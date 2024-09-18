@@ -225,6 +225,7 @@ export default function DashboardScreen({ navigation }) {
     try {
       // Usa el endpoint y archivo PHP correctos
       const response = await fetchData(php, endPoint, formData);
+      console.log(response);
       if (response.status) {
         setDataSetFound(response.dataset);
       } else {
@@ -336,7 +337,7 @@ export default function DashboardScreen({ navigation }) {
             />
             <Text texto='Por aqui podras buscar tus automóviles por la placa, citas por el número de cita y servicios por nombre del servicio que te interesen ' fontSize={10}
               paddingHorizontal={10} font='PoppinsLight' color='white' />
-            <Button textoBoton='Buscar' fontSize={12} height={25} width={80} marginBottom={5} marginTop={5} accionBoton={() => toggleView(true)} />
+            <Button textoBoton='Buscar' fontSize={13} height={30} width={90} marginBottom={5} marginTop={5} accionBoton={() => toggleView(true)} />
           </View>
         </View>
       </View>
@@ -378,11 +379,12 @@ export default function DashboardScreen({ navigation }) {
                 />
               ) : (
                 <ScrollView>
-                  {citasProximas.map(cita => (
+                  {dataSetFound.map(cita => (
                     <CardCita
                       key={cita.id_cita}
                       accionCard={() => verDetalles(navigation, cita)}
                       citaData={{
+                        id_cita:cita.id_cita,
                         fotoCarro: cita.imagen_automovil,
                         fecha_cita: cita.fecha_cita,
                         anio_cita: cita.anio_cita,
@@ -484,6 +486,7 @@ export default function DashboardScreen({ navigation }) {
                       key={cita.id_cita}
                       accionCard={() => verDetalles(navigation, cita)}
                       citaData={{
+                        id_cita:cita.id_cita,
                         fotoCarro: cita.imagen_automovil,
                         fecha_cita: cita.fecha_cita,
                         anio_cita: cita.anio_cita,

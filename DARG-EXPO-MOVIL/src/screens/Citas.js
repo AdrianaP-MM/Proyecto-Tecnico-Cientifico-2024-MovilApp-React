@@ -62,7 +62,7 @@ export default function AppCitas({ navigation }) {
 
     // Función para manejar el toggle del menú de filtros
     const toggleFilters = () => {
-        const toValue = showFilters ? 0 : 120; // Altura del menú de filtros cuando está visible
+        const toValue = showFilters ? 0 : 150; // Altura del menú de filtros cuando está visible
         setOpacity(showFilters ? 0 : 1);
         setShowFilters(!showFilters);
         if (!showFilters) {
@@ -219,7 +219,9 @@ export default function AppCitas({ navigation }) {
                                 fontSize={12}
                             />
                         </View>
-                        <Button textoBoton='Buscar' fontSize={17} />
+                        <View style={styles.contenedorBoton}>
+                            <Button textoBoton='Buscar' fontSize={13} height={30} width={90} marginBottom={20} marginTop={20} />
+                        </View>
                     </Animated.View>
                     <View style={styles.contenedorMenu}>
                         <ButtonPastilla
@@ -244,38 +246,25 @@ export default function AppCitas({ navigation }) {
                         <Text texto='Sin citas para mostrar' fontSize={20}
                             paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
                         />
-                    ) : citas.length === 1 ? (
-                        <CardCita
-                            accionCard={() => verDetalles(navigation, citas[0].id_cita, citas[0].fecha_cita, citas[0].hora_cita, citas[0].id_automovil, citas[0].movilizacion_vehiculo, citas[0].zona_habilitada, citas[0].direccion_ida, citas[0].direccion_regreso, citas[0].estado_cita)}
-                            cita={citas[0]}
-                            citaData={{
-                                fotoCarro: citas[0].imagen_automovil,
-                                fecha_cita: citas[0].fecha_cita,
-                                anio_cita: citas[0].anio_cita,
-                                hora_cita: citas[0].hora_cita,
-                                modelo_automovil: citas[0].modelo_automovil,
-                                placa_automovil: citas[0].placa_automovil,
-                                movilizacion_vehiculo: citas[0].movilizacion_vehiculo
-                            }}
-                            onLongPress={() => deleteCita(citas[0].id_cita)} // Pasa una función anónima
-                        />
                     ) : (
-                        citas.map(cita => (
-                            <CardCita
-                                key={cita.id_cita}
-                                accionCard={() => verDetalles(navigation, cita.id_cita, cita.fecha_cita, cita.hora_cita, cita.id_automovil, cita.movilizacion_vehiculo, cita.zona_habilitada, cita.direccion_ida, cita.direccion_regreso, cita.estado_cita)}
-                                citaData={{
-                                    fotoCarro: cita.imagen_automovil,
-                                    fecha_cita: cita.fecha_cita,
-                                    anio_cita: cita.anio_cita,
-                                    hora_cita: cita.hora_cita,
-                                    modelo_automovil: cita.modelo_automovil,
-                                    placa_automovil: cita.placa_automovil,
-                                    movilizacion_vehiculo: cita.movilizacion_vehiculo
-                                }}
-                                onLongPress={() => deleteCita(cita.id_cita)}
-                            />
-                        ))
+                        <ScrollView>
+                            {citas.map(cita => (
+                                <CardCita
+                                    key={cita.id_cita}
+                                    accionCard={() => verDetalles(navigation, cita)}
+                                    citaData={{
+                                        id_cita:cita.id_cita,
+                                        fotoCarro: cita.imagen_automovil,
+                                        fecha_cita: cita.fecha_cita,
+                                        anio_cita: cita.anio_cita,
+                                        hora_cita: cita.hora_cita,
+                                        modelo_automovil: cita.modelo_automovil,
+                                        placa_automovil: cita.placa_automovil,
+                                        movilizacion_vehiculo: cita.movilizacion_vehiculo
+                                    }}
+                                />
+                            ))}
+                        </ScrollView>
                     )}
                 </ScrollView>
             </View>
@@ -310,15 +299,17 @@ const styles = StyleSheet.create({
         height: 40, // Altura fija de 40 unidades
     },
     iconImageContainer: {
-        width: 17, // Ancho fijo de 40 unidades
-        height: 17, // Altura fija de 40 unidades
-        marginHorizontal: 40,
+        width: 40, // Ancho fijo de 40 unidades
+        height: 40, // Altura fija de 40 unidades
+        marginHorizontal: 15,
         marginBottom: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     iconImage: {
-        width: 17, // Ancho fijo de 40 unidades
-        height: 17, // Altura fija de 40 unidades
-        zIndex: 3,
+        width: 20, // Ancho fijo de 40 unidades
+        height: 20, // Altura fija de 40 unidades
+        zIndex: 6,
     },
     contenedorCuerpo: {
         flex: 1, // Ocupa todo el espacio disponible
@@ -366,6 +357,7 @@ const styles = StyleSheet.create({
         zIndex: 3, // Orden en la pila
         borderRadius: 15,
         paddingHorizontal: 5,
+        marginTop: -15
     },
     contenedorFecha: {
         width: '100%',
@@ -392,4 +384,8 @@ const styles = StyleSheet.create({
     headerImage: {
         position: 'absolute'
     },
+    contenedorBoton: {
+        width: '100%',
+        alignItems: 'center'
+    }
 });
