@@ -23,13 +23,13 @@ Taller Revolution Garage, especializado en el mantenimiento y reparación de aut
 * npm install expo-status-bar
 * npm install react-native-reanimated
 * npm install @react-native-community/masked-view
-* npm install react-native-image-picker
 * npm install react-native-gesture-handler
 * npm install @react-navigation/stack
 * npm install @react-native-picker/picker
 * npm install react-native-modal-datetime-picker
 * npm install expo-image-picker
 * npm install @react-native-async-storage/async-storage
+* npx expo install --check (para validar las versiones de las librerias)
 
 ## Para tener en cuenta
 

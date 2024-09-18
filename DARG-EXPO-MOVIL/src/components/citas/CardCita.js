@@ -16,7 +16,7 @@ export default function CardCita({ accionCard, citaData, onLongPress }) {
                     <Image
                         source={citaData.fotoCarro ?
                             { uri: `${Config.IMAGE_URL}automoviles/${citaData.fotoCarro}` }
-                            : require('../../images/carros/carExample2.png')}
+                            : require('../../images/carros/carExample2.jpg')}
                         style={styles.image} // Estilos de la imagen del automóvil
                     />
                     <View style={styles.cardHeaderTextContainer}>

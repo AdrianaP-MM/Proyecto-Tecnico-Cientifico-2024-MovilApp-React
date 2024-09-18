@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "DARG-EXPO-MOVIL",
-    "slug": "DARG-EXPO-MOVIL",
+    "slug": "darg-expo-movil",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/imgdarg.png",
@@ -18,13 +18,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/imgdarg.png",
         "backgroundColor": "#A4161A"
-      }
+      },
+      "package": "com.gabogaboyo.DARGEXPOMOVIL"
     },
     "web": {
       "favicon": "./assets/imgdarg.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c0aeabb6-24cd-41e5-82a7-8dc23e9e2cce"
+      }
+    },
+    "owner": "gaboyor"
   }
 }

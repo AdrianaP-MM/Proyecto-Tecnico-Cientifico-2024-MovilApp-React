@@ -9,7 +9,7 @@ const TarjetaCarro = ({ carro = {}, onPress }) => {
       <Image
         source={carro.imagen ?
           { uri: `${Config.IMAGE_URL}/automoviles/${carro.imagen}` }
-          : require('../../images/carros/carExample2.png')}
+          : require('../../images/carros/carExample2.jpg')}
         style={styles.image} />
       <View style={styles.textContainer}>
         <View style={styles.modelContainer}>

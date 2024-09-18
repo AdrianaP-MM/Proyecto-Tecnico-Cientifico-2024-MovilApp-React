@@ -30,12 +30,12 @@ const theme = {
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    'PoppinsBold': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-Bold.ttf'),
-    'PoppinsSemiBold': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-SemiBold.ttf'),
-    'PoppinsRegular': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-Regular.ttf'),
-    'PoppinsMedium': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-Medium.ttf'),
-    'PoppinsLight': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-Light.ttf'),
-    'PoppinsLightItalic': require('../DARG-EXPO-MOVIL/assets/fuentes/Poppins-LightItalic.ttf'),
+    'PoppinsBold': require('./assets/fuentes/Poppins-Bold.ttf'),
+    'PoppinsSemiBold': require('./assets/fuentes/Poppins-SemiBold.ttf'),
+    'PoppinsRegular': require('./assets/fuentes/Poppins-Regular.ttf'),
+    'PoppinsMedium': require('./assets/fuentes/Poppins-Medium.ttf'),
+    'PoppinsLight': require('./assets/fuentes/Poppins-Light.ttf'),
+    'PoppinsLightItalic': require('./assets/fuentes/Poppins-LightItalic.ttf'),
   });
 
   const [appIsReady, setAppIsReady] = useState(false);
