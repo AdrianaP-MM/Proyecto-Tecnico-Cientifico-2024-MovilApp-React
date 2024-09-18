@@ -8,6 +8,6 @@ export const verDetalles = (navigation, cita) => {
         zona: cita.zona_habilitada, 
         ida: cita.direccion_ida, 
         regreso: cita.direccion_regreso, 
-        estado: cita.estado 
+        estado: cita.estado_cita
     });
 };

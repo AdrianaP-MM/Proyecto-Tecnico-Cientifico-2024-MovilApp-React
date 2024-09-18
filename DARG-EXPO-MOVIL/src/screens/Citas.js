@@ -147,9 +147,19 @@ export default function AppCitas({ navigation }) {
 
     const searchByFechaLLegada = async () => {
         try {
+            // Mapeo de estados a valores de la base de datos
+            const estadoMap = {
+                'En espera': 'En espera',
+                'Aceptadas': 'Aceptado',
+                'Finalizadas': 'Finalizada' // Cambié 'Finalizada' a 'Finalizada' para consistencia
+            };
+
+            // Determinar el estado de cita a consultar
+            const estadoCita = estadoMap[selectedButton] || '';
+
             const formData = new FormData();
             formData.append('fecha_llegada', convertirFechaSQL(fechaLlegada));
-            formData.append('estado_cita', selectedButton);
+            formData.append('estado_cita', estadoCita);
             console.log('Form Data:', formData);
 
             const responseSearch = await fetchData('citas.php', 'searchByFechaLLegada', formData);

@@ -121,7 +121,7 @@ export const formatPlaca = (value) => {
     // Verificar si comienza con un prefijo válido
     let isValidPrefix = false;
     let prefix = '';
-    
+
     for (let validPrefix of validPrefixes) {
         if (value.startsWith(validPrefix)) {
             prefix = validPrefix;
@@ -157,3 +157,37 @@ export const convertirFechaSQL = (fecha) => {
     // Retorna la fecha en formato 'YYYY-MM-DD' para la consulta SQL
     return `${anio}-${mes}-${dia}`;
 }
+
+export const formatTime = (value) => {
+    // Elimina todos los caracteres no numéricos o los dos puntos ':'
+    let numericValue = value.replace(/[^0-9:]/g, '');
+
+    // Eliminar segundos puntos si existen más de uno
+    const colonCount = (numericValue.match(/:/g) || []).length;
+    if (colonCount > 1) {
+        numericValue = numericValue.replace(/:/g, '').slice(0, 4); // Se queda solo con los 4 primeros caracteres
+    }
+
+    // Si hay más de 2 caracteres, insertar ':' después del segundo dígito
+    if (numericValue.length >= 3) {
+        numericValue = numericValue.slice(0, 2) + ':' + numericValue.slice(2, 4);
+    }
+
+    // Limitar la longitud a 5 caracteres (hh:mm)
+    if (numericValue.length > 5) {
+        numericValue = numericValue.slice(0, 5);
+    }
+
+    // Validar horas y minutos para que estén en un rango correcto
+    const [hours, minutes] = numericValue.split(':');
+
+    if (hours && parseInt(hours) > 23) {
+        numericValue = '23:' + (minutes || '');
+    }
+
+    if (minutes && parseInt(minutes) > 59) {
+        numericValue = (hours || '00') + ':59';
+    }
+
+    return numericValue;
+};
