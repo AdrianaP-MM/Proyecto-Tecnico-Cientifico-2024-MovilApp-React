@@ -410,6 +410,7 @@ export default function DashboardScreen({ navigation }) {
                     <VerticalCard
                       title={item.nombre_servicio}
                       tipo={item.descripcion_servicio}
+                      idServiciosDisponibles={item.id_servicio}
                     />
                   )}
                   keyExtractor={(item) => item.nombre_servicio}
@@ -420,7 +421,6 @@ export default function DashboardScreen({ navigation }) {
               )
             )}
           </View>
-
         </View>
       ) : (
         <View style={styles.body}>
@@ -585,6 +585,7 @@ const styles = StyleSheet.create({
   },
   row: {
     justifyContent: 'space-between',
+    paddingBottom: 10,
   },
   contenedorSearchResult: {
     flex: 1,
@@ -593,7 +594,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   contenedorSearch: {
-    flex: 1,
+    minHeight: 460,
     marginTop: 10,
     width: '100%',
     paddingBottom: 30,

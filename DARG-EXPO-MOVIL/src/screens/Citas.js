@@ -103,27 +103,31 @@ export default function AppCitas({ navigation }) {
         }
     };
 
-    const deleteCita = (idCita) => {
-        Alert.alert(
-            'Eliminar cita',
-            `¿Seguro que deseas eliminar la cita con ID: ${idCita}?`,
-            [
-                {
-                    text: 'Cancelar',
-                    onPress: () => console.log('Eliminación cancelada'), // Acción en caso de cancelar
-                    style: 'cancel',
-                },
-                {
-                    text: 'Eliminar',
-                    onPress: async () => {
-                        // Acción en caso de confirmar la eliminación
-                        console.log(`Cita con ID ${idCita} será eliminada`);
-                        await deleteRow(idCita); // Llamada a la función para eliminar la cita
+    const deleteCita = (idCita, estado) => {
+        if (estado == 'En espera') {
+            Alert.alert(
+                'Eliminar cita',
+                `¿Seguro que deseas eliminar la cita con ID: ${idCita}?`,
+                [
+                    {
+                        text: 'Cancelar',
+                        onPress: () => console.log('Eliminación cancelada'), // Acción en caso de cancelar
+                        style: 'cancel',
                     },
-                },
-            ],
-            { cancelable: false } // No permite cancelar el alert tocando fuera de él
-        );
+                    {
+                        text: 'Eliminar',
+                        onPress: async () => {
+                            // Acción en caso de confirmar la eliminación
+                            console.log(`Cita con ID ${idCita} será eliminada`);
+                            await deleteRow(idCita); // Llamada a la función para eliminar la cita
+                        },
+                    },
+                ],
+                { cancelable: false } // No permite cancelar el alert tocando fuera de él
+            );
+        } else {
+            Alert.alert('Error', 'Solo se pueden eliminar las citas "En espera"')
+        }
     };
 
     const deleteRow = async (id_cita) => {
@@ -259,6 +263,7 @@ export default function AppCitas({ navigation }) {
                         <ScrollView>
                             {citas.map(cita => (
                                 <CardCita
+                                    onLongPress={() => deleteCita(cita.id_cita, cita.estado_cita)}
                                     key={cita.id_cita}
                                     accionCard={() => verDetalles(navigation, cita)}
                                     citaData={{
