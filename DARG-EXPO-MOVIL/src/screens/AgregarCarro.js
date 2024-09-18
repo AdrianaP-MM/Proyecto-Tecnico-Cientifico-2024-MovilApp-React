@@ -26,8 +26,10 @@ const AgregarVehiculo = ({ navigation }) => {
   const [fecha, setFechaFabricacion] = useState(''); // Estado para la fecha del carro
   const [placa, setPlaca] = useState(''); // Estado para la placa del carro
   const [imagen, setImagen] = useState(null); // Estado para la imagen del carro
-  const [tipoAutomovil, setTipoAutomovil] = useState(''); // Estado para el tipo de automóvil
-  const [pickerValuesTipos, setPickerValuesTipos] = useState([]); // Estado para los valores del picker
+  const [tipoAutomovil, setTipoAutomovil] = useState('');
+  const [marcaAutomovil, setMarcaAutomovil] = useState('') // Estado para el tipo de automóvil
+  const [pickerValuesMarca, setPickerValuesMarca] = useState([]);
+  const [pickerValuesTipos, setPickerValuesTipos] = useState([]); // Estado para los valores del picker 
 
   const API = 'automoviles.php'; // URL del servidor
 
@@ -47,9 +49,29 @@ const AgregarVehiculo = ({ navigation }) => {
       Alert.alert('Error', 'Hubo un error.');
     }
   };
+ 
+  const fetchMarcasAutomovil = async () => {
+    try {
+      const responseMarcasAutomoviles = await fetchData(API, 'readMarcas');
+      if (responseMarcasAutomoviles.status) {
+        setPickerValuesMarca(responseMarcasAutomoviles.dataset.map(item => ({
+          label: item.nombre_marca_automovil, // Asegúrate de que el campo nombre sea correcto
+          value: item.id_marca_automovil, // Asegúrate de que el campo id sea correcto
+        })));
+      } else {
+        Alert.alert('Error', `${responseMarcasAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
+      }
+    } catch (error) {
+      console.error('Error en leer los elementos:', error);
+      Alert.alert('Error', 'Hubo un error.');
+    }
+  };
+  
+
 
   useEffect(() => {
     fetchTiposAutomovil();
+    fetchMarcasAutomovil();
   }, []);
 
   // Solicita permisos y abre la galería de imágenes
@@ -74,11 +96,11 @@ const AgregarVehiculo = ({ navigation }) => {
 
   // Función para manejar la acción de guardar el carro
   const handleGuardarCarro = async () => {
-    if (!modelo || !color || !tipoAutomovil || !fecha || !placa || !imagen) {
+    if (!modelo || !color || !tipoAutomovil || !marcaAutomovil || !fecha || !placa || !imagen) {
       Alert.alert('Error', 'Todos los campos son requeridos.');
       return;
     }
-
+  
     // Creamos un objeto FormData para enviar los datos al servidor
     const formData = new FormData();
     formData.append('modelo_automovil', modelo);
@@ -86,7 +108,8 @@ const AgregarVehiculo = ({ navigation }) => {
     formData.append('id_tipo_automovil', tipoAutomovil);
     formData.append('fecha_fabricacion_automovil', fecha);
     formData.append('placa_automovil', placa);
-
+    formData.append('id_marca_automovil', marcaAutomovil);
+  
     if (imagen) {
       formData.append('imagen_automovil', {
         uri: imagen,
@@ -94,21 +117,28 @@ const AgregarVehiculo = ({ navigation }) => {
         name: imagen.split('/').pop(),
       });
     }
-
+  
+    // Imprime los datos de FormData en consola
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+  
     try {
       const response = await fetchData(API, 'createRow', formData);
       if (!response.error) {
+        console.log(response);
         Alert.alert('Éxito', 'El vehículo ha sido agregado correctamente.');
         navigation.goBack();
       } else {
         Alert.alert('Error', response.error);
+        console.log(response);
       }
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Hubo un problema al guardar el carro.');
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <Input
@@ -127,6 +157,12 @@ const AgregarVehiculo = ({ navigation }) => {
         onValueChange={(itemValue) => setTipoAutomovil(itemValue)}
         iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
         items={pickerValuesTipos}
+      />
+        <CustomPicker
+        selectedValue={marcaAutomovil}
+        onValueChange={(itemValue) => setMarcaAutomovil(itemValue)}
+        iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
+        items={pickerValuesMarca}
       />
       <Input
         placeholder="Fecha fabricación"
