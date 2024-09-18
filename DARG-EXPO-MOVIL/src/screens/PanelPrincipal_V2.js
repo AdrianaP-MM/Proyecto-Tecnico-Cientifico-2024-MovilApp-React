@@ -13,7 +13,7 @@ import CardCita from '../components/citas/CardCita';
 import { verDetalles } from '../utils/CitasFunctions';
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente Button desde su ruta
 import { formatAlphabetic, formatAlphanumeric, formatNumeric, formatPlaca } from '../utils/Validator'
-
+import VerticalCard from '../components/servicios/CardServicios'; // Importa componente para tarjetas verticales
 
 // Componente principal del dashboard
 export default function DashboardScreen({ navigation }) {
@@ -106,6 +106,7 @@ export default function DashboardScreen({ navigation }) {
   const [selectedButton, setSelectedButton] = useState('Mis autos'); // Estado para el botón seleccionado
   // Función para cambiar el estado del botón seleccionado
   const changeEstado = async (button) => {
+    console.log('asasa')
     let endpoint;
     let dataTransform;
 
@@ -145,10 +146,12 @@ export default function DashboardScreen({ navigation }) {
         return;
     }
     try {
+      setAutos([]);
       const response = await fetchData('automoviles.php', endpoint);
       if (response.status) {
         const data = response.dataset.map(dataTransform);
         setAutos(data);
+        console.log(data);
       } else {
         setAutos([]);
       }
@@ -161,19 +164,19 @@ export default function DashboardScreen({ navigation }) {
   };
 
   const [cliente, setCliente] = useState([]);
-  const [typePickerValues, setTypePickerValues] = useState('');
+  const [typePickerValues, setTypePickerValues] = useState([]);
 
   const [searchState, setSearchState] = useState(false)
 
   // Función para leer datos de la API
   const readElements = async () => {
     try {
-      if (!pickerMasc) {
+      if (pickerMasc) {
         setSearchState(true)
       }
 
       setTypePickerValues([
-        { id: 'Auto', nombre: 'Auto' },
+        { id: 'Auto', nombre: 'Automóvil' },
         { id: 'Cita', nombre: 'Cita' },
         { id: 'Servicio', nombre: 'Servicio' },
       ]);
@@ -226,6 +229,7 @@ export default function DashboardScreen({ navigation }) {
         setDataSetFound(response.dataset);
       } else {
         setDataSetFound([]);
+        if (response.error) { Alert.alert('Error', response.error) }
       }
     } catch (error) {
       console.error('Error buscando', error);
@@ -235,26 +239,23 @@ export default function DashboardScreen({ navigation }) {
   };
 
 
-  const toggleView = () => {
+  const toggleView = (state) => {
     // Verifica si hay un tipo de valor seleccionado
-    if (!pickerMasc) {
-      Alert.alert('Error', 'Debe escoger el tipo de valor a buscar.');
-      return; // Detiene la ejecución si no se ha seleccionado el tipo de valor
+    if (!pickerMasc && state == true) {
+      Alert.alert('Error', 'Debe escoger el elemento a buscar.');
+    }
+    else {
+      // Verifica si se ha ingresado un valor de búsqueda
+      if (!searchValue && state == true) {
+        Alert.alert('Error', 'Debe ingresar un valor para poder buscar.');
+      }
+      else {
+        // Alterna la vista de búsqueda
+        setShowSearchResult(state);
+        if (state == true) { searchElements(); }
+      }
     }
 
-    // Verifica si se ha ingresado un valor de búsqueda
-    if (!searchValue) {
-      Alert.alert('Error', 'Debe ingresar un valor para poder buscar.');
-      return; // Detiene la ejecución si no se ha ingresado un valor de búsqueda
-    }
-
-    // Alterna la vista de búsqueda
-    setShowSearchResult(!showSearchResult);
-
-    // Si estamos mostrando resultados de búsqueda, ejecuta la búsqueda
-    if (!showSearchResult) {
-      searchElements();
-    }
   };
 
   const [pickerMasc, setPikerMasc] = useState('');
@@ -288,24 +289,32 @@ export default function DashboardScreen({ navigation }) {
           </View>
           <View style={styles.searchContainer}>
             <Input
-              placeholder="A buscar:"
+              placeholder="Seleccione el elemento a buscar:"
               keyboardType='picker'
               value={pickerMasc}
+              height={30}
+              marginBottom={0}
+              width='95%'
+              fontSize={12}
               onChangeText={(text) => {
                 setPikerMasc(text);
-                if (!pickerMasc) {
-                  setSearchState(true);
+                // Cambia el estado en función del nuevo valor
+                if (text) {
+                  setSearchState(true);  // Se debe mostrar el estado de búsqueda
                 } else {
-                  setSearchState(false);
+                  setSearchState(false); // Se debe ocultar el estado de búsqueda
                 }
+                setSearchValue('');
+                toggleView(false)
               }}
               pickerValues={typePickerValues}
             />
+
             <Input
               placeholder='Buscar..'
               textAlign='left'
               padding={5}
-              fontSize={12}
+              fontSize={14}
               iconImage={(require('../images/icons/iconLupa.png'))}
               backgroundColor='#000000'
               textColor='white'
@@ -314,29 +323,38 @@ export default function DashboardScreen({ navigation }) {
               textColorI='white'
               value={searchValue}
               editable={searchState}
+              maxLength={50}
               onChangeText={(text) => {
                 if (pickerMasc === 'Auto') {
                   setSearchValue(formatPlaca(text));
                 } else if (pickerMasc == 'Cita') {
                   setSearchValue(formatNumeric(text));
                 } else {
-                  setSearchValue(formatAlphabetic(text))
+                  setSearchValue(formatAlphabetic(text));
                 }
               }}
             />
             <Text texto='Por aqui podras buscar tus automóviles por la placa, citas por el número de cita y servicios por nombre del servicio que te interesen ' fontSize={10}
               paddingHorizontal={10} font='PoppinsLight' color='white' />
-            <Button textoBoton='Buscar' fontSize={11} height={20} width={90} marginBottom={5} marginTop={5} accionBoton={toggleView} />
+            <Button textoBoton='Buscar' fontSize={12} height={25} width={80} marginBottom={5} marginTop={5} accionBoton={() => toggleView(true)} />
           </View>
         </View>
       </View>
       {showSearchResult ? (
         <View Style={styles.contenedorSearchResult}>
-          <Button textoBoton="Regresar" accionBoton={toggleView} />
+          <TouchableOpacity onPress={() => toggleView(false)}>
+            <Image
+              source={require('../images/icons/btnBack.png')} // Imagen del botón de retroceso
+              style={{ width: 35, height: 27, zIndex: 3 }} // Estilo de la imagen
+              tintColor='black'
+            />
+          </TouchableOpacity>
           <View style={styles.contenedorSearch}>
             {pickerMasc === 'Auto' && (
               dataSetFound.length === 0 ? (
-                <Text>No se encontro el automóvil con es placa</Text>
+                <Text texto='No se encontró al auto con esa placa.' fontSize={20}
+                  paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
+                />
               ) : (
                 <FlatList
                   data={dataSetFound}
@@ -355,7 +373,9 @@ export default function DashboardScreen({ navigation }) {
             )}
             {pickerMasc === 'Cita' && (
               dataSetFound.length === 0 ? (
-                <Text>No se encontraron citas con ese número</Text>
+                <Text texto='No se encontraron citas con ese número.' fontSize={20}
+                  paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
+                />
               ) : (
                 <ScrollView>
                   {citasProximas.map(cita => (
@@ -378,18 +398,23 @@ export default function DashboardScreen({ navigation }) {
             )}
             {pickerMasc !== 'Auto' && pickerMasc !== 'Cita' && (
               dataSetFound.length === 0 ? (
-                <Text>No se encontraron servicios con ese nombre.</Text>
+                <Text texto='No se encontraron servicios con ese nombre.' fontSize={20}
+                  paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
+                />
               ) : (
-                <ScrollView>
-                  {dataSetFound.map((item) => (
+                <FlatList
+                  data={dataSetFound}
+                  renderItem={({ item }) => (
                     <VerticalCard
-                      key={item.id} // Utiliza el id como clave para evitar advertencias de React
                       title={item.nombre_servicio}
                       tipo={item.descripcion_servicio}
-                      idServiciosDisponibles={item.id_servicio}
                     />
-                  ))}
-                </ScrollView>
+                  )}
+                  keyExtractor={(item) => item.nombre_servicio}
+                  numColumns={2}
+                  columnWrapperStyle={styles.row}
+                  style={styles.scrollAutos} // Asegúrate de que este estilo permita el desplazamiento
+                />
               )
             )}
           </View>
@@ -400,19 +425,28 @@ export default function DashboardScreen({ navigation }) {
           <View style={styles.contenedorMenu}>
             <ButtonPastilla
               textoBoton='Mis autos'
-              accionBoton={() => setSelectedButton('Mis autos')}
+              accionBoton={() => {
+                setSelectedButton('Mis autos');
+                changeEstado('Mis autos');
+              }}
               selected={selectedButton === 'Mis autos'}
               width={90}
             />
             <ButtonPastilla
               textoBoton='Autos eliminados'
-              accionBoton={() => setSelectedButton('Autos eliminados')}
+              accionBoton={() => {
+                setSelectedButton('Autos eliminados');
+                changeEstado('Autos eliminados');
+              }}
               selected={selectedButton === 'Autos eliminados'}
               width={145}
             />
             <ButtonPastilla
               textoBoton='Citas próximas'
-              accionBoton={() => setSelectedButton('Citas próximas')}
+              accionBoton={() => {
+                setSelectedButton('Citas próximas');
+                changeEstado('Citas próximas');
+              }}
               selected={selectedButton === 'Citas próximas'}
               width={130}
             />
@@ -420,7 +454,9 @@ export default function DashboardScreen({ navigation }) {
           <View style={styles.contenedorResult}>
             {selectedButton === 'Mis autos' || selectedButton === 'Autos eliminados' ? (
               autos.length === 0 ? (
-                <Text>Sin autos para mostrar</Text>
+                <Text texto='Sin autos para mostrar' fontSize={20}
+                  paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
+                />
               ) : (
                 <FlatList
                   data={autos}
@@ -438,7 +474,9 @@ export default function DashboardScreen({ navigation }) {
               )
             ) : selectedButton === 'Citas próximas' ? (
               citasProximas.length === 0 ? (
-                <Text>Sin citas para mostrar</Text>
+                <Text texto='Sin citas para mostrar' fontSize={20}
+                  paddingHorizontal={10} font='PoppinsMedium' textAlign='center'
+                />
               ) : (
                 <ScrollView>
                   {citasProximas.map(cita => (
@@ -472,19 +510,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     marginTop: 24,
-    paddingBottom: 40,
+    paddingBottom: 50,
     alignItems: 'center',
     paddingHorizontal: 15,
   },
   header: {
     position: 'relative',
     flexDirection: 'column',
-    height: 310,
+    height: 390,
     width: '100%',
     alignItems: 'center',
   },
   headerImage: {
-    position: 'absolute'
+    position: 'absolute',
+    height: 375,
   },
   titleContainer: {
     paddingTop: 25,
@@ -541,4 +580,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  row: {
+    justifyContent: 'space-between',
+  },
+  contenedorSearchResult: {
+    flex: 1,
+    marginTop: 10,
+    width: '100%',
+    paddingBottom: 30,
+  },
+  contenedorSearch: {
+    flex: 1,
+    marginTop: 10,
+    width: '100%',
+    paddingBottom: 30,
+  }
 });

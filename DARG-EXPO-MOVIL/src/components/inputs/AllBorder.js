@@ -4,7 +4,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Picker } from '@react-native-picker/picker';
 
 
-const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, pickerValues = [], iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key, opacity = 1, padding = 15, tintColor = '#A8AFB9', fontSize = 14, height = 'auto', backgroundColor = 'white', textColor = '#7B7B7B', textColorI = 'black', editable = true }) => {
+const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, pickerValues = [], iconImage, maxLength, width = '100%', textAlign = 'left', heightI = 24, widthI = 24, secureTextEntry, key, opacity = 1, padding = 15, tintColor = '#A8AFB9', fontSize = 14, height = 'auto', backgroundColor = 'white', textColor = '#7B7B7B', textColorI = 'black', editable = true, marginBottom = 10}) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState(value);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
@@ -69,7 +69,7 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
     };
 
     return (
-        <View style={[styles.container, { width, opacity, height, backgroundColor }]}>
+        <View style={[styles.container, { width, opacity, height, backgroundColor, marginBottom}]}>
             {iconImage && (
                 <Image
                     source={iconImage}
@@ -115,10 +115,10 @@ const CustomTextInput = ({ placeholder, keyboardType, value, onChangeText, picke
                     <Picker
                         selectedValue={selectedValue}
                         style={styles.picker}
-                        itemStyle={[styles.input, { fontSize }]}
+                        itemStyle={[styles.input, { fontSize}]}
                         onValueChange={handleValueChange}
                     >
-                        <Picker.Item label={`${placeholder}`} value={0} />
+                        <Picker.Item style={fontSize} label={`${placeholder}`} value={0} />
                         {pickerValues.map((value) => (
                             <Picker.Item key={value.id} label={value.nombre} value={value.id} />
                         ))}
