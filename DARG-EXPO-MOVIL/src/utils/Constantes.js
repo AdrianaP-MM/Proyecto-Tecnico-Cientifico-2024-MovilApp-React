@@ -3,8 +3,8 @@
 // utilizar la dirección IP del servidor y no localhost
 const createConfig = (ip) => ({
     IP: ip,
-    SERVER_URL: `${ip}/PROYECTO-TECNICO-CIENTIFICO-2024/api/services/publico/`,
-    IMAGE_URL: `${ip}/PROYECTO-TECNICO-CIENTIFICO-2024/api/images/`
+    SERVER_URL: `${ip}/Proyecto-Tecnico-Cientifico-2024/api/services/publico/`,
+    IMAGE_URL: `${ip}/Proyecto-Tecnico-Cientifico-2024/api/images/`
 });
-const Config = createConfig('http://192.168.0.8'); // Aquí cambian la IP
+const Config = createConfig('http://34.42.201.8'); // Aquí cambian la IP
 export default Config;
