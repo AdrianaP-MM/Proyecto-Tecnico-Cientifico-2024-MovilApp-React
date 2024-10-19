@@ -3,7 +3,9 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Alert, TextInput, Scro
 import * as ImagePicker from 'expo-image-picker';
 import CustomPicker from '../components/inputs/ComboBox'; // Importa el componente de selección personalizada
 import Button from '../components/buttons/ButtonRojo'; // Importa el componente de botón personalizado
+import Input from '../components/inputs/AllBorder';
 import fetchData from '../utils/FetchData';
+import Config from '../utils/Constantes';
 
 const colores = [
   { label: 'Colores', value: '' },
@@ -27,8 +29,8 @@ const InformacionCarro = ({ route, navigation }) => {
   const [fecha, setFecha] = useState(carro.fecha);
   const [placa, setPlaca] = useState(carro.placa);
   const [imagen, setImagen] = useState(carro.imagen);
-  const [tipoAutomovil, setTipoAutomovil] = useState(carro.id_tipo_automovil);
-  const [marcaAutomovil, setMarcaAutomovil] = useState(carro.id_marca_automovil);
+  const [tipoAutomovil, setTipoAutomovil] = useState(carro.tipo);
+  const [marcaAutomovil, setMarcaAutomovil] = useState(carro.marca);
   const [pickerValuesMarca, setPickerValuesMarca] = useState([]);
   const [pickerValuesTipos, setPickerValuesTipos] = useState([]);
 
@@ -58,16 +60,22 @@ const InformacionCarro = ({ route, navigation }) => {
     try {
       const responseTiposAutomoviles = await fetchData(API, 'readTipos');
       if (responseTiposAutomoviles.status) {
-        setPickerValuesTipos(responseTiposAutomoviles.dataset.map(item => ({
-          label: item.nombre_tipo_automovil, // Asegúrate de que el campo nombre sea correcto
-          value: item.id_tipo_automovil, // Asegúrate de que el campo id sea correcto
-        })));
+        // Agregar un elemento predeterminado
+        const tiposConDefault = [{
+          label: 'Selecciona un tipo', // Label predeterminado
+          value: null, // Valor que no se utilizará
+        }, ...responseTiposAutomoviles.dataset.map(item => ({
+          label: item.nombre_tipo_automovil,
+          value: item.id_tipo_automovil,
+        }))];
+
+        setPickerValuesTipos(tiposConDefault);
       } else {
-        Alert.alert('Error', responseTiposAutomoviles.error);
+        Alert.alert('Error', `${responseTiposAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
       }
     } catch (error) {
-      console.error('Error en leer los tipos:', error);
-      Alert.alert('Error', 'Hubo un error al leer los tipos de automóvil.');
+      console.error('Error en leer los elementos:', error);
+      Alert.alert('Error', 'Hubo un error.');
     }
   };
 
@@ -75,16 +83,22 @@ const InformacionCarro = ({ route, navigation }) => {
     try {
       const responseMarcasAutomoviles = await fetchData(API, 'readMarcas');
       if (responseMarcasAutomoviles.status) {
-        setPickerValuesMarca(responseMarcasAutomoviles.dataset.map(item => ({
-          label: item.nombre_marca_automovil, // Asegúrate de que el campo nombre sea correcto
-          value: item.id_marca_automovil, // Asegúrate de que el campo id sea correcto
-        })));
+        // Agregar un elemento predeterminado
+        const marcasConDefault = [{
+          label: 'Selecciona una marca', // Label predeterminado
+          value: null, // Valor que no se utilizará
+        }, ...responseMarcasAutomoviles.dataset.map(item => ({
+          label: item.nombre_marca_automovil,
+          value: item.id_marca_automovil,
+        }))];
+
+        setPickerValuesMarca(marcasConDefault);
       } else {
-        Alert.alert('Error', responseMarcasAutomoviles.error);
+        Alert.alert('Error', `${responseMarcasAutomoviles.error}` + '. Es necesario registrar un automóvil antes de agendar una cita.');
       }
     } catch (error) {
-      console.error('Error en leer las marcas:', error);
-      Alert.alert('Error', 'Hubo un error al leer las marcas de automóvil.');
+      console.error('Error en leer los elementos:', error);
+      Alert.alert('Error', 'Hubo un error.');
     }
   };
 
@@ -102,15 +116,42 @@ const InformacionCarro = ({ route, navigation }) => {
   };
 
   const handleChangePlaca = (text) => {
-    // Limita la longitud del campo de placa a 6 dígitos
-    if (text.length <= 6) {
-      setPlaca(text);
-    }
+    // Limpiar el valor de cualquier carácter que no sea letras, números o guiones
+    let cleanText = text.replace(/[^A-Z0-9-]/g, '').toUpperCase();
+
+    // Actualizar el estado de la placa
+    setPlaca(cleanText);
   };
+
+  function validateSalvadoranPlate(plate) {
+    // Expresión regular para validar el formato de la placa salvadoreña
+    const plateRegex = /^(A|AB|C|CC|CD|D|E|F|M|MB|MI|N|O|P|PR|PNC|RE|T|V)-?[A-Za-z0-9]{3}-[A-Za-z0-9]{3}$/;
+
+    // Validar formato
+    if (!plateRegex.test(plate)) {
+      return { valid: false, message: 'Formatos de placa salvadoreños: Un subfijo: P-###-###, dos subfijos: AB-###-###, tres subfijos PNC-###-###. Verfica tambien la informacion de placa.' };
+    }
+
+    return { valid: true, message: 'Placa válida.' };
+  }
 
   const handleGuardarCarro = async () => {
     if (!modelo || !color || !tipoAutomovil || !marcaAutomovil || !fecha || !placa) {
       Alert.alert('Error', 'Todos los campos son requeridos.');
+      return;
+    }
+
+    const validationResult = validateSalvadoranPlate(placa);
+    if (!validationResult.valid) {
+      Alert.alert('Error', validationResult.message);
+      return; // Detener la ejecución si la placa no es válida
+    }
+
+    // Validar que la fecha no sea mayor que la fecha actual
+    const fechaActual = new Date();
+    const fechaFabricacion = new Date(fecha); // Asegúrate de que `fecha` tenga un formato válido
+    if (fechaFabricacion > fechaActual) {
+      Alert.alert('Error', 'La fecha de fabricación no puede ser mayor a la fecha actual.');
       return;
     }
 
@@ -152,23 +193,19 @@ const InformacionCarro = ({ route, navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.label}>Modelo</Text>
-      <TextInput
+      <Input
         placeholder="Modelo automóvil"
         value={modelo}
         onChangeText={setModelo}
-        style={styles.input}
       />
-      
-      <Text style={styles.label}>Color</Text>
+
       <CustomPicker
         selectedValue={color}
         onValueChange={(itemValue) => setColor(itemValue)}
         iconImage={require('../images/icons/iconDui.png')} // Cambia la ruta a la imagen de tu ícono
         items={colores}
       />
-      
-      <Text style={styles.label}>Tipo de Automóvil</Text>
+
       <CustomPicker
         selectedValue={tipoAutomovil}
         onValueChange={(itemValue) => setTipoAutomovil(itemValue)}
@@ -176,7 +213,6 @@ const InformacionCarro = ({ route, navigation }) => {
         items={pickerValuesTipos}
       />
 
-      <Text style={styles.label}>Marca del Automóvil</Text>
       <CustomPicker
         selectedValue={marcaAutomovil}
         onValueChange={(itemValue) => setMarcaAutomovil(itemValue)}
@@ -184,34 +220,47 @@ const InformacionCarro = ({ route, navigation }) => {
         items={pickerValuesMarca}
       />
 
-      <Text style={styles.label}>Fecha de Fabricación</Text>
-      <TextInput
+      <Input
         placeholder="Fecha fabricación (yyyy)"
         value={fecha}
         onChangeText={handleChangeFecha}
-        style={styles.input}
         keyboardType="numeric" // Solo permite ingresar números
       />
-      
-      <Text style={styles.label}>Placa</Text>
-      <TextInput
+
+      <Input
         placeholder="Placa automóvil"
         value={placa}
         onChangeText={handleChangePlaca}
-        style={styles.input}
       />
-      
+
       <TouchableOpacity style={styles.imageButton} onPress={handleAgregarImagen}>
-        <Text style={styles.imageButtonText}>Agregar imagen</Text>
+        <Text style={styles.imageButtonText}>Cambiar imagen</Text>
         <Text style={styles.imageButtonPlus}>+</Text>
       </TouchableOpacity>
-      
-      <View style={styles.imageContainer}>
-        {imagen ? (
-          <Image source={{ uri: imagen }} style={styles.image} />
-        ) : (
-          <Text>No se ha seleccionado imagen</Text>
-        )}
+
+      <View style={styles.cambioImagen}>
+
+        <Image
+          source={carro.imagen
+            ? { uri: `${Config.IMAGE_URL}/automoviles/${carro.imagen}` }
+            : require('../images/carros/carExample2.jpg')}
+          style={styles.image}
+        />
+
+        <Image
+          source={require('../images/icons/btnBack.png')} // Ruta de tu imagen intermedia
+          style={styles.imageIntermedia}
+          resizeMode="contain"
+        />
+
+        <View style={styles.imageContainer}>
+          {imagen ? (
+            <Image source={{ uri: imagen }} style={styles.image} />
+          ) : (
+            <Text>No se ha seleccionado imagen</Text>
+          )}
+        </View>
+
       </View>
 
       <Button textoBoton='Guardar' accionBoton={handleGuardarCarro} />
@@ -243,33 +292,54 @@ const styles = StyleSheet.create({
   },
   imageButton: {
     flexDirection: 'row',
-    backgroundColor: 'lightgray',
-    width: '100%',
-    padding: 15,
-    borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 12,
     marginTop: 10,
+    backgroundColor: 'white',
   },
   imageButtonText: {
-    color: 'black',
-    marginRight: 10,
-  },
-  imageButtonPlus: {
-    color: 'black',
-    fontWeight: 'bold',
+    flex: 1,
     fontSize: 16,
   },
+  imageButtonPlus: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'gray',
+  },
   imageContainer: {
-    marginTop: 10,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    marginBottom: 20,
   },
   image: {
-    width: 150,
-    height: 150,
-    resizeMode: 'cover',
+    width: 100, // Ancho de la imagen, ajusta según tus necesidades
+    height: 100, // Alto de la imagen, ajusta según tus necesidades
+    marginHorizontal: 10, // Espacio horizontal entre imágenes
     borderRadius: 10,
+  },
+  imageIntermedia: {
+    width: 50, // Ancho de la imagen, ajusta según tus necesidades
+    height: 50, // Alto de la imagen, ajusta según tus necesidades
+    transform: [{ rotate: '180deg' }],
+  },
+  cambioImagen: {
+    flexDirection: 'row',
+    alignItems: 'center', // Alinea verticalmente los elementos
+    justifyContent: 'space-between', // Espacio entre los elementos
+    padding: 10, // Agrega un poco de espacio interno
+  },
+  cambioImagenText: {
+    // Estilos para el texto
+    marginRight: 10, // Espacio entre el texto y la imagen
+  },
+  imageContainer: {
+    // Estilos para el contenedor de la imagen
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -18,10 +18,14 @@ const CarrosVista = ({ navigation }) => {
       const DATA = await fetchData(API, 'readAllMyCars');
       if (DATA.status) {
         const data = DATA.dataset.map(item => ({
-          id_automovil: item.id_automovil, // Asegúrate de que id_automovil esté presente
+          id_automovil: item.id_automovil,
           id_cliente: item.id_cliente,
           imagen: item.imagen_automovil,
           modelo: item.modelo_automovil,
+          color: item.color_automovil,
+          tipo: item.id_tipo_automovil,
+          marca: item.id_marca_automovil,
+          fecha: item.fecha_fabricacion_automovil,
           placa: item.placa_automovil
         }));
         setCarros(data);
