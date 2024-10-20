@@ -7,7 +7,7 @@ import Input from '../components/inputs/AllBorder'; // Importa el componente de 
 import fetchData from '../utils/FetchData';
 import * as ImagePicker from 'expo-image-picker';
 import Config from '../utils/Constantes'
-import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces } from '../utils/Validator'
+import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces, validatePassword } from '../utils/Validator'
 const IMAGE_URL = Config.IMAGE_URL;
 
 // Componente principal que exporta la pantalla de edición jurídica
@@ -73,7 +73,7 @@ export default function EditarPerfil({ navigation }) {
                         if (confirmCorreo.status) {
                             console.log('El usuario con correo existe', confirmCorreo);
                             const sendCorreo = await fetchData('usuarios_clientes.php', 'enviarCodigoRecuperacion', formData);
-                            //console.log(formData)
+                            console.log(formData);
                             if (sendCorreo.status) {
                                 Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
                                 setCodeSend(sendCorreo.codigo);
@@ -141,6 +141,12 @@ export default function EditarPerfil({ navigation }) {
 
         if (password.length < 8 || password.length > 50) {
             Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
+            return false;
+        }
+
+        // Valida el correo electrónico
+        if (!validatePassword(password)) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe de tener almenos una letra mayuscula, una letra minuscula, un numero y un simbolo.');
             return false;
         }
 

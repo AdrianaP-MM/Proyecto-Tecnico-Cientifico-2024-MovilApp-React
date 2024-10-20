@@ -5,7 +5,7 @@ import Text from '../components/utilidades/Text'; // Importación del componente
 import Button from '../components/buttons/ButtonRojo'; // Importación del componente de botón personalizado
 import Input from '../components/inputs/AllBorder'; // Importación del componente de entrada de texto personalizado
 
-import { correoValidate, formatNOSpaces, validateEmail, formatEmail } from '../utils/Validator'
+import { correoValidate, formatNOSpaces, validateEmail, formatEmail, validatePassword } from '../utils/Validator'
 import fetchData from '../utils/FetchData';
 
 export default function AppRestablecerContra() {
@@ -134,8 +134,14 @@ export default function AppRestablecerContra() {
             return false;
         }
 
-        if(contra.length < 8 || confirmContra.length < 8){
+        if (contra.length < 8 || confirmContra.length < 8) {
             Alert.alert('Error', 'La contraseña es menor a 8 caracteres.');
+            return false;
+        }
+
+        // Valida el correo electrónico
+        if (!validatePassword(contra)) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe de tener almenos una letra mayuscula, una letra minuscula, un numero y un simbolo.');
             return false;
         }
 

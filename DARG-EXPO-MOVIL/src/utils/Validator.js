@@ -37,6 +37,11 @@ export const validateEmail = (correo) => {
     return correoRegex.test(correo); // Devuelve true si el email cumple con el formato, false si no
 };
 
+export const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+    return passwordRegex.test(password); // Devuelve true si la contraseña cumple con el formato, false si no
+};
+
 // Format the NIT
 export const formatNit = (value) => {
     const numericValue = value.replace(/\D/g, '');

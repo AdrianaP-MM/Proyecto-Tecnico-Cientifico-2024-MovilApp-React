@@ -6,7 +6,7 @@ import Button from '../components/buttons/ButtonRojo'; // Import the custom butt
 import Input from '../components/inputs/AllBorder'; // Import the custom input
 import CustomPicker from '../components/inputs/ComboBox'; // Import the custom input
 import { StatusBar } from 'expo-status-bar'; // Import the status bar
-import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces } from '../utils/Validator'
+import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces, validatePassword } from '../utils/Validator'
 import fetchData from '../utils/FetchData';
 
 export default function Registrate({ navigation }) {
@@ -74,6 +74,12 @@ export default function Registrate({ navigation }) {
             return false;
         }
 
+        // Valida el correo electrónico
+        if (!validatePassword(contraseña)) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe de tener almenos una letra mayuscula, una letra minuscula, un numero y un simbolo.');
+            return false;
+        }
+
         if (confirmarContraseña.length < 8 || confirmarContraseña.length > 50) {
             Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
             return false;
@@ -126,6 +132,13 @@ export default function Registrate({ navigation }) {
             Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
             return false;
         }
+
+        // Valida el correo electrónico
+        if (!validatePassword(contraseña)) {
+            Alert.alert('Campos incorrectos', 'La contraseña debe de tener almenos una letra mayuscula, una letra minuscula, un numero y un simbolo.');
+            return false;
+        }
+
 
         if (confirmarContraseña.length < 8 || confirmarContraseña.length > 50) {
             Alert.alert('Campos incorrectos', 'La contraseña debe tener entre 8 y 50 dígitos.');
