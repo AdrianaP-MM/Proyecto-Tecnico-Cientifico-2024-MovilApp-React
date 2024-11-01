@@ -29,6 +29,7 @@ const InformacionCarro = ({ route, navigation }) => {
   const [fecha, setFecha] = useState(carro.fecha);
   const [placa, setPlaca] = useState(carro.placa);
   const [imagen, setImagen] = useState(carro.imagen);
+  const [nuevaimagen, setNuevaImagen] = useState();
   const [tipoAutomovil, setTipoAutomovil] = useState(carro.tipo);
   const [marcaAutomovil, setMarcaAutomovil] = useState(carro.marca);
   const [pickerValuesMarca, setPickerValuesMarca] = useState([]);
@@ -52,7 +53,8 @@ const InformacionCarro = ({ route, navigation }) => {
     });
 
     if (!result.canceled) {
-      setImagen(result.assets[0].uri); // Actualiza el estado con la imagen seleccionada
+      setNuevaImagen(result.assets[0].uri); // Actualiza el estado con la imagen seleccionada
+      console.log("Imagen seleccionada " + nuevaimagen);
     }
   };
 
@@ -106,6 +108,8 @@ const InformacionCarro = ({ route, navigation }) => {
     fetchTiposAutomovil();
     fetchMarcasAutomovil();
     console.log('Carro recibido:', carro);
+    console.log('Imageen recibida1:', carro.imagen);
+    console.log('Imageen recibida2:', imagen);
   }, [carro]);
 
   const handleChangeFecha = (text) => {
@@ -165,19 +169,21 @@ const InformacionCarro = ({ route, navigation }) => {
     formData.append('id_cliente', cliente.id_cliente);
     formData.append('id_automovil', carro.id_automovil); // Se envía el ID del automóvil para la actualización
 
-    if (imagen) {
+    if (nuevaimagen) {
       formData.append('imagen_automovil', {
-        uri: imagen,
+        uri: nuevaimagen,
         type: 'image/jpeg',
         name: imagen.split('/').pop(),
       });
+    } else {
+      // Envía solo el nombre de la imagen actual
+      formData.append('imagenActual', imagen); // Asegúrate de que `carro.imagenActual` tenga el nombre de la imagen actual
     }
-    console.log('ID del automóvil:', carro.id_automovil);
-    console.log('FormData:', formData); // Log para verificar los datos enviados
+
+    console.log('Contenido de formData antes del envío:', formData);
 
     try {
       const response = await fetchData(API, 'updateRow', formData);
-      console.log('Server Response:', response); // Log para verificar la respuesta del servidor
 
       if (response.status) {
         Alert.alert('Éxito', 'El vehículo ha sido actualizado correctamente.');
@@ -254,10 +260,10 @@ const InformacionCarro = ({ route, navigation }) => {
         />
 
         <View style={styles.imageContainer}>
-          {imagen ? (
-            <Image source={{ uri: imagen }} style={styles.image} />
+          {nuevaimagen ? (
+            <Image source={{ uri: nuevaimagen }} style={styles.image} />
           ) : (
-            <Text>No se ha seleccionado imagen</Text>
+            <Text>?</Text>
           )}
         </View>
 
