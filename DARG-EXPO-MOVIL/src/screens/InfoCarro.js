@@ -270,7 +270,11 @@ const InformacionCarro = ({ route, navigation }) => {
           {nuevaimagen ? (
             <Image source={{ uri: nuevaimagen }} style={styles.image} />
           ) : (
-            <Text>?</Text>
+            <Image
+              source={require('../images/icons/iconInterrogacion.png')} // Ruta de tu imagen intermedia
+              style={styles.imageDefault}
+              resizeMode="contain"
+            />
           )}
         </View>
 
@@ -331,6 +335,12 @@ const styles = StyleSheet.create({
   image: {
     width: 100, // Ancho de la imagen, ajusta según tus necesidades
     height: 100, // Alto de la imagen, ajusta según tus necesidades
+    marginHorizontal: 10, // Espacio horizontal entre imágenes
+    borderRadius: 10,
+  },
+  imageDefault: {
+    width: 70, // Ancho de la imagen, ajusta según tus necesidades
+    height: 70, // Alto de la imagen, ajusta según tus necesidades
     marginHorizontal: 10, // Espacio horizontal entre imágenes
     borderRadius: 10,
   },
