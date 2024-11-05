@@ -34,8 +34,14 @@ const InformacionCarro = ({ route, navigation }) => {
   const [marcaAutomovil, setMarcaAutomovil] = useState(carro.marca);
   const [pickerValuesMarca, setPickerValuesMarca] = useState([]);
   const [pickerValuesTipos, setPickerValuesTipos] = useState([]);
+  const [updateCount, setUpdateCount] = useState(0);
 
   const API = 'automoviles.php'; // URL del servidor
+
+
+  const forceRender = () => {
+    setUpdateCount(prev => prev + 1); // Incrementa un contador para forzar el renderizado
+  };
 
   // Solicita permisos y abre la galería de imágenes
   const handleAgregarImagen = async () => {
@@ -53,8 +59,12 @@ const InformacionCarro = ({ route, navigation }) => {
     });
 
     if (!result.canceled) {
-      setNuevaImagen(result.assets[0].uri); // Actualiza el estado con la imagen seleccionada
-      console.log("Imagen seleccionada " + nuevaimagen);
+      setNuevaImagen(''); // Limpiar imagen temporalmente
+      setTimeout(() => {
+        setNuevaImagen(result.assets[0].uri); // Establecer la nueva imagen seleccionada
+        console.log('Nueva imagen establecida:', result.assets[0].uri); // Verifica que el URI se establezca
+        Alert.alert('Imagen seleccionada', 'La imagen se ha seleccionado correctamente.');
+      }, 0); // Pequeño retraso para asegurar el cambio de estado
     }
   };
 
@@ -107,10 +117,8 @@ const InformacionCarro = ({ route, navigation }) => {
   useEffect(() => {
     fetchTiposAutomovil();
     fetchMarcasAutomovil();
-    console.log('Carro recibido:', carro);
-    console.log('Imageen recibida1:', carro.imagen);
-    console.log('Imageen recibida2:', imagen);
-  }, [carro]);
+    console.log('nuevaimagen:', nuevaimagen);
+  }, [carro, nuevaimagen]); // Combina las dependencias en una sola lista
 
   const handleChangeFecha = (text) => {
     // Limita la longitud del campo de fecha a 4 dígitos
@@ -148,12 +156,11 @@ const InformacionCarro = ({ route, navigation }) => {
     const validationResult = validateSalvadoranPlate(placa);
     if (!validationResult.valid) {
       Alert.alert('Error', validationResult.message);
-      return; // Detener la ejecución si la placa no es válida
+      return;
     }
 
-    // Validar que la fecha no sea mayor que la fecha actual
     const fechaActual = new Date();
-    const fechaFabricacion = new Date(fecha); // Asegúrate de que `fecha` tenga un formato válido
+    const fechaFabricacion = new Date(fecha);
     if (fechaFabricacion > fechaActual) {
       Alert.alert('Error', 'La fecha de fabricación no puede ser mayor a la fecha actual.');
       return;
@@ -167,20 +174,19 @@ const InformacionCarro = ({ route, navigation }) => {
     formData.append('fecha_fabricacion_automovil', fecha);
     formData.append('placa_automovil', placa);
     formData.append('id_cliente', cliente.id_cliente);
-    formData.append('id_automovil', carro.id_automovil); // Se envía el ID del automóvil para la actualización
+    formData.append('id_automovil', carro.id_automovil);
 
     if (nuevaimagen) {
+      console.log('Imagen nueva que se enviará:', nuevaimagen); // Verifica el valor
       formData.append('imagen_automovil', {
         uri: nuevaimagen,
         type: 'image/jpeg',
-        name: imagen.split('/').pop(),
+        name: nuevaimagen.split('/').pop(),
       });
     } else {
-      // Envía solo el nombre de la imagen actual
-      formData.append('imagenActual', imagen); // Asegúrate de que `carro.imagenActual` tenga el nombre de la imagen actual
+      console.log('Usando imagen actual:', carro.imagen); // Verifica que carro.imagen está presente
+      formData.append('imagenActual', carro.imagen);
     }
-
-    console.log('Contenido de formData antes del envío:', formData);
 
     try {
       const response = await fetchData(API, 'updateRow', formData);
@@ -196,6 +202,7 @@ const InformacionCarro = ({ route, navigation }) => {
       Alert.alert('Error', 'Hubo un problema al actualizar el carro.');
     }
   };
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
