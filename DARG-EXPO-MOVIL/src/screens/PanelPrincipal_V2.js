@@ -374,7 +374,7 @@ export default function DashboardScreen({ navigation }) {
                     <TarjetaCarro
                       key={carro.placa_automovil} // Asignar una key única, por ejemplo la placa del carro
                       carro={carro}
-                      onPress={() => navigation.navigate('InformacionCarro', { carro: carro })}
+                      onPress={null}
                     />
                   ))}
                 </ScrollView>
@@ -473,13 +473,13 @@ export default function DashboardScreen({ navigation }) {
                   renderItem={({ item }) => (
                     <TarjetaCarro
                       carro={item}
-                      onPress={() => navigation.navigate('InformacionCarro', { carro: item })}
+                      onPress={null}
                     />
                   )}
                   keyExtractor={(item) => item.placa}
                   numColumns={2}
                   columnWrapperStyle={styles.row}
-                  style={styles.scrollAutos}
+                  style={styles.scrollAutos2}
                 />
               )
             ) : selectedButton === 'Citas próximas' ? (
@@ -572,6 +572,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   scrollAutos: {
+    flex: 1, // Ocupa todo el espacio disponible
+    width: '100%', // Ancho completo
+    backgroundColor: 'white',
+    paddingTop: 15,
+  },
+  scrollAutos2: {
     flex: 1, // Ocupa todo el espacio disponible
     width: '100%', // Ancho completo
     backgroundColor: 'white',
