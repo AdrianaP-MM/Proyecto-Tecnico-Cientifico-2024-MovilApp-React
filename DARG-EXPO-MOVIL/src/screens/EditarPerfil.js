@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Config from '../utils/Constantes'
 import { correoValidate, validateEmail, formatNit, formatTel, formatDui, formatAlphabetic, formatEmail, formatNOSpaces, validatePassword } from '../utils/Validator'
 const IMAGE_URL = Config.IMAGE_URL;
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Componente principal que exporta la pantalla de edición jurídica
 export default function EditarPerfil({ navigation }) {
@@ -267,6 +268,7 @@ export default function EditarPerfil({ navigation }) {
         try {
             const DATA = await fetchData(API, 'logOut');
             if (!DATA.error) {
+                await AsyncStorage.removeItem('session');
                 Alert.alert('Éxito', 'Sesesion cerrada.');
                 navigation.navigate('Login');
             } else {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { View, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
 import { Avatar, Provider, TouchableRipple, Dialog, Portal } from 'react-native-paper';
 import Text from '../components/utilidades/Text'; // Importa el componente de texto personalizado
@@ -6,7 +7,8 @@ import Button from '../components/buttons/ButtonRojo'; // Importa el botón pers
 import Input from '../components/inputs/AllBorder'; // Importa el componente de entrada personalizado
 import { StatusBar } from 'expo-status-bar'; // Importa la barra de estado
 import fetchData from '../utils/FetchData';
-import { correoValidate, validateEmail, formatEmail, formatNOSpaces } from '../utils/Validator'
+import { correoValidate, validateEmail, formatEmail, formatNOSpaces } from '../utils/Validator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login({ navigation }) {
   // Define los estados para el correo electrónico y la contraseña
@@ -25,6 +27,17 @@ export default function Login({ navigation }) {
   const [visibleCamposContraseña, setvisibleCamposContraseña] = React.useState(false);
 
 
+  useEffect(() => {
+    const verificarSesion = async () => {
+      const session = await AsyncStorage.getItem('session');
+      if (session === 'true') {
+        navigation.navigate('TabNavigator'); // Redirige automáticamente si hay sesión
+      }
+    };
+  
+    verificarSesion();
+  }, []);
+  
   const validateFields = () => {
     // Verifica los campos básicos
     const fields = {email, password};
@@ -78,6 +91,7 @@ export default function Login({ navigation }) {
       const DATA = await fetchData(API, 'logIn', formData);
 
       if (!DATA.error) {
+        await AsyncStorage.setItem('session', 'true');
         Alert.alert('Éxito', 'Auntenticacion completada.');
         navigation.navigate('TabNavigator'); // Navegamos a la pantalla 'Panel Principal'
         setEmail('');
@@ -105,7 +119,7 @@ export default function Login({ navigation }) {
     }
   };
 
-
+  
 
   // Función para enviar el código de verificación al correo ingresado
   const handleSendCode = async () => {
@@ -364,7 +378,6 @@ export default function Login({ navigation }) {
             </TouchableRipple>
           </View>
           <Button textoBoton='Iniciar sesión' accionBoton={handleLogin} fontSize={17} width='90%' marginTop={50} />
-          <Button textoBoton='cerrar sesión' accionBoton={handleCerrarSesion} fontSize={17} width='90%' marginTop={10} />
           <View style={styles.registerContainer}>
             <Text texto='¿No tienes cuenta? ' font='PoppinsRegular' fontSize={14} textAlign='center' />
             <TouchableRipple
