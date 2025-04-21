@@ -59,7 +59,8 @@ export default function Registrate({ navigation }) {
 
     const validateFieldsNatural = () => {
         // Verifica los campos básicos
-        const fields = { dui, telefono, correo, contraseña, confirmarContraseña, nombres, apellidos, checked, departamentos, nit };
+        const fields = { dui, telefono, correo, contraseña, confirmarContraseña, nombres, apellidos, checked, departamentos};
+        
         const missingFields = Object.entries(fields)
             .filter(([key, value]) => !value)
             .map(([key]) => key);
@@ -106,12 +107,7 @@ export default function Registrate({ navigation }) {
             Alert.alert('Correo electrónico incorrecto', 'El correo electrónico no es válido, dominio inexistente.');
             return false;
         }
-
-        if (nit.length != 17) {
-            Alert.alert('Campos incorrectos', 'El número de NIT no es válido, se requiere de 15 digítos.');
-            return false;
-        }
-
+        
         // Si todo está completo, retorna true
         return true;
     };
@@ -201,7 +197,6 @@ export default function Registrate({ navigation }) {
         formData.append('user_apellidos', apellidos);
         formData.append('user_tipo', checked);
         formData.append('user_departamento', departemento);
-        formData.append('user_nit', nit);
 
         try {
             const DATA = await fetchData(API, 'signUpPersonaNatural', formData);
@@ -374,6 +369,17 @@ export default function Registrate({ navigation }) {
                             maxLength={11}
                         />
 
+                        <Input
+                            placeholder='NIT'
+                            value={nit}
+                            onChangeText={(text) => setNit(formatNit(text))}
+                            width='95%'
+                            iconImage={require('../images/icons/iconNit.png')}
+                            keyboardType='numeric'
+                            maxLength={17}
+                            style={styles.input}
+                        />
+
                         <CustomPicker
                             selectedValue={rubro}
                             onValueChange={(itemValue) => setRubro(itemValue)}
@@ -497,16 +503,7 @@ export default function Registrate({ navigation }) {
                     maxLength={10}
                     style={styles.input}
                 />
-                <Input
-                    placeholder='NIT'
-                    value={nit}
-                    onChangeText={(text) => setNit(formatNit(text))}
-                    width='95%'
-                    iconImage={require('../images/icons/iconNit.png')}
-                    keyboardType='numeric'
-                    maxLength={17}
-                    style={styles.input}
-                />
+
 
                 <View style={styles.loginContainer}>
                     <Button textoBoton='Registrate' accionBoton={checked === 'Persona juridica' ? handleRegistroJuridico : handleRegistroNatural} fontSize={17} width='55%' />
