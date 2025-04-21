@@ -130,7 +130,7 @@ export default function EditarPerfil({ navigation }) {
 
     const validateFieldsContra = () => {
         // Verifica los campos básicos
-        const fields = {password, passwordReset};
+        const fields = { password, passwordReset };
         const missingFields = Object.entries(fields)
             .filter(([key, value]) => !value)
             .map(([key]) => key);
@@ -282,18 +282,13 @@ export default function EditarPerfil({ navigation }) {
 
     const validateFields = () => {
         // Verifica los campos básicos
-        const fields = { dui, telefono, correo, nombre, apellido, depaSeleccionado, nit };
+        const fields = { dui, telefono, correo, nombre, apellido, depaSeleccionado };
         const missingFields = Object.entries(fields)
             .filter(([key, value]) => !value)
             .map(([key]) => key);
 
         if (missingFields.length > 0) {
-            Alert.alert('Campos incompletos', 'Por favor, completa todos los campos.');
-            return false;
-        }
-
-        if (nit.length != 17) {
-            Alert.alert('Campos incorrectos', 'El número de NIT no es válido, se requiere de 15 digítos.');
+            Alert.alert('Campos incompletos', 'Por favor, completa todsdasos los campos.');
             return false;
         }
 
@@ -334,7 +329,7 @@ export default function EditarPerfil({ navigation }) {
 
         // Verifica campos adicionales si `opacity` es igual a 1
         if (opacity === 1) {
-            const additionalFields = { rubroSeleccionado, nrc, nrf };
+            const additionalFields = { rubroSeleccionado, nrc, nrf, nit };
             const missingAdditionalFields = Object.entries(additionalFields)
                 .filter(([key, value]) => !value)
                 .map(([key]) => key);
@@ -362,7 +357,6 @@ export default function EditarPerfil({ navigation }) {
             formData.append('user_nombres', nombre);
             formData.append('user_apellidos', apellido);
             formData.append('user_departamento', depaSeleccionado);
-            formData.append('user_nit', nit);
 
             if (imagen) {
                 formData.append('user_img', {
@@ -377,6 +371,7 @@ export default function EditarPerfil({ navigation }) {
                 formData.append('user_rubro', rubroSeleccionado);
                 formData.append('user_nrc', nrc);
                 formData.append('user_nrf', nrf);
+                formData.append('user_nit', nit);
             }
 
             const responseProfile = await fetchData(API, 'editProfile', formData);
@@ -565,6 +560,20 @@ export default function EditarPerfil({ navigation }) {
                             maxLength={50}
                             style={styles.input}
                         />
+
+                        <View style={styles.inputContainer}>
+                            <Input
+                                placeholder='DUI'
+                                value={dui}
+                                onChangeText={(text) => setDui(formatDui(text))}
+                                width='100%'
+                                iconImage={require('../images/icons/iconDui.png')}
+                                keyboardType='numeric'
+                                maxLength={10}
+                                style={styles.input}
+                            />
+                        </View>
+
                         <Input
                             placeholder='Rubro comercial'
                             value={rubroSeleccionado}
@@ -576,35 +585,24 @@ export default function EditarPerfil({ navigation }) {
                             height={seeH}
                         />
 
-                        <View style={styles.dui_nit}>
-                            <View style={styles.inputContainer}>
-                                <Input
-                                    placeholder='DUI'
-                                    value={dui}
-                                    onChangeText={(text) => setDui(formatDui(text))}
-                                    width='100%'
-                                    iconImage={require('../images/icons/iconDui.png')}
-                                    keyboardType='numeric'
-                                    maxLength={10}
-                                    style={styles.input}
-                                />
-                            </View>
-
-                            <View style={styles.inputContainer}>
-                                <Input
-                                    placeholder='NIT'
-                                    value={nit}
-                                    onChangeText={(text) => setNit(formatNit(text))}
-                                    width='100%'
-                                    iconImage={require('../images/icons/iconNit.png')}
-                                    keyboardType='numeric'
-                                    maxLength={17}
-                                    style={styles.input}
-                                />
-                            </View>
+                        <View style={styles.inputContainer}>
+                            <Input
+                                placeholder='NIT'
+                                value={nit}
+                                onChangeText={(text) => setNit(formatNit(text))}
+                                width={see}
+                                iconImage={require('../images/icons/iconNit.png')}
+                                keyboardType='numeric'
+                                maxLength={17}
+                                opacity={opacity}
+                                height={seeH}
+                            />
                         </View>
 
                         <View style={[styles.dui_nit, { height: seeH }]}>
+
+
+
                             <View style={styles.inputContainer}>
                                 <Input
                                     placeholder='NRC'
