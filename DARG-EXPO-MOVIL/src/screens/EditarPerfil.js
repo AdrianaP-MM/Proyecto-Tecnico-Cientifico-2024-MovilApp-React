@@ -633,9 +633,13 @@ export default function EditarPerfil({ navigation }) {
                         </View>
 
                         <View style={styles.buttonContainer}>
-                            <Button textoBoton='Actualizar' accionBoton={editProfile} fontSize={15} width='38%' />
-                            <Button textoBoton='Cambiar contraseña' accionBoton={handleAbrirDialogo} fontSize={15} width='52%' />
+                            <Button textoBoton='Actualizar' accionBoton={editProfile} fontSize={15} width='100%' />
                         </View>
+
+                        <View style={styles.buttonContainer}>
+                            <Button textoBoton='Cambiar contraseña' accionBoton={handleAbrirDialogo} fontSize={15} width='100%' />
+                        </View>
+
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
